@@ -77,4 +77,8 @@ public class LimeLight extends SubsystemBase {
     calculateXdistance();
     calculateZdistance();
   }
+
+  public void setLight(boolean on) {
+    limeLight.getEntry("ledMode").setNumber(1);
+  }
 }
