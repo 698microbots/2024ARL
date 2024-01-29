@@ -35,6 +35,7 @@ public final class Constants {
   // public static final int goalHeight = 0; // get this from the game manual later // shouldn't be needed
   public static final int limeLightHeight = 0/*placeholder */;
   public static final double limeLightInitAngle = 0/*placeholder */;
+  public static final double goalHeight = 0;
 
   public static final double angleToRadians = (Math.PI/180);
   public static final double radiansToAngle = (180/Math.PI);

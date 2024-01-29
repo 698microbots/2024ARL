@@ -59,11 +59,4 @@ private double zDisp = 0;
       return false;
     }
   }
-
-  // public void setMotorSpeed_Angle(double speed, double angle) { // move to DriveTrain
-  //   BR.drive(speed, angle); //off by about 32 degrees
-  //   BL.drive(speed, angle);
-  //   FR.drive(speed, angle);
-  //   FL.drive(speed, angle);  
-  // }
 }
