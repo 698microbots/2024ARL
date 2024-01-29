@@ -11,16 +11,28 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.AutoCenter;
 import frc.robot.commands.AutoTest;
+import frc.robot.commands.SetFlywheelMotor;
 import frc.robot.generated.TunerConstants;
 
 public class RobotContainer {
-  private double MaxSpeed = 1; // 6 meters per second desired top speed (6 origin)
+  private double MaxSpeed = .5; // 6 meters per second desired top speed (6 origin)
   private double MaxAngularRate = .5 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
+  public XboxController xboxController = new XboxController(0); // new XBox object
+
+  // button definitions
+  private final JoystickButton Xbutton = new JoystickButton(xboxController, Constants.Xbox_Button_X);
+  private final JoystickButton Ybutton = new JoystickButton(xboxController, Constants.Xbox_Button_Y);
+  private final JoystickButton Abutton = new JoystickButton(xboxController, Constants.Xbox_Button_A);
+  private final JoystickButton Bbutton = new JoystickButton(xboxController, Constants.Xbox_Button_B);
+  private final JoystickButton RBbutton = new JoystickButton(xboxController, Constants.Xbox_Button_RB);
+  private final JoystickButton LBbutton = new JoystickButton(xboxController, Constants.Xbox_Button_LB);
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   public final CommandXboxController joystick = new CommandXboxController(0); // My joystick
@@ -41,6 +53,11 @@ public class RobotContainer {
             .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
             .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
+    // Abutton.onTrue(new SetFlywheelMotor()); // tells the flywheel to move
+    // to trigger a command to cernter the robot on an AprilTag, get the flywheel
+    // and hanger in position
+    Xbutton.onTrue(new AutoCenter());
+    Xbutton.onTrue(new SetFlywheelMotor());
 
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
     joystick.b().whileTrue(drivetrain

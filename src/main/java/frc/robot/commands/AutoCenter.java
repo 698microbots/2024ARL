@@ -4,23 +4,25 @@
 
 package frc.robot.commands;
 
-import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
-
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.CommandSwerveDrivetrain;
 import frc.robot.Constants;
+import frc.robot.subsystems.LimeLight;
 
-public class AutoTest extends Command {
-  /** Creates a new AutoTest. */
-  private final CommandSwerveDrivetrain driveTrain;
-  private int counter;
-  private final double seconds;
-  private final SwerveRequest.FieldCentric swerveRequest = new SwerveRequest.FieldCentric(); //type of field centric is in the class
-  public AutoTest(CommandSwerveDrivetrain driveTrain, double seconds) {
+public class AutoCenter extends Command {
+// Instance Variables
+private double hypot = 0;
+private double turnAngle = 0;
+private double orientationAngle = 90 - turnAngle;
+private double xDisp = 0;
+private double zDisp = 0; 
+
+  /** Creates a new AutoCenter. */
+  public AutoCenter() {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.seconds = seconds;
-    this.driveTrain = driveTrain;
-    addRequirements(driveTrain);
+    LimeLight light = new LimeLight();
+    this.hypot = light.calcHypotenuse();
+    this.turnAngle = light.getH_angle();
   }
 
   // Called when the command is initially scheduled.
@@ -32,21 +34,24 @@ public class AutoTest extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveTrain.applyRequest(() -> swerveRequest.withVelocityX(2.0).withVelocityY(0).withRotationalRate(.5));
-    counter++;
-
-
+    LimeLight limeLight = new LimeLight(); // new limelight object
+    xDisp = limeLight.calculateXdistance();
+    zDisp = limeLight.calculateZdistance();
+    
+    // tell the motors to move & turn
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (counter > Constants.numSeconds(seconds)){
+    if(xDisp == 0 && zDisp == 0) {
       return true;
     } else {
       return false;
