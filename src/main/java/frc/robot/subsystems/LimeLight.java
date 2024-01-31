@@ -29,48 +29,65 @@ public class LimeLight extends SubsystemBase {
     botPose = limeLight.getEntry("botPose");
     aprilID = limeLight.getEntry("tid");
   }
+
   // getters
-  public double hasTargets(){
+  public double hasTargets() {
     return hasTargets.getDouble(0);
   }
-  public double getV_angle(){
+
+  public double getV_angle() {
     return V_angle.getDouble(0);
   }
-  public double getH_angle(){
+
+  public double getH_angle() {
     return H_angle.getDouble(0);
   }
-  public double getBotPose(){
+
+  public double getBotPose() {
     aprilTagList = botPose.getDoubleArray(new double[6]);
     return aprilTagList[0];
-    
   }
-  public double getaprilTagID(){
+
+  public double getRobotX() {
+    return limeLight.getEntry("botpose").getDoubleArray(new double[6])[0];
+  }
+
+  public double getRobotZ() {
+    return limeLight.getEntry("botpose").getDoubleArray(new double[6])[3];
+  }
+
+  public double getRobotYaw() {
+    return limeLight.getEntry("botpose").getDoubleArray(new double[6])[5];
+  }
+
+  public double getaprilTagID() {
     return aprilID.getDouble(0);
 
   }
 
   // setters
-  public void setPipeline(int pipe){
-    limeLight.getEntry("pipeline").setNumber(pipe); 
-   }
-   //0: AprilTag
-   //1: Reflective
-   //2: Zoomed In
-  
-  public double calculateZdistance(){//Z direction is foward from the robot
-    zDistance = ((Constants.goalHeight-Constants.limeLightHeight)/(Math.tan(Math.toRadians(getV_angle()+Constants.limeLightInitAngle))));
+  public void setPipeline(int pipe) {
+    limeLight.getEntry("pipeline").setNumber(pipe);
+  }
+  // 0: AprilTag
+  // 1: Reflective
+  // 2: Zoomed In
+
+  public double calculateZdistance() {// Z direction is foward from the robot
+    zDistance = ((Constants.goalHeight - Constants.limeLightHeight)
+        / (Math.tan(Math.toRadians(getV_angle() + Constants.limeLightInitAngle))));
     return zDistance;
   }
 
-  public double calculateXdistance(){//X direction is sideways from the robot
-    xDistance = calculateZdistance()*Math.tan(Math.toRadians(getH_angle()));
+  public double calculateXdistance() {// X direction is sideways from the robot
+    xDistance = calculateZdistance() * Math.tan(Math.toRadians(getH_angle()));
     return xDistance;
   }
 
   public double calcHypotenuse() {
     return Math.hypot(calculateXdistance(), calculateZdistance());
   }
-  
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

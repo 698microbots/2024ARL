@@ -28,8 +28,9 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run(); 
     SmartDashboard.putNumber("Left Y", m_robotContainer.joystick.getLeftY());
     SmartDashboard.putNumber("Left X", m_robotContainer.joystick.getLeftX());
-
-
+    SmartDashboard.putNumber("botpose", m_robotContainer.limeLight.getRobotX()); // output the robot's x position
+    SmartDashboard.putNumber("botpose", m_robotContainer.limeLight.getRobotZ()); // output the robot's z position
+    SmartDashboard.putNumber("botpose", m_robotContainer.limeLight.getRobotYaw()); // output the robot's yaw
   }
 
   @Override

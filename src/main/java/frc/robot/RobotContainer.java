@@ -20,6 +20,7 @@ import frc.robot.commands.AutoCenter;
 import frc.robot.commands.AutoTest;
 import frc.robot.commands.SetFlywheelMotor;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.LimeLight;
 
 public class RobotContainer {
   private double MaxSpeed = .5; // 6 meters per second desired top speed (6 origin)
@@ -36,6 +37,7 @@ public class RobotContainer {
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   public final CommandXboxController joystick = new CommandXboxController(0); // My joystick
+  public final LimeLight limeLight = new LimeLight(); // limelight object
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
   private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
