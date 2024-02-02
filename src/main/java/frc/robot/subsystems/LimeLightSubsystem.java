@@ -10,7 +10,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class LimeLight extends SubsystemBase {
+public class LimeLightSubsystem extends SubsystemBase {
 
   // creates the instance variables for the LimeLight Subsystem
   private NetworkTable limeLight;
@@ -20,7 +20,7 @@ public class LimeLight extends SubsystemBase {
   private double xDistance;
 
   /** Creates a new LimeLight. */
-  public LimeLight() {
+  public LimeLightSubsystem() {
     limeLight = NetworkTableInstance.getDefault().getTable("limelight");
 
     V_angle = limeLight.getEntry("ty");

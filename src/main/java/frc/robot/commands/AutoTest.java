@@ -32,8 +32,10 @@ public class AutoTest extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveTrain.applyRequest(() -> swerveRequest.withVelocityX(2.0).withVelocityY(0).withRotationalRate(.5));
+    driveTrain.applyRequest(() -> swerveRequest.withVelocityX(0).withVelocityY(0).withRotationalRate(.5));
+    
     counter++;
+    System.out.println("ITS RUNNING" + counter);
 
 
 

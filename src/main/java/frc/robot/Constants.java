@@ -18,7 +18,7 @@ package frc.robot;
  */
 public final class Constants {
     public static double numSeconds(double seconds){ //does the calculations for how many 20ms are in a second, compare it to a counter adds every 20ms
-      return seconds / 60;
+      return seconds * 50;
   }
   // Controller Button IDs
   public static final int Xbox_Button_A = 1;

@@ -7,7 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.subsystems.LimeLight;
+import frc.robot.subsystems.LimeLightSubsystem;
 
 public class AutoCenter extends Command {
 // Instance Variables
@@ -16,13 +16,15 @@ private double turnAngle = 0;
 private double orientationAngle = 90 - turnAngle;
 private double xDisp = 0;
 private double zDisp = 0; 
+private LimeLightSubsystem limeLightSubsystem;
 
   /** Creates a new AutoCenter. */
-  public AutoCenter() {
+  public AutoCenter(LimeLightSubsystem limeLightSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    LimeLight light = new LimeLight();
-    this.hypot = light.calcHypotenuse();
-    this.turnAngle = light.getH_angle();
+    this.limeLightSubsystem = limeLightSubsystem;
+    addRequirements(limeLightSubsystem);
+    hypot = limeLightSubsystem.calcHypotenuse();
+    turnAngle = limeLightSubsystem.getH_angle();
   }
 
   // Called when the command is initially scheduled.
@@ -34,7 +36,7 @@ private double zDisp = 0;
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    LimeLight limeLight = new LimeLight(); // new limelight object
+    LimeLightSubsystem limeLight = new LimeLightSubsystem(); // new limelight object
     xDisp = limeLight.calculateXdistance();
     zDisp = limeLight.calculateZdistance();
     

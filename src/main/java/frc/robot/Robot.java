@@ -8,19 +8,18 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.LimeLight;
+import frc.robot.subsystems.LimeLightSubsystem;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
 
-  LimeLight light = new LimeLight();
 
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
-    light.setLight(false); // tell the limelight to turn its lights off
+    m_robotContainer.limeLight.setLight(false); // tell the limelight to turn its lights off
   }
 
   @Override
@@ -28,6 +27,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run(); 
     SmartDashboard.putNumber("Left Y", m_robotContainer.joystick.getLeftY());
     SmartDashboard.putNumber("Left X", m_robotContainer.joystick.getLeftX());
+
 
 
   }
