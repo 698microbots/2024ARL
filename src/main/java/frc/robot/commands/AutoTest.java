@@ -33,9 +33,13 @@ public class AutoTest extends Command {
   @Override
   public void execute() {
     driveTrain.applyRequest(() -> swerveRequest.withVelocityX(0).withVelocityY(0).withRotationalRate(.5));
+    //applyRequest RETURNS A COMMAND ()
+    driveTrain.setControl(swerveRequest.withVelocityX(0).withVelocityY(0).withRotationalRate(.5));
+    //nothing happens when I do this???
+
     
     counter++;
-    System.out.println("ITS RUNNING" + counter);
+    System.out.println("ITS RUNNING: " + counter);
 
 
 

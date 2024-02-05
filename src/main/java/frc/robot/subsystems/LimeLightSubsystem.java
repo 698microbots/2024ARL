@@ -44,7 +44,7 @@ public class LimeLightSubsystem extends SubsystemBase {
     return aprilTagList[0];
     
   }
-  public double getaprilTagID(){
+  public double getAprilTagID(){
     return aprilID.getDouble(0);
 
   }
@@ -79,6 +79,11 @@ public class LimeLightSubsystem extends SubsystemBase {
   }
 
   public void setLight(boolean on) {
+    if (on){
     limeLight.getEntry("ledMode").setNumber(1);
+    }else{
+      limeLight.getEntry("ledMode").setNumber(0);
+    }
+
   }
 }

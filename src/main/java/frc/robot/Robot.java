@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.LimeLightHelpersSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 
 public class Robot extends TimedRobot {
@@ -19,17 +20,20 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
-    m_robotContainer.limeLight.setLight(false); // tell the limelight to turn its lights off
+    // m_robotContainer.limeLight.setLight(false); limelight auto turns off this
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run(); 
+    System.out.println("running robot periodic");
     SmartDashboard.putNumber("Left Y", m_robotContainer.joystick.getLeftY());
     SmartDashboard.putNumber("Left X", m_robotContainer.joystick.getLeftX());
 
-
-
+    // SmartDashboard.putNumber("Robot Y", m_robotContainer.pose.getY()); //says this is null when simulating
+    // SmartDashboard.putNumber("Left X", m_robotContainer.pose.getX());
+    SmartDashboard.putNumber("AprilTag ID", LimeLightHelpersSubsystem.getFiducialID("limelight"));
+    SmartDashboard.putNumber("H Angle", m_robotContainer.limeLight.getH_angle());
   }
 
   @Override
@@ -64,7 +68,11 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    System.out.println("running teleop periodic");
+
+    
+  }
 
   @Override
   public void teleopExit() {}

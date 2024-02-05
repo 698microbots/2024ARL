@@ -56,4 +56,11 @@ public final class Constants {
   public static final int backRightDrive = 5; // 3
   public static final int backRightTurn = 0;  //4
   public static final int backRightCanCoder = 2; //the cancoder ones are probably not right
+
+  public static final int flywheelMotorOne = 9;
+  public static final int flywheelMotorTwo = 10;
+  public static final int armMotor = 12;
+  public static final int hangerMotorOne = 1; // aprk max ids
+  public static final int hangerMotorTwo = 2;
+  public static final double voltageNoteIn = 5.0;
 }

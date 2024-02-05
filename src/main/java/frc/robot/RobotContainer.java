@@ -11,6 +11,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -20,9 +21,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AutoCenter;
 import frc.robot.commands.AutoTest;
-import frc.robot.commands.SetFlywheelMotor;
+import frc.robot.commands.FlywheelSetIdle;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 
 public class RobotContainer {
@@ -39,10 +41,12 @@ public class RobotContainer {
   private final JoystickButton LBbutton = new JoystickButton(xboxController, Constants.Xbox_Button_LB);
 
   /* Setting up bindings for necessary control of the swerve drive platform */
-  public final LimeLightSubsystem limeLight = new LimeLightSubsystem();
+  public  LimeLightSubsystem limeLight = new LimeLightSubsystem();
   public final CommandXboxController joystick = new CommandXboxController(0); // My joystick
   public final CommandXboxController joystick2 = new CommandXboxController(1);
   public final ArmSubsystem arm = new ArmSubsystem();
+  public FlywheelSubsystem flyWheel = new FlywheelSubsystem();
+
 
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
   private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -52,7 +56,8 @@ public class RobotContainer {
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
   private final Telemetry logger = new Telemetry(MaxSpeed);
-  private Pose2d pose = drivetrain.getState().Pose;
+  public Pose2d pose = drivetrain.getState().Pose; //could break the code 
+  private SwerveModuleState[] states = drivetrain.getState().ModuleStates;
 
   private void configureBindings() {
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
@@ -65,20 +70,19 @@ public class RobotContainer {
     // to trigger a command to cernter the robot on an AprilTag, get the flywheel
     // and hanger in position
     // Xbutton.onTrue(new SequentialCommandGroup(new AutoCenter(), new SetFlywheelMotor()));
-
+    flyWheel.setDefaultCommand(new FlywheelSetIdle(flyWheel));
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
     joystick.b().whileTrue(drivetrain
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
-
     // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
-
     /**
      * 
      * 2nd driver commands
      * 
      */
 
+    joystick2.a().whileTrue(getAutonomousCommand());
 
     
     if (Utils.isSimulation()) {
@@ -94,5 +98,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // return Commands.print("No autonomous command configured");
     return new AutoTest(drivetrain, 2);
+    // return drivetrain.applyRequest(null);
+    
   }
 }
