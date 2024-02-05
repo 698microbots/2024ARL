@@ -7,10 +7,11 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ArmSubsystem. */
-  private final TalonFX armMotor = new TalonFX(0);
+  private final TalonFX armMotor = new TalonFX(Constants.armMotor);
   public ArmSubsystem() {
 
   }
