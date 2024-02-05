@@ -19,9 +19,8 @@ import com.ctre.phoenix6.hardware.TalonFX;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static double numSeconds(double seconds) { // does the calculations for how many 20ms are in a second, compare
-                                                    // it to a counter adds every 20ms
-    return seconds / 60;
+    public static double numSeconds(double seconds){ //does the calculations for how many 20ms are in a second, compare it to a counter adds every 20ms
+      return seconds / 60;
   }
 
   // motor constants
@@ -63,6 +62,6 @@ public final class Constants {
   public static final int backLeftCanCoder = 3; // the cancoder ones are probably not right
 
   public static final int backRightDrive = 5; // 3
-  public static final int backRightTurn = 0; // 4
-  public static final int backRightCanCoder = 2; // the cancoder ones are probably not right
+  public static final int backRightTurn = 0;  //4
+  public static final int backRightCanCoder = 2; //the cancoder ones are probably not right
 }

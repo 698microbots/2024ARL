@@ -11,19 +11,21 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AutoCenter;
 import frc.robot.commands.AutoTest;
-import frc.robot.commands.SetFlywheelMotor;
+import frc.robot.commands.FlywheelSetIdle;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.LimeLight;
 
 public class RobotContainer {
-  private double MaxSpeed = .5; // 6 meters per second desired top speed (6 origin)
+  private double MaxSpeed = 2; // 6 meters per second desired top speed (6 origin)
   private double MaxAngularRate = .5 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
   public XboxController xboxController = new XboxController(0); // new XBox object
 
@@ -36,8 +38,8 @@ public class RobotContainer {
   private final JoystickButton LBbutton = new JoystickButton(xboxController, Constants.Xbox_Button_LB);
 
   /* Setting up bindings for necessary control of the swerve drive platform */
+  public  LimeLightSubsystem limeLight = new LimeLightSubsystem();
   public final CommandXboxController joystick = new CommandXboxController(0); // My joystick
-  public final LimeLight limeLight = new LimeLight(); // limelight object
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
   private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
@@ -46,7 +48,8 @@ public class RobotContainer {
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
   private final Telemetry logger = new Telemetry(MaxSpeed);
-  private Pose2d pose = drivetrain.getState().Pose;
+  public Pose2d pose = drivetrain.getState().Pose; //could break the code 
+  private SwerveModuleState[] states = drivetrain.getState().ModuleStates;
 
   private void configureBindings() {
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
@@ -58,16 +61,22 @@ public class RobotContainer {
     // Abutton.onTrue(new SetFlywheelMotor()); // tells the flywheel to move
     // to trigger a command to cernter the robot on an AprilTag, get the flywheel
     // and hanger in position
-    Xbutton.onTrue(new AutoCenter());
-    Xbutton.onTrue(new SetFlywheelMotor());
-
+    // Xbutton.onTrue(new SequentialCommandGroup(new AutoCenter(), new SetFlywheelMotor()));
+    flyWheel.setDefaultCommand(new FlywheelSetIdle(flyWheel));
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
     joystick.b().whileTrue(drivetrain
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
-
     // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
+    /**
+     * 
+     * 2nd driver commands
+     * 
+     */
 
+    joystick2.a().whileTrue(getAutonomousCommand());
+
+    
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
     }
@@ -80,6 +89,8 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     // return Commands.print("No autonomous command configured");
-    return new AutoTest(drivetrain, 1);
+    return new AutoTest(drivetrain, 2);
+    // return drivetrain.applyRequest(null);
+    
   }
 }
