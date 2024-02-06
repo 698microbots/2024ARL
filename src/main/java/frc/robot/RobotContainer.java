@@ -28,8 +28,8 @@ import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 
 public class RobotContainer {
-  private double MaxSpeed = 2; // 6 meters per second desired top speed (6 origin)
-  private double MaxAngularRate = .5 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
+  private double MaxSpeed = 1.5; // 6 meters per second desired top speed (6 origin)
+  private double MaxAngularRate = .75 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
   public XboxController xboxController = new XboxController(0); // new XBox object
 
   // button definitions
@@ -82,7 +82,7 @@ public class RobotContainer {
      * 
      */
 
-    joystick2.a().whileTrue(getAutonomousCommand());
+    joystick2.a().whileTrue(new AutoCenter(drivetrain, limeLight));
 
     
     if (Utils.isSimulation()) {
