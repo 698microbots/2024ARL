@@ -23,11 +23,14 @@ import frc.robot.commands.AutoCenter;
 import frc.robot.commands.AutoTest;
 import frc.robot.commands.FlywheelSetIdle;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.FlywheelSubsystem;
+import frc.robot.subsystems.LimeLightSubsystem;
 
 public class RobotContainer {
   private double MaxSpeed = 2; // 6 meters per second desired top speed (6 origin)
   private double MaxAngularRate = .5 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
   public XboxController xboxController = new XboxController(0); // new XBox object
+  public FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
 
   // button definitions
   private final JoystickButton Xbutton = new JoystickButton(xboxController, Constants.Xbox_Button_X);
@@ -38,8 +41,9 @@ public class RobotContainer {
   private final JoystickButton LBbutton = new JoystickButton(xboxController, Constants.Xbox_Button_LB);
 
   /* Setting up bindings for necessary control of the swerve drive platform */
-  public  LimeLightSubsystem limeLight = new LimeLightSubsystem();
+  public LimeLightSubsystem limeLight = new LimeLightSubsystem();
   public final CommandXboxController joystick = new CommandXboxController(0); // My joystick
+  public final CommandXboxController joystick2 = new CommandXboxController(0);
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
   private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
@@ -62,7 +66,7 @@ public class RobotContainer {
     // to trigger a command to cernter the robot on an AprilTag, get the flywheel
     // and hanger in position
     // Xbutton.onTrue(new SequentialCommandGroup(new AutoCenter(), new SetFlywheelMotor()));
-    flyWheel.setDefaultCommand(new FlywheelSetIdle(flyWheel));
+    flywheelSubsystem.setDefaultCommand(new FlywheelSetIdle(flywheelSubsystem));
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
     joystick.b().whileTrue(drivetrain
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
