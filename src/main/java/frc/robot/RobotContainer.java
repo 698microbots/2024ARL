@@ -25,11 +25,12 @@ import frc.robot.commands.FlywheelSetIdle;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
+import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 
 public class RobotContainer {
-  private double MaxSpeed = 1.5; // 6 meters per second desired top speed (6 origin)
-  private double MaxAngularRate = .75 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
+  private double MaxSpeed = 3.5; // 6 meters per second desired top speed (6 origin)
+  private double MaxAngularRate = 1.75 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
   public XboxController xboxController = new XboxController(0); // new XBox object
 
   // button definitions
@@ -46,9 +47,10 @@ public class RobotContainer {
   public final CommandXboxController joystick2 = new CommandXboxController(1);
   public final ArmSubsystem arm = new ArmSubsystem();
   public FlywheelSubsystem flyWheel = new FlywheelSubsystem();
+  public GyroSubsystem gyro = new GyroSubsystem();
 
 
-  private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
+  public final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
   private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric

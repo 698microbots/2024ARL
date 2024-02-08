@@ -20,6 +20,9 @@ public class GyroSubsystem extends SubsystemBase {
     return gyro.getAngle() % 360;
   }
 
+  public void resetAngle(){
+    gyro.reset();;
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
