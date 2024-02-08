@@ -26,10 +26,14 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run(); 
-    System.out.println("running robot periodic");
+    // System.out.println("running robot periodic");
     SmartDashboard.putNumber("Left Y", m_robotContainer.joystick.getLeftY());
     SmartDashboard.putNumber("Left X", m_robotContainer.joystick.getLeftX());
 
+    SmartDashboard.putNumber("Robot Y", m_robotContainer.pose.getY()); //says this is null when simulating
+    SmartDashboard.putNumber("Left X", m_robotContainer.pose.getX());
+    SmartDashboard.putNumber("AprilTag ID", LimeLightHelpersSubsystem.getFiducialID("limelight"));
+    SmartDashboard.putNumber("H Angle", m_robotContainer.limeLight.getH_angle());
 
   }
 
@@ -66,7 +70,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    System.out.println("running teleop periodic");
+    // System.out.println("running teleop periodic");
 
     
   }
