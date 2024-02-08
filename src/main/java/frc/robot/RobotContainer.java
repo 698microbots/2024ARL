@@ -24,11 +24,12 @@ import frc.robot.commands.AutoTest;
 import frc.robot.commands.FlywheelSetIdle;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.FlywheelSubsystem;
+import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 
 public class RobotContainer {
-  private double MaxSpeed = 1.5; // 6 meters per second desired top speed (6 origin)
-  private double MaxAngularRate = .75 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
+  private double MaxSpeed = 3.5; // 6 meters per second desired top speed (6 origin)
+  private double MaxAngularRate = 1.75 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
   public XboxController xboxController = new XboxController(0); // new XBox object
   public FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
 
@@ -43,6 +44,13 @@ public class RobotContainer {
   /* Setting up bindings for necessary control of the swerve drive platform */
   public LimeLightSubsystem limeLight = new LimeLightSubsystem();
   public final CommandXboxController joystick = new CommandXboxController(0); // My joystick
+  public final CommandXboxController joystick2 = new CommandXboxController(1);
+  public final ArmSubsystem arm = new ArmSubsystem();
+  public FlywheelSubsystem flyWheel = new FlywheelSubsystem();
+  public GyroSubsystem gyro = new GyroSubsystem();
+
+
+  public final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
   public final CommandXboxController joystick2 = new CommandXboxController(0);
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
   private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()

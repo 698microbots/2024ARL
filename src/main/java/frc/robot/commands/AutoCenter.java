@@ -15,13 +15,13 @@ import frc.robot.subsystems.LimeLightSubsystem;
 public class AutoCenter extends Command {
 // Instance Variables
 
-
-private PIDController pidController = new PIDController(.5, 0, 0);
+private double angle;
+private PIDController pidController = new PIDController(.000005, 0, 0);
 private LimeLightSubsystem limeLightSubsystem;
 private CommandSwerveDrivetrain drivetrain;
 private boolean end = false;
 private final SwerveRequest.RobotCentric swerveCentric = new SwerveRequest.RobotCentric();
-
+private int counter = 0;
   /** Creates a new AutoCenter. */
   public AutoCenter(CommandSwerveDrivetrain drivetrain, LimeLightSubsystem limeLightSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -39,14 +39,19 @@ private final SwerveRequest.RobotCentric swerveCentric = new SwerveRequest.Robot
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = pidController.calculate(limeLightSubsystem.getH_angle(),0);
-    if (speed > 2.5 ){
-      speed = 2.5;
+    angle = limeLightSubsystem.getH_angle(); 
+    double speed = pidController.calculate(angle,0);
+    if (Math.abs(speed) > 1 ){
+      speed = 1 * Math.signum(speed);
     }
 
-    
+    if (angle <=1 ){
+      end = true;
+    }
+
 
     drivetrain.setControl(swerveCentric.withRotationalRate(speed));
+    counter++;
   }
 
   // Called once the command ends or is interrupted.

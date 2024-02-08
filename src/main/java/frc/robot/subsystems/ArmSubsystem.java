@@ -17,7 +17,7 @@ public class ArmSubsystem extends SubsystemBase {
   }
   
   public void moveArm(double speed){
-    armMotor.set(speed);
+    armMotor.set(speed * .5);
   }
 
   @Override

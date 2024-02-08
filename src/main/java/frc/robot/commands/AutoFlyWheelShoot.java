@@ -12,6 +12,7 @@ public class AutoFlyWheelShoot extends Command {
   /** Creates a new AutoFlyWheelShoot. */
   private final FlywheelSubsystem flywheelSubsystem;
   private final LimeLightSubsystem limeLight;
+  private final int counter = 0;
   public AutoFlyWheelShoot(FlywheelSubsystem flywheelSubsystem, LimeLightSubsystem limeLight) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.flywheelSubsystem = flywheelSubsystem;
@@ -19,6 +20,14 @@ public class AutoFlyWheelShoot extends Command {
     addRequirements(flywheelSubsystem);
     addRequirements(limeLight);
   }
+
+  public AutoFlyWheelShoot(FlywheelSubsystem flywheelSubsystem, LimeLightSubsystem limeLight, int seconds) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    this.flywheelSubsystem = flywheelSubsystem;
+    this.limeLight = limeLight;
+    addRequirements(flywheelSubsystem);
+    addRequirements(limeLight);
+  }  
 
   // Called when the command is initially scheduled.
   @Override

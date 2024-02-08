@@ -30,10 +30,11 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Left Y", m_robotContainer.joystick.getLeftY());
     SmartDashboard.putNumber("Left X", m_robotContainer.joystick.getLeftX());
 
-    SmartDashboard.putNumber("Robot Y", m_robotContainer.pose.getY()); //says this is null when simulating
-    SmartDashboard.putNumber("Left X", m_robotContainer.pose.getX());
+    SmartDashboard.putNumber("Robot Y", m_robotContainer.drivetrain.getState().Pose.getY()); //says this is null when simulating
+    SmartDashboard.putNumber("Robot X", m_robotContainer.drivetrain.getState().Pose.getX());
     SmartDashboard.putNumber("AprilTag ID", LimeLightHelpersSubsystem.getFiducialID("limelight"));
     SmartDashboard.putNumber("H Angle", m_robotContainer.limeLight.getH_angle());
+    SmartDashboard.putNumber("Angle", m_robotContainer.gyro.getAngle());
 
   }
 
