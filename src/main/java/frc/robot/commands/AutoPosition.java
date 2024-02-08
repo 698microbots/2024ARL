@@ -4,7 +4,10 @@
 
 package frc.robot.commands;
 
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.CommandSwerveDrivetrain;
 import frc.robot.subsystems.LimeLightSubsystem;
 
 public class AutoPosition extends Command {
@@ -15,12 +18,16 @@ public class AutoPosition extends Command {
   private double zDisp = 0; 
   private double xDisp = 0;
   private LimeLightSubsystem limeLightSubsystem = new LimeLightSubsystem();
+  private final SwerveRequest.RobotCentric swerveCentric = new SwerveRequest.RobotCentric();
+  private CommandSwerveDrivetrain drivetrain;
 
   /** Creates a new AutoPosition. */
-  public AutoPosition(LimeLightSubsystem limeLightSubsystem) {
+  public AutoPosition(LimeLightSubsystem limeLightSubsystem, CommandSwerveDrivetrain drivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.limeLightSubsystem = limeLightSubsystem;
+    this.drivetrain = drivetrain;
     addRequirements(limeLightSubsystem);
+    addRequirements(drivetrain);
     hypot = limeLightSubsystem.calcHypotenuse();
     turnAngle = limeLightSubsystem.getH_angle();
   }
@@ -35,6 +42,7 @@ public class AutoPosition extends Command {
   @Override
   public void execute() {
     zDisp = limeLightSubsystem.calculateZdistance();
+    drivetrain.setControl(swerveCentric.withVelocityX(hypot));
   }
 
   // Called once the command ends or is interrupted.

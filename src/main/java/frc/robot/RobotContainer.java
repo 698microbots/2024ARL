@@ -23,6 +23,7 @@ import frc.robot.commands.AutoCenter;
 import frc.robot.commands.AutoTest;
 import frc.robot.commands.FlywheelSetIdle;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
@@ -51,8 +52,6 @@ public class RobotContainer {
 
 
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
-  public final CommandXboxController joystick2 = new CommandXboxController(0);
-  private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
   private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric

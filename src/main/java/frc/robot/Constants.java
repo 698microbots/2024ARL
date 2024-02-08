@@ -24,9 +24,11 @@ public final class Constants {
   }
 
   // motor constants
-  public static final TalonFX Lmotor = new TalonFX(8); // create a new motor object (left)
-  public static final TalonFX Rmotor = new TalonFX(9); // create a new motor object (left)
-  public static final TalonFX FlywheelMotor = new TalonFX(0); // create a new motor object
+  public static final int Lmotor = 8; // create a new motor object (left)
+  public static final int Rmotor = 9; // create a new motor object (left)
+  public static final int armMotor = 12;
+  public static final int motor1 = 13;
+  public static final int motor2 = 14;
 
   // Controller Button IDs
   public static final int Xbox_Button_A = 1;
