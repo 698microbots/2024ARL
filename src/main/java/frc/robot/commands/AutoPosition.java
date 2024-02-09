@@ -11,6 +11,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.CommandSwerveDrivetrain;
 import frc.robot.Constants;
+import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.*;
@@ -19,10 +20,9 @@ public class AutoPosition extends Command {
   // instance variables
   private double hypot = 0;
   private double turnAngle = 0;
-  private double orientationAngle = 90 - turnAngle;
   private double zDisp = 0;
   private double xDisp = 0;
-  private LimeLightSubsystem limeLightSubsystem = new LimeLightSubsystem();
+  private LimeLightSubsystem limeLightSubsystem;
   private final SwerveRequest.RobotCentric swerveCentric = new SwerveRequest.RobotCentric();
   private CommandSwerveDrivetrain drivetrain;
   private PIDController pidController = new PIDController(0, 0, 0);
@@ -47,6 +47,7 @@ public class AutoPosition extends Command {
   @Override
   public void execute() {
     zDisp = Math.hypot(limeLightSubsystem.getXDist(), limeLightSubsystem.getYDist());
+    drivetrain.setControl(swerveCentric.withRotationalRate(pidController.calculate(limeLightSubsystem.getBotPose(), limeLightSubsystem.getH_angle())));
     drivetrain.setControl(swerveCentric.withVelocityX(
         pidController.calculate(limeLightSubsystem.getRobotPoseX(), limeLightSubsystem.getTargetPoseX())));
     drivetrain.setControl(swerveCentric.withVelocityY(

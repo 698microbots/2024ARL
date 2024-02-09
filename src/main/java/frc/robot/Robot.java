@@ -36,9 +36,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("H Angle", m_robotContainer.limeLight.getH_angle());
     SmartDashboard.putNumber("Angle", m_robotContainer.gyro.getAngle());
     SmartDashboard.putNumber("Target Space X", m_robotContainer.limeLight.getTargetPoseX());
-    SmartDashboard.putNumber("Target Pose Y", m_robotContainer.limeLight.getTargetPoseY());
+    SmartDashboard.putNumber("Target Pose Y", m_robotContainer.limeLight.getTargetPoseZ());
     SmartDashboard.putNumber("Target Space X", m_robotContainer.limeLight.getRobotPoseX());
-    SmartDashboard.putNumber("Target Pose Y", m_robotContainer.limeLight.getRobotPoseX());
+    SmartDashboard.putNumber("Target Pose Y", m_robotContainer.limeLight.getRobotPoseZ());
   }
 
   @Override
