@@ -27,11 +27,18 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
+import frc.robot.subsystems.driveTrainVoltages;
 
 public class RobotContainer {
-  private double MaxSpeed = 3.5; // 6 meters per second desired top speed (6 origin)
-  private double MaxAngularRate = 1.75 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
+  private double MaxSpeed = 2.5; // 6 meters per second desired top speed (6 origin)
+  private double MaxAngularRate = .5 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
   public XboxController xboxController = new XboxController(0); // new XBox object
+  
+  /*
+   * 
+   * TODO: MaxAngularRate really effects driving in a straight line, if its too slow then swerve will drift off to the side in which its turning
+   * 
+   */
 
   // button definitions
   private final JoystickButton Xbutton = new JoystickButton(xboxController, Constants.Xbox_Button_X);
@@ -48,8 +55,8 @@ public class RobotContainer {
   public final ArmSubsystem arm = new ArmSubsystem();
   public FlywheelSubsystem flyWheel = new FlywheelSubsystem();
   public GyroSubsystem gyro = new GyroSubsystem();
-
-
+  public Telemetry telemetry = new Telemetry(3.5);
+  public driveTrainVoltages driveTrainVoltages = new driveTrainVoltages();
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
   private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
@@ -99,7 +106,7 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     // return Commands.print("No autonomous command configured");
-    return new AutoTest(drivetrain, 2);
+    return new AutoTest(drivetrain, 5);
     // return drivetrain.applyRequest(null);
     
   }
