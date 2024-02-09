@@ -20,13 +20,12 @@ public class AutoPosition extends Command {
   private double hypot = 0;
   private double turnAngle = 0;
   private double orientationAngle = 90 - turnAngle;
-  private double zDisp = 0; 
+  private double zDisp = 0;
   private double xDisp = 0;
   private LimeLightSubsystem limeLightSubsystem = new LimeLightSubsystem();
   private final SwerveRequest.RobotCentric swerveCentric = new SwerveRequest.RobotCentric();
   private CommandSwerveDrivetrain drivetrain;
-  private PIDController pidController = new PIDController(0,0,0);
-  
+  private PIDController pidController = new PIDController(0, 0, 0);
 
   /** Creates a new AutoPosition. */
   public AutoPosition(LimeLightSubsystem limeLightSubsystem, CommandSwerveDrivetrain drivetrain) {
@@ -48,12 +47,16 @@ public class AutoPosition extends Command {
   @Override
   public void execute() {
     zDisp = Math.hypot(limeLightSubsystem.getXDist(), limeLightSubsystem.getYDist());
-    drivetrain.setControl(swerveCentric.withVelocityX(limeLightSubsystem.getXDist()));
+    drivetrain.setControl(swerveCentric.withVelocityX(
+        pidController.calculate(limeLightSubsystem.getRobotPoseX(), limeLightSubsystem.getTargetPoseX())));
+    drivetrain.setControl(swerveCentric.withVelocityY(
+        pidController.calculate(limeLightSubsystem.getRobotPoseZ(), limeLightSubsystem.getTargetPoseZ())));
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override

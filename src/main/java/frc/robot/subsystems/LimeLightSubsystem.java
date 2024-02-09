@@ -62,7 +62,7 @@ public class LimeLightSubsystem extends SubsystemBase {
         .getDoubleArray(new double[6])[0];
   }
 
-  public double getTargetPoseY() {
+  public double getTargetPoseZ() {
     return NetworkTableInstance.getDefault().getTable("limelight").getEntry("camerapose_targetspace")
         .getDoubleArray(new double[6])[1];
   }
@@ -72,7 +72,7 @@ public class LimeLightSubsystem extends SubsystemBase {
         .getDoubleArray(new double[6])[0];
   }
 
-  public double getRobotPose() {
+  public double getRobotPoseZ() {
     return NetworkTableInstance.getDefault().getTable("limelight").getEntry("targetpose_robotspace")
         .getDoubleArray(new double[6])[3];
   }
