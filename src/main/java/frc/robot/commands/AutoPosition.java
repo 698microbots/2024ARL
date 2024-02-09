@@ -25,7 +25,7 @@ public class AutoPosition extends Command {
   private LimeLightSubsystem limeLightSubsystem;
   private final SwerveRequest.RobotCentric swerveCentric = new SwerveRequest.RobotCentric();
   private CommandSwerveDrivetrain drivetrain;
-  private PIDController pidController = new PIDController(0, 0, 0);
+  private PIDController pidController = new PIDController(0, 0, 0); // TODO - tune this
 
   /** Creates a new AutoPosition. */
   public AutoPosition(LimeLightSubsystem limeLightSubsystem, CommandSwerveDrivetrain drivetrain) {
