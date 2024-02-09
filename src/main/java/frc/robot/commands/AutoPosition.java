@@ -4,11 +4,16 @@
 
 package frc.robot.commands;
 
+import java.lang.constant.Constable;
+
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.CommandSwerveDrivetrain;
+import frc.robot.Constants;
 import frc.robot.subsystems.LimeLightSubsystem;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.*;
 
 public class AutoPosition extends Command {
   // instance variables
@@ -20,6 +25,8 @@ public class AutoPosition extends Command {
   private LimeLightSubsystem limeLightSubsystem = new LimeLightSubsystem();
   private final SwerveRequest.RobotCentric swerveCentric = new SwerveRequest.RobotCentric();
   private CommandSwerveDrivetrain drivetrain;
+  private PIDController pidController = new PIDController(Constants.kp, Constants.ki, Constants.kd);
+  
 
   /** Creates a new AutoPosition. */
   public AutoPosition(LimeLightSubsystem limeLightSubsystem, CommandSwerveDrivetrain drivetrain) {
@@ -41,8 +48,8 @@ public class AutoPosition extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    zDisp = limeLightSubsystem.calculateZdistance();
-    drivetrain.setControl(swerveCentric.withVelocityX(hypot));
+    zDisp = Math.hypot(limeLightSubsystem.getXDist(), limeLightSubsystem.getYDist());
+    drivetrain.setControl(swerveCentric.withVelocityX(limeLightSubsystem.getXDist()));
   }
 
   // Called once the command ends or is interrupted.

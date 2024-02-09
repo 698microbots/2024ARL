@@ -66,4 +66,9 @@ public final class Constants {
   public static final int backRightDrive = 5; // 3
   public static final int backRightTurn = 0;  //4
   public static final int backRightCanCoder = 2; //the cancoder ones are probably not right
+
+  // constants for the PID
+  public static final int kp = 0;
+  public static final int ki = 0;
+  public static final int kd = 0;
 }

@@ -9,8 +9,11 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import edu.wpi.first.math.geometry.*;
 
 public class LimeLightSubsystem extends SubsystemBase {
+  // instance variables
+  private Translation2d translation2d = new Translation2d();
 
   // creates the instance variables for the LimeLight Subsystem
   private NetworkTable limeLight;
@@ -63,15 +66,17 @@ public class LimeLightSubsystem extends SubsystemBase {
     return NetworkTableInstance.getDefault().getTable("limelight").getEntry("camerapose_targetspace")
         .getDoubleArray(new double[6])[1];
   }
+
   public double getRobotPoseX() {
     return NetworkTableInstance.getDefault().getTable("limelight").getEntry("targetpose_robotspace")
         .getDoubleArray(new double[6])[0];
   }
 
-  public double getRobotPoseY() {
+  public double getRobotPose() {
     return NetworkTableInstance.getDefault().getTable("limelight").getEntry("targetpose_robotspace")
-        .getDoubleArray(new double[6])[1];
+        .getDoubleArray(new double[6])[3];
   }
+
   // setters
   public void setPipeline(int pipe) {
     limeLight.getEntry("pipeline").setNumber(pipe);
@@ -80,26 +85,33 @@ public class LimeLightSubsystem extends SubsystemBase {
   // 1: Reflective
   // 2: Zoomed In
 
-  public double calculateZdistance() {// Z direction is foward from the robot
-    zDistance = ((Constants.goalHeight - Constants.limeLightHeight)
-        / (Math.tan(Math.toRadians(getV_angle() + Constants.limeLightInitAngle))));
-    return zDistance;
+  // public double calculateZdistance() {// Z direction is foward from the robot
+  //   zDistance = ((Constants.goalHeight - Constants.limeLightHeight)
+  //   (Math.tan(Math.toRadians(getV_angle() + Constants.limeLightInitAngle))));
+  //   return zDistance;
+  // }
+
+  // public double calculateXdistance() {// X direction is sideways from the robot
+  //   xDistance = calculateZdistance() * Math.tan(Math.toRadians(getH_angle()));
+  //   return xDistance;
+  // }
+
+  public double getXDist() {
+    // return Math.abs(getRobotPoseX() - getTargetPoseX());
+    return translation2d.getX();
   }
 
-  public double calculateXdistance() {// X direction is sideways from the robot
-    xDistance = calculateZdistance() * Math.tan(Math.toRadians(getH_angle()));
-    return xDistance;
+  public double getYDist() {
+    // return Math.abs(getRobotPoseY() - getRobotPoseY());
+    return translation2d.getY();
   }
-
-  public double calcHypotenuse() {
-    return Math.hypot(calculateXdistance(), calculateZdistance());
-  }
-
+  
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    calculateXdistance();
-    calculateZdistance();
+    /// This method will be called once per scheduler run
+    /// calculateXdistance();
+    /// calculateZdistance();
+    // the methods to get x and y distances go here
   }
 
   public void setLight(boolean on) {
