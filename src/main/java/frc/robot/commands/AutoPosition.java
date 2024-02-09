@@ -25,7 +25,7 @@ public class AutoPosition extends Command {
   private LimeLightSubsystem limeLightSubsystem = new LimeLightSubsystem();
   private final SwerveRequest.RobotCentric swerveCentric = new SwerveRequest.RobotCentric();
   private CommandSwerveDrivetrain drivetrain;
-  private PIDController pidController = new PIDController(Constants.kp, Constants.ki, Constants.kd);
+  private PIDController pidController = new PIDController(0,0,0);
   
 
   /** Creates a new AutoPosition. */
@@ -35,7 +35,6 @@ public class AutoPosition extends Command {
     this.drivetrain = drivetrain;
     addRequirements(limeLightSubsystem);
     addRequirements(drivetrain);
-    hypot = limeLightSubsystem.calcHypotenuse();
     turnAngle = limeLightSubsystem.getH_angle();
   }
 

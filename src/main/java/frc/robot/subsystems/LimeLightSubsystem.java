@@ -85,16 +85,18 @@ public class LimeLightSubsystem extends SubsystemBase {
   // 1: Reflective
   // 2: Zoomed In
 
-  // public double calculateZdistance() {// Z direction is foward from the robot
-  //   zDistance = ((Constants.goalHeight - Constants.limeLightHeight)
-  //   (Math.tan(Math.toRadians(getV_angle() + Constants.limeLightInitAngle))));
-  //   return zDistance;
-  // }
+  public double calculateZdistance() {// Z direction is foward from the robot
+    zDistance = (Constants.goalHeight - Constants.limeLightHeight)
+        * (Math.tan(Math.toRadians(getV_angle() + Constants.limeLightInitAngle)));
 
-  // public double calculateXdistance() {// X direction is sideways from the robot
-  //   xDistance = calculateZdistance() * Math.tan(Math.toRadians(getH_angle()));
-  //   return xDistance;
-  // }
+    return zDistance;
+
+  }
+
+  public double calculateXdistance() {// X direction is sideways from the robot
+    xDistance = calculateZdistance() * Math.tan(Math.toRadians(getH_angle()));
+    return xDistance;
+  }
 
   public double getXDist() {
     // return Math.abs(getRobotPoseX() - getTargetPoseX());
@@ -105,7 +107,7 @@ public class LimeLightSubsystem extends SubsystemBase {
     // return Math.abs(getRobotPoseY() - getRobotPoseY());
     return translation2d.getY();
   }
-  
+
   @Override
   public void periodic() {
     /// This method will be called once per scheduler run
