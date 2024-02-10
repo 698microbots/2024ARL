@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.hardware.TalonFX;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean
@@ -18,8 +20,16 @@ package frc.robot;
  */
 public final class Constants {
     public static double numSeconds(double seconds){ //does the calculations for how many 20ms are in a second, compare it to a counter adds every 20ms
-      return seconds * 50;
+      return seconds / 60;
   }
+
+  // motor constants
+  public static final int Lmotor = 8; // create a new motor object (left)
+  public static final int Rmotor = 9; // create a new motor object (left)
+  public static final int armMotor = 12;
+  public static final int motor1 = 13;
+  public static final int motor2 = 14;
+
   // Controller Button IDs
   public static final int Xbox_Button_A = 1;
   public static final int Xbox_Button_B = 2;
@@ -31,36 +41,34 @@ public final class Constants {
   public static final int Xbox_Button_RS = 10;
 
   // constants for the LimeLight
-  // public static final int goalHeight = 0; // get this from the game manual later // shouldn't be needed
-  public static final int limeLightHeight = 0/*placeholder */;
-  public static final double limeLightInitAngle = 0/*placeholder */;
-  public static final double goalHeight = 0;
+  // public static final int goalHeight = 0; // get this from the game manual
+  // later // shouldn't be needed
+  public static final int limeLightHeight = 0/* placeholder */;
+  public static final double limeLightInitAngle = 0/* placeholder */;
+  public static final double goalHeight = 0.0;
 
-  public static final double angleToRadians = (Math.PI/180);
-  public static final double radiansToAngle = (180/Math.PI);
-  
+  public static final double angleToRadians = (Math.PI / 180);
+  public static final double radiansToAngle = (180 / Math.PI);
 
-  //values turn motors are 7, 2, 0, 4
+  // values turn motors are 7, 2, 0, 4
   public static final int frontLeftDrive = 6;
   public static final int frontLeftTurn = 7;
-  public static final int frontLeftCanCoder = 0; //the cancoder ones are probably not right
-  
+  public static final int frontLeftCanCoder = 0; // the cancoder ones are probably not right
+
   public static final int frontRightDrive = 1;
   public static final int frontRightTurn = 2;
-  public static final int frontRightCanCoder = 1; //the cancoder ones are probably not right
-  
-  public static final int backLeftDrive = 3; //5
+  public static final int frontRightCanCoder = 1; // the cancoder ones are probably not right
+
+  public static final int backLeftDrive = 3; // 5
   public static final int backLeftTurn = 4; // 0
-  public static final int backLeftCanCoder = 3; //the cancoder ones are probably not right
-  
+  public static final int backLeftCanCoder = 3; // the cancoder ones are probably not right
+
   public static final int backRightDrive = 5; // 3
   public static final int backRightTurn = 0;  //4
   public static final int backRightCanCoder = 2; //the cancoder ones are probably not right
 
-  public static final int flywheelMotorOne = 9;
-  public static final int flywheelMotorTwo = 10;
-  public static final int armMotor = 12;
-  public static final int hangerMotorOne = 1; // aprk max ids
-  public static final int hangerMotorTwo = 2;
-  public static final double voltageNoteIn = 5.0;
+  // constants for the PID
+  public static final int kp = 0;
+  public static final int ki = 0;
+  public static final int kd = 0;
 }

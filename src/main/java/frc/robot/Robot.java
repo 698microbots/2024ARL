@@ -22,7 +22,6 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
@@ -38,7 +37,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Left Y", m_robotContainer.joystick.getLeftY());
     SmartDashboard.putNumber("Left X", m_robotContainer.joystick.getLeftX());
 
-    SmartDashboard.putNumber("Robot Y", m_robotContainer.drivetrain.getState().Pose.getY()); //says this is null when simulating
+    SmartDashboard.putNumber("Robot Y", m_robotContainer.drivetrain.getState().Pose.getY()); // says this is null when
+                                                                                             // simulating
     SmartDashboard.putNumber("Robot X", m_robotContainer.drivetrain.getState().Pose.getX());
     SmartDashboard.putNumber("AprilTag ID", LimeLightHelpersSubsystem.getFiducialID("limelight"));
     SmartDashboard.putNumber("H Angle", m_robotContainer.limeLight.getH_angle());
@@ -57,16 +57,23 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("FR TURN Voltage", m_robotContainer.driveTrainVoltages.FRTVoltage());
     SmartDashboard.putNumber("BR TURN Voltage", m_robotContainer.driveTrainVoltages.BRTVoltage());
     
+    SmartDashboard.putNumber("Target Space X", m_robotContainer.limeLight.getTargetPoseX());
+    SmartDashboard.putNumber("Target Pose Y", m_robotContainer.limeLight.getTargetPoseZ());
+    SmartDashboard.putNumber("Target Space X", m_robotContainer.limeLight.getRobotPoseX());
+    SmartDashboard.putNumber("Target Pose Y", m_robotContainer.limeLight.getRobotPoseZ());
   }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+  }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+  }
 
   @Override
-  public void disabledExit() {}
+  public void disabledExit() {
+  }
 
   @Override
   public void autonomousInit() {
@@ -78,10 +85,12 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+  }
 
   @Override
-  public void autonomousExit() {}
+  public void autonomousExit() {
+  }
 
   @Override
   public void teleopInit() {
@@ -94,11 +103,11 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     // System.out.println("running teleop periodic");
 
-    
   }
 
   @Override
-  public void teleopExit() {}
+  public void teleopExit() {
+  }
 
   @Override
   public void testInit() {
@@ -106,11 +115,14 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+  }
 
   @Override
-  public void testExit() {}
+  public void testExit() {
+  }
 
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+  }
 }

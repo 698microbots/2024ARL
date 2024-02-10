@@ -39,6 +39,7 @@ public class RobotContainer {
    * TODO: MaxAngularRate really effects driving in a straight line, if its too slow then swerve will drift off to the side in which its turning
    * 
    */
+  public FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
 
   // button definitions
   private final JoystickButton Xbutton = new JoystickButton(xboxController, Constants.Xbox_Button_X);
@@ -49,7 +50,7 @@ public class RobotContainer {
   private final JoystickButton LBbutton = new JoystickButton(xboxController, Constants.Xbox_Button_LB);
 
   /* Setting up bindings for necessary control of the swerve drive platform */
-  public  LimeLightSubsystem limeLight = new LimeLightSubsystem();
+  public LimeLightSubsystem limeLight = new LimeLightSubsystem();
   public final CommandXboxController joystick = new CommandXboxController(0); // My joystick
   public final CommandXboxController joystick2 = new CommandXboxController(1);
   public final ArmSubsystem arm = new ArmSubsystem();
@@ -79,7 +80,7 @@ public class RobotContainer {
     // to trigger a command to cernter the robot on an AprilTag, get the flywheel
     // and hanger in position
     // Xbutton.onTrue(new SequentialCommandGroup(new AutoCenter(), new SetFlywheelMotor()));
-    flyWheel.setDefaultCommand(new FlywheelSetIdle(flyWheel));
+    flywheelSubsystem.setDefaultCommand(new FlywheelSetIdle(flywheelSubsystem));
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
     joystick.b().whileTrue(drivetrain
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));

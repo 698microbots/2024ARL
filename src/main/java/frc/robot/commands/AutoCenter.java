@@ -50,8 +50,8 @@ private int counter = 0;
       end = true;
     }
 
-
-    drivetrain.setControl(swerveCentric.withRotationalRate(speed));
+    System.out.println("Rotation Speed: " + speed);
+    // drivetrain.setControl(swerveCentric.withRotationalRate(speed));
     counter++;
   }
 
