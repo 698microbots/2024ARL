@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AutoCenter;
+import frc.robot.commands.AutoPosition;
 import frc.robot.commands.AutoTest;
 import frc.robot.commands.FlywheelSetIdle;
 import frc.robot.generated.TunerConstants;
@@ -30,7 +31,7 @@ import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.driveTrainVoltages;
 
 public class RobotContainer {
-  private double MaxSpeed = 2.5; // 6 meters per second desired top speed (6 origin)
+  private double MaxSpeed = .5; // 6 meters per second desired top speed (6 origin)
   private double MaxAngularRate = .5 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
   public XboxController xboxController = new XboxController(0); // new XBox object
   
@@ -93,7 +94,7 @@ public class RobotContainer {
      */
 
     joystick2.a().whileTrue(new AutoCenter(drivetrain, limeLight));
-
+    joystick2.b().whileTrue(new AutoPosition(drivetrain, limeLight));
     
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));

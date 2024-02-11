@@ -15,53 +15,96 @@ import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.*;
+import edu.wpi.first.math.util.Units;
 
 public class AutoPosition extends Command {
   // instance variables
   private double hypot = 0;
   private double turnAngle = 0;
-  private double zDisp = 0;
+  private double yDisp = 0;
   private double xDisp = 0;
+  // private boolean blueAlliance; //if you are on the blue alliance or not (for robot pose)
+  //made these visible to the entire class so isFinished() can see it
+  private double currentX;
+  private double currentY;
+  private double currentAngle;
+
+  
+  
+  
   private LimeLightSubsystem limeLightSubsystem;
   private final SwerveRequest.RobotCentric swerveCentric = new SwerveRequest.RobotCentric();
   private CommandSwerveDrivetrain drivetrain;
-  private PIDController pidController = new PIDController(0, 0, 0); // TODO - tune this
+  private PIDController pidControllerXController = new PIDController(0, 0, 0); // TODO - tune this
+  private PIDController pidControllerYController = new PIDController(0, 0, 0); // TODO - tune this
+  private PIDController pidControllerAngleController = new PIDController(0, 0, 0); // TODO - tune this
 
   /** Creates a new AutoPosition. */
-  public AutoPosition(LimeLightSubsystem limeLightSubsystem, CommandSwerveDrivetrain drivetrain) {
+  public AutoPosition(CommandSwerveDrivetrain drivetrain, LimeLightSubsystem limeLightSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.limeLightSubsystem = limeLightSubsystem;
     this.drivetrain = drivetrain;
     addRequirements(limeLightSubsystem);
     addRequirements(drivetrain);
-    turnAngle = limeLightSubsystem.getH_angle();
+    // turnAngle = limeLightSubsystem.getH_angle();
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    xDisp = limeLightSubsystem.get2dBotPoseForAmp().getX(); //just gets the initial distances
+    yDisp = limeLightSubsystem.get2dBotPoseForAmp().getY();
+    turnAngle = Units.radiansToDegrees(limeLightSubsystem.get2dBotPoseForAmp().getRotation().getRadians());
+  
   }
-
+  //TODO: for pose, it initializes from the blue alliance driver station, get target pose and robot pose to estimate distance from the tags
+  //maybe get poses from specific alliances
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    zDisp = Math.hypot(limeLightSubsystem.getXDist(), limeLightSubsystem.getYDist());
-    drivetrain.setControl(swerveCentric.withRotationalRate(pidController.calculate(limeLightSubsystem.getBotPose(), limeLightSubsystem.getH_angle())));
-    drivetrain.setControl(swerveCentric.withVelocityX(
-        pidController.calculate(limeLightSubsystem.getRobotPoseX(), limeLightSubsystem.getTargetPoseX())));
-    drivetrain.setControl(swerveCentric.withVelocityY(
-        pidController.calculate(limeLightSubsystem.getRobotPoseZ(), limeLightSubsystem.getTargetPoseZ())));
+    //this is like kind of complicated so it probalby wont work but we will see
+    hypot = Math.hypot(xDisp, yDisp);
+
+    currentX = limeLightSubsystem.get2dBotPoseForAmp().getX(); //just gets the initial distances
+    currentY = limeLightSubsystem.get2dBotPoseForAmp().getY();
+    currentAngle = Units.radiansToDegrees(limeLightSubsystem.get2dBotPoseForAmp().getRotation().getRadians());
+  
+    double xSpeed = pidControllerXController.calculate(currentX, 0);
+    double ySpeed = pidControllerYController.calculate(currentY, 0);
+    double rotateSpeed = pidControllerAngleController.calculate(currentAngle, 0);
+    //we might have to change x and y speed depending on what the bot actually thinks is x and y direction
+    
+    System.out.println("x speed: " + xSpeed);
+    System.out.println("y speed: " + ySpeed);
+    System.out.println("rotate speed: " + rotateSpeed);
+
+    // TODO: uncomment this once speeds are reasonable
+    // drivetrain.setControl(swerveCentric.
+    //   withVelocityX(xSpeed).
+    //   withVelocityY(ySpeed).
+    //   withRotationalRate(rotateSpeed));
+
+
+    // drivetrain.setControl(swerveCentric.withRotationalRate(pidController.calculate(limeLightSubsystem.getBotPose(), limeLightSubsystem.getH_angle())));
+    // drivetrain.setControl(swerveCentric.withVelocityX(
+    //     pidController.calculate(limeLightSubsystem.getRobotPoseX(), limeLightSubsystem.getTargetPoseX())));
+    // drivetrain.setControl(swerveCentric.withVelocityY(
+    //     pidController.calculate(limeLightSubsystem.getRobotPoseZ(), limeLightSubsystem.getTargetPoseZ())));
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+  
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if (currentX < 1 || currentY < 1 || currentAngle < 1){
+      return true;
+    } else {
+      return false;
+    }
   }
 }

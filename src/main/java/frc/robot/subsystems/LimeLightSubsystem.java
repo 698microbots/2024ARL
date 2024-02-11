@@ -18,18 +18,18 @@ public class LimeLightSubsystem extends SubsystemBase {
   // creates the instance variables for the LimeLight Subsystem
   private NetworkTable limeLight;
   private NetworkTableEntry V_angle, H_angle, hasTargets, botPose, aprilID;
-  private double[] aprilTagList;
+  private double[] poseList;
   private double zDistance;
   private double xDistance;
 
   /** Creates a new LimeLight. */
   public LimeLightSubsystem() {
     limeLight = NetworkTableInstance.getDefault().getTable("limelight");
-
+    //make sure all the keys are exactly matching the docs, no capitals 
     V_angle = limeLight.getEntry("ty");
     H_angle = limeLight.getEntry("tx");
     hasTargets = limeLight.getEntry("tv");
-    botPose = limeLight.getEntry("botPose");
+    botPose = limeLight.getEntry("botpose");
     aprilID = limeLight.getEntry("tid");
   }
 
@@ -46,10 +46,33 @@ public class LimeLightSubsystem extends SubsystemBase {
     return H_angle.getDouble(0);
   }
 
-  public double getBotPose() {
-    aprilTagList = botPose.getDoubleArray(new double[6]);
-    return aprilTagList[0];
+  public Pose2d get2dBotPoseForAmp() {
+    /*
+     * Its specific because it determines what type of botpose we need
+     * For example, we may need the botpose, botpose_wpiblue, botpose_wpired, etc
+     * in order to tell our distance from the apriltag.
+     * This method should give us an x and y position to the april tag as well as a rotaiton angle to it
+     */
+    poseList = botPose.getDoubleArray(new double[6]);
+    //position
+    double x = poseList[0];
+    double y = poseList[1];
+    double z = poseList[2];
+    //rotation
+    double roll = poseList[3];
+    double pitch = poseList[4];
+    double yaw = poseList[5];
 
+    Pose3d pose3d = new Pose3d(
+    x,
+    y,
+    z,
+    new Rotation3d(
+      roll,
+      pitch,
+      yaw
+    ));
+    return pose3d.toPose2d();
   }
 
   public double getaprilTagID() {
@@ -108,6 +131,7 @@ public class LimeLightSubsystem extends SubsystemBase {
     return translation2d.getY();
   }
 
+
   @Override
   public void periodic() {
     /// This method will be called once per scheduler run
@@ -116,7 +140,7 @@ public class LimeLightSubsystem extends SubsystemBase {
     // the methods to get x and y distances go here
   }
 
-  public void setLight(boolean on) {
-    limeLight.getEntry("ledMode").setNumber(1);
-  }
+  // public void setLight(boolean on) {
+  //   limeLight.getEntry("ledMode").setNumber(1);
+  // }
 }

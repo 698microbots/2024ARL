@@ -21,7 +21,7 @@ public class GyroSubsystem extends SubsystemBase {
   }
 
   public void resetAngle(){
-    gyro.reset();;
+    gyro.reset();
   }
   @Override
   public void periodic() {

@@ -13,6 +13,7 @@ import frc.robot.CommandSwerveDrivetrain;
 public class TunerConstants {
     // Both sets of gains need to be tuned to your individual robot.
     //TODO: Possibly tune these so that swerve does not rotationaly drift while going straight
+    //POSSIBLE FIX TO THE TODO: maybe have the gyro centered in the middle of robot to elimiate rotation drift? then 
     // The steer motor uses any SwerveModule.SteerRequestType control request with the
     // output type specified by SwerveModuleConstants.SteerMotorClosedLoopOutput
     private static final Slot0Configs steerGains = new Slot0Configs()

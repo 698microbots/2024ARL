@@ -27,6 +27,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     // m_robotContainer.limeLight.setLight(false); limelight auto turns off this
     DataLogManager.start();
+    
     //TODO: Get Advantagescope logging to work, already able to set the ip for it but its still not connecting
   }
 

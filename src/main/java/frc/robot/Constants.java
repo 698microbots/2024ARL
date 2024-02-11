@@ -23,6 +23,11 @@ public final class Constants {
       return seconds / 60;
   }
 
+    public static boolean flyWheelhasRun(boolean ran){
+      boolean hasRun = ran;
+      return hasRun;
+    } //THIS IS EXTREMELY JANKY AND THERE IS PROBABLY A BETTER WAY TO DO THIS
+
   // motor constants
   public static final int Lmotor = 8; // create a new motor object (left)
   public static final int Rmotor = 9; // create a new motor object (left)
