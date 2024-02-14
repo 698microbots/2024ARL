@@ -20,13 +20,15 @@ private PIDController pidController = new PIDController(.4, 1, 0); //kp as 0.05 
 private LimeLightSubsystem limeLightSubsystem;
 private CommandSwerveDrivetrain drivetrain;
 private boolean end = false;
+private double maxRotationSpeed;
 private final SwerveRequest.RobotCentric swerveCentric = new SwerveRequest.RobotCentric();
 private int counter = 0;
   /** Creates a new AutoCenter. */
-  public AutoCenter(CommandSwerveDrivetrain drivetrain, LimeLightSubsystem limeLightSubsystem) {
+  public AutoCenter(CommandSwerveDrivetrain drivetrain, LimeLightSubsystem limeLightSubsystem, double maxRotationSpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.limeLightSubsystem = limeLightSubsystem;
     this.drivetrain = drivetrain;
+    this.maxRotationSpeed = maxRotationSpeed;
     addRequirements(limeLightSubsystem);
     addRequirements(drivetrain);
   }
@@ -42,8 +44,8 @@ private int counter = 0;
   public void execute() {
     angle = limeLightSubsystem.getH_angle(); 
     double speed = pidController.calculate(angle,0);
-    if (Math.abs(speed) > 1 ){
-      speed = 1 * Math.signum(speed);
+    if (Math.abs(maxRotationSpeed) > 1 ){
+      maxRotationSpeed = 1 * Math.signum(maxRotationSpeed);
     }
 
     if (angle <=1 ){

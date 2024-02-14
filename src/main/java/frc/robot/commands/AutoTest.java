@@ -50,11 +50,10 @@ public class AutoTest extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // if (counter > Constants.numSeconds(seconds)){
-    //   return true;
-    // } else {
-    //   return false;
-    // }
-    return false;
+    if (counter > Constants.numSeconds(seconds)){
+      return true;
+    } else {
+      return false;
+    }
   }
 }
