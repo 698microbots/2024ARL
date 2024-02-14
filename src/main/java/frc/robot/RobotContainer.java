@@ -31,8 +31,8 @@ import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.driveTrainVoltages;
 
 public class RobotContainer {
-  private double MaxSpeed = .5; // 6 meters per second desired top speed (6 origin)
-  private double MaxAngularRate = .5 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
+  private double MaxSpeed = 3.5; // 6 meters per second desired top speed (6 origin)
+  private double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
   public XboxController xboxController = new XboxController(0); // new XBox object
   
   /*

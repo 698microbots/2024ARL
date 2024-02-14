@@ -16,7 +16,7 @@ public class AutoCenter extends Command {
 // Instance Variables
 
 private double angle;
-private PIDController pidController = new PIDController(.05, 0, 0);
+private PIDController pidController = new PIDController(.4, 1, 0); //kp as 0.05 works, everything else as 0
 private LimeLightSubsystem limeLightSubsystem;
 private CommandSwerveDrivetrain drivetrain;
 private boolean end = false;
@@ -52,7 +52,7 @@ private int counter = 0;
 
     System.out.println("Rotation Speed: " + speed);
     System.out.println("Angle: " + angle);
-    // drivetrain.setControl(swerveCentric.withRotationalRate(speed));
+    drivetrain.setControl(swerveCentric.withRotationalRate(speed));
     counter++;
   }
 
@@ -64,13 +64,13 @@ private int counter = 0;
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
+  public boolean isFinished() {//
     // if (end){
     //   end = true;
     //   return true;
     // } else {
     //   return false;
     // }
-    return false; 
+    return false;
   }
 }

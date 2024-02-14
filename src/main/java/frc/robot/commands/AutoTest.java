@@ -34,7 +34,7 @@ public class AutoTest extends Command {
   public void execute() {
     // driveTrain.applyRequest(() -> swerveRequest.withVelocityX(0).withVelocityY(0).withRotationalRate(.5));
     //applyRequest RETURNS A COMMAND ()
-    driveTrain.setControl(swerveRequest.withVelocityX(1.5).withVelocityY(0).withRotationalRate(0));
+    driveTrain.setControl(swerveRequest.withVelocityX(0).withVelocityY(0).withRotationalRate(01));
     
     counter++;
     System.out.println("ITS RUNNING: " + counter);
@@ -50,10 +50,11 @@ public class AutoTest extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (counter > Constants.numSeconds(seconds)){
-      return true;
-    } else {
-      return false;
-    }
+    // if (counter > Constants.numSeconds(seconds)){
+    //   return true;
+    // } else {
+    //   return false;
+    // }
+    return false;
   }
 }

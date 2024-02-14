@@ -58,10 +58,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("FR TURN Voltage", m_robotContainer.driveTrainVoltages.FRTVoltage());
     SmartDashboard.putNumber("BR TURN Voltage", m_robotContainer.driveTrainVoltages.BRTVoltage());
     
-    SmartDashboard.putNumber("Target Space X", m_robotContainer.limeLight.getTargetPoseX());
-    SmartDashboard.putNumber("Target Pose Y", m_robotContainer.limeLight.getTargetPoseZ());
-    SmartDashboard.putNumber("Target Space X", m_robotContainer.limeLight.getRobotPoseX());
-    SmartDashboard.putNumber("Target Pose Y", m_robotContainer.limeLight.getRobotPoseZ());
+    SmartDashboard.putNumber("Robot Pose to amp X: ", m_robotContainer.limeLight.get2dBotPoseForAmp().getX());
+    SmartDashboard.putNumber("Robot Pose to amp Y:", m_robotContainer.limeLight.get2dBotPoseForAmp().getY());
+    // SmartDashboard.putNumber("Target Space X", m_robotContainer.limeLight.getRobotPoseX());
+    // SmartDashboard.putNumber("Target Pose Y", m_robotContainer.limeLight.getRobotPoseZ());
   }
 
   @Override
