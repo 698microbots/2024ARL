@@ -23,10 +23,6 @@ public final class Constants {
       return seconds * 50;
   }
 
-    public static boolean flyWheelhasRun(boolean ran){
-      boolean hasRun = ran;
-      return hasRun;
-    } //THIS IS EXTREMELY JANKY AND THERE IS PROBABLY A BETTER WAY TO DO THIS
 
   // motor constants
   public static final int Lmotor = 8; // create a new motor object (left)
@@ -72,8 +68,8 @@ public final class Constants {
   public static final int backRightTurn = 0;  //4
   public static final int backRightCanCoder = 2; //the cancoder ones are probably not right
 
-  // constants for the PID
-  public static final int kp = 0;
-  public static final int ki = 0;
-  public static final int kd = 0;
+  public static final double speakerTagHeightMeters = 0;
+  public static final double ampTagHeightMeters = 0;
+  public static final double endArmPositionSpeed = 0.05;
+  public static final double ampEncoderUnits = 0;
 }

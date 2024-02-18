@@ -54,8 +54,8 @@ public class AutoPosition extends Command {
   public void initialize() {
     xDisp = limeLightSubsystem.get2dBotPoseForAmp().getX(); //just gets the initial distances
     yDisp = limeLightSubsystem.get2dBotPoseForAmp().getY();
-    turnAngle = Units.radiansToDegrees(limeLightSubsystem.get2dBotPoseForAmp().getRotation().getRadians());
-  
+    // turnAngle = Units.radiansToDegrees(limeLightSubsystem.get2dBotPoseForAmp().getRotation().getRadians());
+    // angle constantly changes so this does not need to be here
   }
   //TODO: for pose, it initializes from the blue alliance driver station, get target pose and robot pose to estimate distance from the tags
   //maybe get poses from specific alliances

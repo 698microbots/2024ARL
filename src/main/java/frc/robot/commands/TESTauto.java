@@ -10,13 +10,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.CommandSwerveDrivetrain;
 import frc.robot.Constants;
 
-public class AutoTest extends Command {
+public class TESTauto extends Command {
   /** Creates a new AutoTest. */
   private final CommandSwerveDrivetrain driveTrain;
   private int counter;
   private final double seconds;
   private final SwerveRequest.FieldCentric swerveRequest = new SwerveRequest.FieldCentric(); //type of field centric is in the class
-  public AutoTest(CommandSwerveDrivetrain driveTrain, double seconds) {
+  public TESTauto(CommandSwerveDrivetrain driveTrain, double seconds) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.seconds = seconds;
     this.driveTrain = driveTrain;
