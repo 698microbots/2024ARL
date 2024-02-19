@@ -24,12 +24,12 @@ public final class Constants {
   }
 
 
-  // motor constants
-  public static final int Lmotor = 8; // create a new motor object (left)
-  public static final int Rmotor = 9; // create a new motor object (left)
-  public static final int armMotor = 12;
-  public static final int motor1 = 13;
-  public static final int motor2 = 14;
+  // // motor constants
+  // public static final int Lmotor = 8; // create a new motor object (left)
+  // public static final int Rmotor = 9; // create a new motor object (left)
+  // public static final int armMotor = 12;
+  // public static final int motor1 = 13;
+  // public static final int motor2 = 14;
 
   // Controller Button IDs
   public static final int Xbox_Button_A = 1;
@@ -67,6 +67,10 @@ public final class Constants {
   public static final int backRightDrive = 5; // 3
   public static final int backRightTurn = 0;  //4
   public static final int backRightCanCoder = 2; //the cancoder ones are probably not right
+
+  public static final int flywheelMotor1 = 8;
+  public static final int flywheelMotor2 = 9;
+  public static final int armMotor = 10;
 
   public static final double speakerTagHeightMeters = 0;
   public static final double ampTagHeightMeters = 0;

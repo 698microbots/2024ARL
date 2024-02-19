@@ -42,7 +42,6 @@ public class RobotContainer {
    * TODO: MaxAngularRate really effects driving in a straight line, if its too slow then swerve will drift off to the side in which its turning
    * 
    */
-  public FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
 
   // button definitions
   private final JoystickButton Xbutton = new JoystickButton(xboxController, Constants.Xbox_Button_X);
@@ -79,15 +78,14 @@ public class RobotContainer {
             .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
             .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
-    //lambdas 
-    arm.setDefaultCommand(new TESTMoveArm(arm, () -> joystick2.getLeftY()));
-    flyWheel.setDefaultCommand(new TESTFlywheel(flywheelSubsystem, () -> joystick2.getRightY()));
+        
+    arm.setDefaultCommand(new TESTMoveArm(arm, () -> joystick2.getLeftY() * .5));
+    flyWheel.setDefaultCommand(new TESTFlywheel(flyWheel, () -> joystick2.getRightY() * .80));
     
         // Abutton.onTrue(new SetFlywheelMotor()); // tells the flywheel to move
     // to trigger a command to cernter the robot on an AprilTag, get the flywheel
     // and hanger in position
     // Xbutton.onTrue(new SequentialCommandGroup(new AutoCenter(), new SetFlywheelMotor()));
-    flywheelSubsystem.setDefaultCommand(new FlywheelSetIdle(flywheelSubsystem));
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
     joystick.b().whileTrue(drivetrain
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
