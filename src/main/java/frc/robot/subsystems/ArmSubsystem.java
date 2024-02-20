@@ -5,7 +5,9 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.EncoderType;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -15,16 +17,21 @@ public class ArmSubsystem extends SubsystemBase {
   private double distance = 0;
   /** Creates a new ArmSubsystem. */
   private final TalonFX armMotor = new TalonFX(Constants.armMotor);
-  // Initializes an encoder on DIO pins 0 and 1
-  // 2X decoding and non-inverted
-  Encoder encoder = new Encoder(0, 1, false, Encoder.EncodingType.k1X);
-
+  private final Encoder boreEncoder = new Encoder(0, 1); 
   public ArmSubsystem() {
 
   }
+  
+  public void moveArm(double speed){
+    armMotor.set(speed);
+  }
+  //TODO: find out what this returns
+  public double getEncoder(){
+    return boreEncoder.get();
+  }
 
-  public void moveArm(double speed) {
-    armMotor.set(speed * .5);
+  public void resetEncoder(){
+    boreEncoder.reset();
   }
 
   @Override

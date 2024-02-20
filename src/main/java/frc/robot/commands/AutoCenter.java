@@ -17,6 +17,7 @@ public class AutoCenter extends Command {
 
 private double angle;
 private PIDController pidController = new PIDController(.4, 1, 0); //kp as 0.05 works, everything else as 0
+//dont use I for pid
 private LimeLightSubsystem limeLightSubsystem;
 private CommandSwerveDrivetrain drivetrain;
 private boolean end = false;

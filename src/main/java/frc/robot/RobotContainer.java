@@ -21,8 +21,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AutoCenter;
 import frc.robot.commands.AutoPosition;
-import frc.robot.commands.AutoTest;
+import frc.robot.commands.TESTauto;
 import frc.robot.commands.FlywheelSetIdle;
+import frc.robot.commands.TESTFlywheel;
+import frc.robot.commands.TESTMoveArm;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
@@ -40,7 +42,6 @@ public class RobotContainer {
    * TODO: MaxAngularRate really effects driving in a straight line, if its too slow then swerve will drift off to the side in which its turning
    * 
    */
-  public FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
 
   // button definitions
   private final JoystickButton Xbutton = new JoystickButton(xboxController, Constants.Xbox_Button_X);
@@ -77,11 +78,14 @@ public class RobotContainer {
             .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
             .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
-    // Abutton.onTrue(new SetFlywheelMotor()); // tells the flywheel to move
+        
+    arm.setDefaultCommand(new TESTMoveArm(arm, () -> joystick2.getLeftY() * .5));
+    flyWheel.setDefaultCommand(new TESTFlywheel(flyWheel, () -> joystick2.getRightY() * .80));
+    
+        // Abutton.onTrue(new SetFlywheelMotor()); // tells the flywheel to move
     // to trigger a command to cernter the robot on an AprilTag, get the flywheel
     // and hanger in position
     // Xbutton.onTrue(new SequentialCommandGroup(new AutoCenter(), new SetFlywheelMotor()));
-    flywheelSubsystem.setDefaultCommand(new FlywheelSetIdle(flywheelSubsystem));
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
     joystick.b().whileTrue(drivetrain
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
@@ -93,7 +97,7 @@ public class RobotContainer {
      * 
      */
 
-    joystick2.a().whileTrue(new AutoCenter(drivetrain, limeLight));
+    joystick2.a().whileTrue(new AutoCenter(drivetrain, limeLight, 3.0));
     joystick2.b().whileTrue(new AutoPosition(drivetrain, limeLight));
     
     if (Utils.isSimulation()) {
@@ -108,7 +112,7 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     // return Commands.print("No autonomous command configured");
-    return new AutoTest(drivetrain, 5);
+    return new TESTauto(drivetrain, 5);
     // return drivetrain.applyRequest(null);
     
   }
