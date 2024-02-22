@@ -65,7 +65,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Whatever getEncoder() returns: ", m_robotContainer.arm.getEncoder());
     SmartDashboard.putNumber("Encoder Distance: ", m_robotContainer.arm.getDistance());
     SmartDashboard.putBoolean("Encoder Direction: ", m_robotContainer.arm.getDirection());
-    SmartDashboard.putBoolean("Reversed Direction", m_robotContainer.arm.reverseDirection())
+    SmartDashboard.putBoolean("Reversed Direction", m_robotContainer.arm.reverseDirection());
   }
 
   @Override
