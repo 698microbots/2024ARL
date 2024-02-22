@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.LimeLightHelpersSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 
@@ -60,8 +61,11 @@ public class Robot extends TimedRobot {
     
     SmartDashboard.putNumber("Robot Pose to amp X: ", m_robotContainer.limeLight.get2dBotPoseForAmp().getX());
     SmartDashboard.putNumber("Robot Pose to amp Y:", m_robotContainer.limeLight.get2dBotPoseForAmp().getY());
-    // SmartDashboard.putNumber("Target Space X", m_robotContainer.limeLight.getRobotPoseX());
-    // SmartDashboard.putNumber("Target Pose Y", m_robotContainer.limeLight.getRobotPoseZ());
+
+    SmartDashboard.putNumber("Whatever getEncoder() returns: ", m_robotContainer.arm.getEncoder());
+    SmartDashboard.putNumber("Encoder Distance: ", m_robotContainer.arm.getDistance());
+    SmartDashboard.putBoolean("Encoder Direction: ", m_robotContainer.arm.getDirection());
+    SmartDashboard.putBoolean("Reversed Direction", m_robotContainer.arm.reverseDirection())
   }
 
   @Override
