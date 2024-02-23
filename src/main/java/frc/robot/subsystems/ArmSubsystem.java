@@ -12,8 +12,8 @@ import frc.robot.Constants;
 
 public class ArmSubsystem extends SubsystemBase {
   // new instance var for distcnce travelled
-  private double distance;
-  private boolean direction; // ▌NEW▐
+  private double distance = 0;
+  private boolean direction = false; // ▌NEW▐
   /** Creates a new ArmSubsystem. */
   private final TalonFX armMotor = new TalonFX(Constants.armMotor);
   private final Encoder boreEncoder = new Encoder(0, 1);
@@ -26,11 +26,11 @@ public class ArmSubsystem extends SubsystemBase {
     armMotor.set(speed);
   }
 
-  @Override
-  public void periodic() {
-    distance = boreEncoder.getDistance(); // Gets the distance traveled
-    direction = boreEncoder.getDirection(); // Gets the current direction of the encoder // ▌NEW▐
-  }
+  // @Override
+  // public void periodic() { // don't need preiodic
+  //   distance = ; // Gets the distance traveled
+  //   direction = ; // Gets the current direction of the encoder // ▌NEW▐
+  // }
 
   // Getter methods
   // TODO: find out what this returns
@@ -39,11 +39,11 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public double getDistance() { // ▌NEW▐
-    return distance;
+    return boreEncoder.getDistance();
   }
 
   public boolean getDirection() { // ▌NEW▐
-    return direction;
+    return boreEncoder.getDirection();
   }
 
   // setter methods
