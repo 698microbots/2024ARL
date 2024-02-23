@@ -53,6 +53,7 @@ public class AutoFlyWheelShoot extends Command {
     double speed = limeLight.calculateZdistance(Constants.speakerTagHeightMeters) * .5 + 1; 
 
     flywheelSubsystem.setFlywheelMotorSpeed(speed);
+    counter++;
   }
 
   // Called once the command ends or is interrupted.
@@ -65,6 +66,10 @@ public class AutoFlyWheelShoot extends Command {
   @Override
   //TODO: see how long a cycle takes and stop it
   public boolean isFinished() {
-    return false;
+    if (counter > Constants.numSeconds(seconds)){
+      return true;
+    } else {
+      return false;
+    }
   }
 }

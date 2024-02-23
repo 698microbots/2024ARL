@@ -99,6 +99,7 @@ public class RobotContainer {
 
     joystick2.a().whileTrue(new AutoCenter(drivetrain, limeLight, 3.0));
     joystick2.b().whileTrue(new AutoPosition(drivetrain, limeLight));
+
     
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
