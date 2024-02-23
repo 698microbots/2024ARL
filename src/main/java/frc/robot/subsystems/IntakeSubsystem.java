@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
-    private final CANSparkMax IntakeMotor = new CANSparkMax(2, CANSparkMax.MotorType.kBrushed);
+    private final CANSparkMax IntakeMotor = new CANSparkMax(2, CANSparkMax.MotorType.kBrushless);
     private boolean canRun = false;
   public IntakeSubsystem() {}
 

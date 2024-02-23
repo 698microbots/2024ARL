@@ -28,7 +28,12 @@ public class TESTFlywheel extends Command {
   @Override
   public void execute() {
     double speed = ySpeed.get();
+
+    if (speed > 0){
     flywheelSubsystem.setFlywheelMotorSpeed(speed);
+    } else {
+    flywheelSubsystem.setFlywheelMotorSpeed(.05);
+    }
   }
 
   // Called once the command ends or is interrupted.
