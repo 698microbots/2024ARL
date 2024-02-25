@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.ControlModeValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.EncoderType;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -16,7 +18,7 @@ public class ArmSubsystem extends SubsystemBase {
   private final TalonFX armMotor = new TalonFX(Constants.armMotor);
   private final Encoder boreEncoder = new Encoder(0, 1); 
   public ArmSubsystem() {
-
+    armMotor.setNeutralMode(NeutralModeValue.Brake);
   }
   
   public void moveArm(double speed){

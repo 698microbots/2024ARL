@@ -57,6 +57,22 @@ public class driveTrainVoltages extends SubsystemBase {
     return BRTurn.getPosition().getValueAsDouble();
   }
 
+
+  public double FLTVelocity(){
+    return FLTurn.getVelocity().getValueAsDouble();
+  }
+
+  public double BLVelocity(){
+    return BLTurn.getVelocity().getValueAsDouble();
+  }
+  
+  public double FRVelocity(){
+    return FRTurn.getVelocity().getValueAsDouble();
+  }
+  
+  public double BRVelocity(){
+    return BRTurn.getVelocity().getValueAsDouble();
+  }  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

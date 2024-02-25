@@ -61,7 +61,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Robot Pose to amp X: ", m_robotContainer.limeLight.get2dBotPoseForAmp().getX());
     SmartDashboard.putNumber("Robot Pose to amp Y:", m_robotContainer.limeLight.get2dBotPoseForAmp().getY());
     // SmartDashboard.putNumber("Target Space X", m_robotContainer.limeLight.getRobotPoseX());
+    
     // SmartDashboard.putNumber("Target Pose Y", m_robotContainer.limeLight.getRobotPoseZ());
+    SmartDashboard.putNumber("Intake Volts: ", m_robotContainer.intake.getIntakeVolts());
+
   }
 
   @Override

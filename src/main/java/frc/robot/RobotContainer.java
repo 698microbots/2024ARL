@@ -23,12 +23,14 @@ import frc.robot.commands.AutoCenter;
 import frc.robot.commands.AutoPosition;
 import frc.robot.commands.TESTauto;
 import frc.robot.commands.FlywheelSetIdle;
+import frc.robot.commands.IntakeMove;
 import frc.robot.commands.TESTFlywheel;
 import frc.robot.commands.TESTMoveArm;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.GyroSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.driveTrainVoltages;
 
@@ -61,6 +63,7 @@ public class RobotContainer {
   public Telemetry telemetry = new Telemetry(3.5);
   public driveTrainVoltages driveTrainVoltages = new driveTrainVoltages();
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
+  public final IntakeSubsystem intake = new IntakeSubsystem();
   private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
@@ -79,8 +82,8 @@ public class RobotContainer {
             .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
         
-    arm.setDefaultCommand(new TESTMoveArm(arm, () -> joystick2.getLeftY() * .5));
-    flyWheel.setDefaultCommand(new TESTFlywheel(flyWheel, () -> joystick2.getRightY() * .80));
+    arm.setDefaultCommand(new TESTMoveArm(arm, () -> joystick2.getRightY() * .3));
+    flyWheel.setDefaultCommand(new TESTFlywheel(flyWheel, () -> joystick2.getLeftY() * .45));
     
         // Abutton.onTrue(new SetFlywheelMotor()); // tells the flywheel to move
     // to trigger a command to cernter the robot on an AprilTag, get the flywheel
@@ -97,9 +100,12 @@ public class RobotContainer {
      * 
      */
 
-    joystick2.a().whileTrue(new AutoCenter(drivetrain, limeLight, 3.0));
-    joystick2.b().whileTrue(new AutoPosition(drivetrain, limeLight));
+    // joystick2.a().whileTrue(new AutoCenter(drivetrain, limeLight, 3.0));
+    // joystick2.b().whileTrue(new AutoPosition(drivetrain, limeLight));
 
+    joystick2.b().whileTrue(new IntakeMove(intake, true));
+    joystick2.b().whileFalse(new IntakeMove(intake, false));
+    joystick2.a().whileTrue(new AutoPosition(drivetrain, limeLight));
     
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));

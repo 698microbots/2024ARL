@@ -4,23 +4,20 @@
 
 package frc.robot.commands;
 
-import java.util.function.Supplier;
-
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
-public class TESTMoveArm extends Command {
-  /** Creates a new MoveArm. */
-  private final ArmSubsystem armSubsystem; 
-  private Supplier<Double> ySpeed;
-  private double speed = 0;
-  public TESTMoveArm(ArmSubsystem armSubsystem, Supplier<Double> ySpeed) {
+public class IntakeMove extends Command {
+  /** Creates a new IntakeMove. */
+  private final IntakeSubsystem intakeSubsystem;
+  private final boolean yes;
+  public IntakeMove(IntakeSubsystem intakeSubsystem, boolean yes) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.armSubsystem = armSubsystem;
-    this.ySpeed = ySpeed;
-    addRequirements(armSubsystem);
+    this.intakeSubsystem = intakeSubsystem;
+    this.yes = yes;
+    addRequirements(intakeSubsystem);
+    
   }
-
 
   // Called when the command is initially scheduled.
   @Override
@@ -29,13 +26,20 @@ public class TESTMoveArm extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    speed = ySpeed.get();
-    armSubsystem.moveArm(speed * .3);
+    if (yes){
+      intakeSubsystem.setIntakeMotor(-.5);
+    } else {
+      intakeSubsystem.setIntakeMotor(0);
+      
+    }
+    System.out.println("INTAKE RUNNING");
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    // intakeSubsystem.setIntakeMotor(0);
+  }
 
   // Returns true when the command should end.
   @Override
