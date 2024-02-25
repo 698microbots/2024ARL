@@ -33,7 +33,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    CommandScheduler.getInstance().run(); 
+    CommandScheduler.getInstance().run();
+    m_robotContainer.field2d.setRobotPose(m_robotContainer.pose); 
     // System.out.println("STATES:/n" + m_robotContainer.drivetrain.getSwerveModTarget());
     SmartDashboard.putNumber("Left Y", m_robotContainer.joystick.getLeftY());
     SmartDashboard.putNumber("Left X", m_robotContainer.joystick.getLeftX());
@@ -57,12 +58,17 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("BL TURN Voltage", m_robotContainer.driveTrainVoltages.BLTVoltage());
     SmartDashboard.putNumber("FR TURN Voltage", m_robotContainer.driveTrainVoltages.FRTVoltage());
     SmartDashboard.putNumber("BR TURN Voltage", m_robotContainer.driveTrainVoltages.BRTVoltage());
-    
+ 
+    SmartDashboard.putNumber("FL DRIVE Velocity", m_robotContainer.driveTrainVoltages.FLDVoltage());
+    SmartDashboard.putNumber("BL DRIVE Velocity", m_robotContainer.driveTrainVoltages.BLDVoltage());
+    SmartDashboard.putNumber("FR DRIVE Velocity", m_robotContainer.driveTrainVoltages.FRDVoltage());
+    SmartDashboard.putNumber("BR DRIVE Velocity", m_robotContainer.driveTrainVoltages.BRDVoltage());
+
     SmartDashboard.putNumber("Robot Pose to amp X: ", m_robotContainer.limeLight.get2dBotPoseForAmp().getX());
     SmartDashboard.putNumber("Robot Pose to amp Y:", m_robotContainer.limeLight.get2dBotPoseForAmp().getY());
     // SmartDashboard.putNumber("Target Space X", m_robotContainer.limeLight.getRobotPoseX());
-    
     // SmartDashboard.putNumber("Target Pose Y", m_robotContainer.limeLight.getRobotPoseZ());
+    SmartDashboard.putData("Field2d", m_robotContainer.field2d);
     SmartDashboard.putNumber("Intake Volts: ", m_robotContainer.intake.getIntakeVolts());
 
   }

@@ -59,19 +59,19 @@ public class driveTrainVoltages extends SubsystemBase {
 
 
   public double FLTVelocity(){
-    return FLTurn.getVelocity().getValueAsDouble();
+    return FLDrive.getVelocity().getValueAsDouble();
   }
 
   public double BLVelocity(){
-    return BLTurn.getVelocity().getValueAsDouble();
+    return BLDrive.getVelocity().getValueAsDouble();
   }
   
   public double FRVelocity(){
-    return FRTurn.getVelocity().getValueAsDouble();
+    return FRDrive.getVelocity().getValueAsDouble();
   }
   
   public double BRVelocity(){
-    return BRTurn.getVelocity().getValueAsDouble();
+    return BRDrive.getVelocity().getValueAsDouble();
   }  
   @Override
   public void periodic() {
