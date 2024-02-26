@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.generated.SwerveRequestMODIFIED;
 import frc.robot.generated.TunerConstants;
 
 /**
@@ -49,12 +50,23 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
             startSimThread();
         }
     }
+    // TODO: try to add desaturate wheel speeds by adding a new SwerveDriveTrain
+    // public void setControl(SwerveRequestMODIFIED request) {
+    //     try {
+    //         m_stateLock.writeLock().lock();
 
+    //         m_requestToApply = request;
+    //     } finally {
+    //         m_stateLock.writeLock().unlock();
+    //     }
+    // }
     public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
         return run(() -> this.setControl(requestSupplier.get()));
     }
 
-
+    // public Command applyRequest(Supplier<SwerveRequestMODIFIED> requestSupplier) {
+    //     return run(() -> this.setControl(requestSupplier.get()));
+    // }
     private void startSimThread() {
         m_lastSimTime = Utils.getCurrentTimeSeconds();
 

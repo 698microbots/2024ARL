@@ -4,13 +4,17 @@
 
 package frc.robot.commands;
 
+import java.lang.invoke.ConstantBootstraps;
+
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.IntakeSubsystem;
 
 public class IntakeMove extends Command {
   /** Creates a new IntakeMove. */
   private final IntakeSubsystem intakeSubsystem;
   private final boolean yes;
+  private int counter = 0;
   public IntakeMove(IntakeSubsystem intakeSubsystem, boolean yes) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intakeSubsystem = intakeSubsystem;
@@ -33,12 +37,28 @@ public class IntakeMove extends Command {
       
     }
     System.out.println("INTAKE RUNNING");
+
+    // if (intakeSubsystem.getCanRun()){
+    //   intakeSubsystem.setIntakeMotor(-.75);
+    //   counter = 0;
+    // } else {
+    //   intakeSubsystem.setIntakeMotor(0);
+    // }
+
+    // if (intakeSubsystem.getIntakeVolts() > Constants.intakeNoteVoltage){
+    //   counter++;
+    // }
+
+    // if (counter > Constants.numSeconds(2)){
+    //   intakeSubsystem.setCanRun(false);
+    // }
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // intakeSubsystem.setIntakeMotor(0);
+    intakeSubsystem.setIntakeMotor(0);
   }
 
   // Returns true when the command should end.

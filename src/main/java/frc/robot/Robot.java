@@ -34,7 +34,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    m_robotContainer.field2d.setRobotPose(m_robotContainer.pose); 
+    // m_robotContainer.field2d.setRobotPose(m_robotContainer.pose); 
     // System.out.println("STATES:/n" + m_robotContainer.drivetrain.getSwerveModTarget());
     SmartDashboard.putNumber("Left Y", m_robotContainer.joystick.getLeftY());
     SmartDashboard.putNumber("Left X", m_robotContainer.joystick.getLeftX());
@@ -68,7 +68,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Robot Pose to amp Y:", m_robotContainer.limeLight.get2dBotPoseForAmp().getY());
     // SmartDashboard.putNumber("Target Space X", m_robotContainer.limeLight.getRobotPoseX());
     // SmartDashboard.putNumber("Target Pose Y", m_robotContainer.limeLight.getRobotPoseZ());
-    SmartDashboard.putData("Field2d", m_robotContainer.field2d);
+    // SmartDashboard.putData("Field2d", m_robotContainer.field2d);
     SmartDashboard.putNumber("Intake Volts: ", m_robotContainer.intake.getIntakeVolts());
 
   }
