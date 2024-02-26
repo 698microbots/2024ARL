@@ -30,9 +30,9 @@ public class TESTFlywheel extends Command {
     double speed = ySpeed.get();
 
     if (speed > 0){
-    flywheelSubsystem.setFlywheelMotorSpeed(speed);
+    flywheelSubsystem.setFlywheelMotorSpeed(0);
     } else {
-    flywheelSubsystem.setFlywheelMotorSpeed(.05);
+    flywheelSubsystem.setFlywheelMotorSpeed(-.05);
     }
   }
 

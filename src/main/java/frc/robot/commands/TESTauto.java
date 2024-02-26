@@ -9,6 +9,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.CommandSwerveDrivetrain;
 import frc.robot.Constants;
+import frc.robot.generated.SwerveRequestMODIFIED;
 
 public class TESTauto extends Command {
   /** Creates a new AutoTest. */
@@ -16,6 +17,7 @@ public class TESTauto extends Command {
   private int counter;
   private final double seconds;
   private final SwerveRequest.FieldCentric swerveRequest = new SwerveRequest.FieldCentric(); //type of field centric is in the class
+  // private final SwerveRequestMODIFIED.FieldCentric s = new SwerveRequestMODIFIED.FieldCentric();
   public TESTauto(CommandSwerveDrivetrain driveTrain, double seconds) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.seconds = seconds;

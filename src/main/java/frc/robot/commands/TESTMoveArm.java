@@ -30,7 +30,7 @@ public class TESTMoveArm extends Command {
   @Override
   public void execute() {
     speed = ySpeed.get();
-    armSubsystem.moveArm(speed);
+    armSubsystem.moveArm(speed * .3);
   }
 
   // Called once the command ends or is interrupted.

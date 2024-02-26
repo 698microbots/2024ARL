@@ -7,12 +7,15 @@ package frc.robot;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -23,12 +26,14 @@ import frc.robot.commands.AutoCenter;
 import frc.robot.commands.AutoPosition;
 import frc.robot.commands.TESTauto;
 import frc.robot.commands.FlywheelSetIdle;
+import frc.robot.commands.IntakeMove;
 import frc.robot.commands.TESTFlywheel;
 import frc.robot.commands.TESTMoveArm;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.GyroSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.driveTrainVoltages;
 
@@ -40,7 +45,7 @@ public class RobotContainer {
   /*
    * 
    * TODO: MaxAngularRate really effects driving in a straight line, if its too slow then swerve will drift off to the side in which its turning
-   * 
+   * Might have to desaturate wheel speeds in the SwerveRequest Class
    */
 
   // button definitions
@@ -51,6 +56,7 @@ public class RobotContainer {
   private final JoystickButton RBbutton = new JoystickButton(xboxController, Constants.Xbox_Button_RB);
   private final JoystickButton LBbutton = new JoystickButton(xboxController, Constants.Xbox_Button_LB);
 
+  
   /* Setting up bindings for necessary control of the swerve drive platform */
   public LimeLightSubsystem limeLight = new LimeLightSubsystem();
   public final CommandXboxController joystick = new CommandXboxController(0); // My joystick
@@ -61,6 +67,7 @@ public class RobotContainer {
   public Telemetry telemetry = new Telemetry(3.5);
   public driveTrainVoltages driveTrainVoltages = new driveTrainVoltages();
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
+  public final IntakeSubsystem intake = new IntakeSubsystem();
   private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
@@ -69,6 +76,10 @@ public class RobotContainer {
   private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
   private final Telemetry logger = new Telemetry(MaxSpeed);
   public Pose2d pose = drivetrain.getState().Pose; //could break the code 
+  public final Field2d field2d = new Field2d();
+
+
+
   private SwerveModuleState[] states = drivetrain.getState().ModuleStates;
 
   private void configureBindings() {
@@ -79,8 +90,8 @@ public class RobotContainer {
             .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
         
-    arm.setDefaultCommand(new TESTMoveArm(arm, () -> joystick2.getLeftY() * .5));
-    flyWheel.setDefaultCommand(new TESTFlywheel(flyWheel, () -> joystick2.getRightY() * .80));
+    arm.setDefaultCommand(new TESTMoveArm(arm, () -> joystick2.getRightY() * .3));
+    flyWheel.setDefaultCommand(new TESTFlywheel(flyWheel, () -> joystick2.getLeftY() * .45));
     
         // Abutton.onTrue(new SetFlywheelMotor()); // tells the flywheel to move
     // to trigger a command to cernter the robot on an AprilTag, get the flywheel
@@ -97,9 +108,12 @@ public class RobotContainer {
      * 
      */
 
-    joystick2.a().whileTrue(new AutoCenter(drivetrain, limeLight, 3.0));
-    joystick2.b().whileTrue(new AutoPosition(drivetrain, limeLight));
+    // joystick2.a().whileTrue(new AutoCenter(drivetrain, limeLight, 3.0));
+    // joystick2.b().whileTrue(new AutoPosition(drivetrain, limeLight));
 
+    joystick2.b().whileTrue(new IntakeMove(intake, true));
+    joystick2.b().whileFalse(new IntakeMove(intake, false));
+    joystick2.a().whileTrue(new AutoPosition(drivetrain, limeLight));
     
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
@@ -113,8 +127,10 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     // return Commands.print("No autonomous command configured");
-    return new TESTauto(drivetrain, 5);
+    PathPlannerPath path = PathPlannerPath.fromPathFile("autotest");
+    // return new TESTauto(drivetrain, 5);
     // return drivetrain.applyRequest(null);
+    return AutoBuilder.followPath(path);
     
   }
 }
