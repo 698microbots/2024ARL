@@ -72,6 +72,8 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putData("Field2d", m_robotContainer.field2d);
     SmartDashboard.putNumber("Intake Volts: ", m_robotContainer.intake.getIntakeVolts());
 
+    SmartDashboard.putBoolean("isBlocked", m_robotContainer.intake.getBlocked());
+
   }
 
   @Override

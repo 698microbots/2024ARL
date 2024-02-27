@@ -6,29 +6,39 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
-    private final CANSparkMax IntakeMotor = new CANSparkMax(15, CANSparkMax.MotorType.kBrushless);
-    private boolean canRun = true;
-  public IntakeSubsystem() {}
+  private final CANSparkMax IntakeMotor = new CANSparkMax(15, CANSparkMax.MotorType.kBrushless);
+  // Initializes a DigitalInput on DIO 0
+  private final DigitalInput photoSensor = new DigitalInput(2); //TODO - make this a constant
+  private boolean canRun = true;
 
-  public void setIntakeMotor(double speed){
+  public IntakeSubsystem() {
+  }
+
+  public void setIntakeMotor(double speed) {
     IntakeMotor.set(speed);
   }
 
-  public double getIntakeVolts(){
+  public double getIntakeVolts() {
     return IntakeMotor.getBusVoltage();
   }
 
-  public void setCanRun(boolean run){
+  public void setCanRun(boolean run) {
     canRun = run;
   }
 
-  public boolean getCanRun(){
+  public boolean getCanRun() {
     return canRun;
   }
+
+  public boolean getBlocked() {
+    return photoSensor.get();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
