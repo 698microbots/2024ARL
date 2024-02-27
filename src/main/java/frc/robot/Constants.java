@@ -76,6 +76,6 @@ public final class Constants {
   public static final double ampTagHeightMeters = 0;
   public static final double endArmPositionSpeed = 0.05;
   public static final double ampEncoderUnits = 0;
-  public static final double intakeNoteVoltage = 12;
+  public static final double intakeNoteVoltage = 11.5;
 
 }

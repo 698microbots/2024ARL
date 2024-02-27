@@ -38,9 +38,10 @@ import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.driveTrainVoltages;
 
 public class RobotContainer {
-  private double MaxSpeed = 3.5; // 6 meters per second desired top speed (6 origin)
+  private double MaxSpeed = 1.0; // 6 meters per second desired top speed (6 origin)
   private double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
   public XboxController xboxController = new XboxController(0); // new XBox object
+  public XboxController xboxController2 = new XboxController(1); // new XBox object
   
   /*
    * 
@@ -56,6 +57,12 @@ public class RobotContainer {
   private final JoystickButton RBbutton = new JoystickButton(xboxController, Constants.Xbox_Button_RB);
   private final JoystickButton LBbutton = new JoystickButton(xboxController, Constants.Xbox_Button_LB);
 
+  private final JoystickButton Xbutton2 = new JoystickButton(xboxController2, Constants.Xbox_Button_X);
+  private final JoystickButton Ybutton2 = new JoystickButton(xboxController2, Constants.Xbox_Button_Y);
+  private final JoystickButton Abutton2 = new JoystickButton(xboxController2, Constants.Xbox_Button_A);
+  private final JoystickButton Bbutton2 = new JoystickButton(xboxController2, Constants.Xbox_Button_B);
+  private final JoystickButton RBbutton2 = new JoystickButton(xboxController2, Constants.Xbox_Button_RB);
+  private final JoystickButton LBbutton2 = new JoystickButton(xboxController2, Constants.Xbox_Button_LB);
   
   /* Setting up bindings for necessary control of the swerve drive platform */
   public LimeLightSubsystem limeLight = new LimeLightSubsystem();
@@ -110,10 +117,12 @@ public class RobotContainer {
 
     // joystick2.a().whileTrue(new AutoCenter(drivetrain, limeLight, 3.0));
     // joystick2.b().whileTrue(new AutoPosition(drivetrain, limeLight));
-
-    joystick2.b().whileTrue(new IntakeMove(intake, true));
-    joystick2.b().whileFalse(new IntakeMove(intake, false));
+    // joystick2.b().toggleOnTrue(new IntakeMove(intake, false));
+    joystick2.b().whileTrue(new IntakeMove(intake));
+    // joystick2.b().whileFalse(new IntakeMove(intake, false));
     joystick2.a().whileTrue(new AutoPosition(drivetrain, limeLight));
+    joystick2.x().whileTrue(new IntakeMove(intake, true));
+    joystick2.x().whileTrue(new IntakeMove(intake, false));
     
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));

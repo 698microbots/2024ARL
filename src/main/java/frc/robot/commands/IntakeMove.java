@@ -13,7 +13,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class IntakeMove extends Command {
   /** Creates a new IntakeMove. */
   private final IntakeSubsystem intakeSubsystem;
-  private final boolean yes;
+  private  boolean yes = false;
   private int counter = 0;
   public IntakeMove(IntakeSubsystem intakeSubsystem, boolean yes) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -23,6 +23,12 @@ public class IntakeMove extends Command {
     
   }
 
+  public IntakeMove(IntakeSubsystem intakeSubsystem) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    this.intakeSubsystem = intakeSubsystem;
+    addRequirements(intakeSubsystem);
+    
+  }  
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
@@ -30,28 +36,33 @@ public class IntakeMove extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (yes){
-      intakeSubsystem.setIntakeMotor(-.5);
-    } else {
-      intakeSubsystem.setIntakeMotor(0);
-      
-    }
-    System.out.println("INTAKE RUNNING");
-
-    // if (intakeSubsystem.getCanRun()){
-    //   intakeSubsystem.setIntakeMotor(-.75);
-    //   counter = 0;
+    // if (yes){
+    //   intakeSubsystem.setIntakeMotor(-.5);
     // } else {
     //   intakeSubsystem.setIntakeMotor(0);
+      
     // }
+    // intakeSubsystem.setCanRun(true);
+    if (yes){
+      intakeSubsystem.setCanRun(true);
+      counter = 0;
+    }
 
-    // if (intakeSubsystem.getIntakeVolts() > Constants.intakeNoteVoltage){
-    //   counter++;
-    // }
+    if (intakeSubsystem.getCanRun()){
+      intakeSubsystem.setIntakeMotor(-.75);
+      
+    } 
 
-    // if (counter > Constants.numSeconds(2)){
-    //   intakeSubsystem.setCanRun(false);
-    // }
+    if (intakeSubsystem.getIntakeVolts() < Constants.intakeNoteVoltage){
+      System.out.println("Intake Volts : " +  intakeSubsystem.getIntakeVolts());
+      counter++;
+      System.out.println("Counter:" + counter);
+
+    }
+
+    if (counter > Constants.numSeconds(1.5)){
+      intakeSubsystem.setCanRun(false);
+    }
 
   }
 
