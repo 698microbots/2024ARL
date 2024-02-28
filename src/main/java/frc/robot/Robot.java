@@ -74,6 +74,7 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putBoolean("isBlocked", m_robotContainer.intake.getBlocked());
 
+    SmartDashboard.putNumber("arm encoder", m_robotContainer.arm.getEncoder());
   }
 
   @Override

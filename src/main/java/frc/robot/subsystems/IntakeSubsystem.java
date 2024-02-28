@@ -35,6 +35,14 @@ public class IntakeSubsystem extends SubsystemBase {
     return canRun;
   }
 
+  // public boolean canRun() {
+  //   if (getBlocked()) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
+
   public boolean getBlocked() {
     return photoSensor.get();
   }

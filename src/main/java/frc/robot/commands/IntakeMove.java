@@ -36,13 +36,13 @@ public class IntakeMove extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // if (yes){
-    //   intakeSubsystem.setIntakeMotor(-.5);
-    // } else {
-    //   intakeSubsystem.setIntakeMotor(0);
-      
-    // }
-    // intakeSubsystem.setCanRun(true);
+    if (yes){
+      intakeSubsystem.setIntakeMotor(-.5);
+    } else {
+      intakeSubsystem.setIntakeMotor(0);
+    }
+
+    intakeSubsystem.setCanRun(true);
     if (yes){
       intakeSubsystem.setCanRun(true);
       counter = 0;
@@ -50,17 +50,22 @@ public class IntakeMove extends Command {
 
     if (intakeSubsystem.getCanRun()){
       intakeSubsystem.setIntakeMotor(-.75);
-      
+
     } 
 
-    if (intakeSubsystem.getIntakeVolts() < Constants.intakeNoteVoltage){
-      System.out.println("Intake Volts : " +  intakeSubsystem.getIntakeVolts());
+    // if (intakeSubsystem.canRun()){
+    //   intakeSubsystem.setIntakeMotor(-.75);
+      
+    // } 
+    
+    if (intakeSubsystem.getIntakeVolts() < Constants.intakeNoteVoltage) {
+      System.out.println("Intake Volts : " + intakeSubsystem.getIntakeVolts());
       counter++;
       System.out.println("Counter:" + counter);
 
     }
 
-    if (counter > Constants.numSeconds(1.5)){
+    if (counter > Constants.numSeconds(1.5)) {
       intakeSubsystem.setCanRun(false);
     }
 

@@ -9,6 +9,7 @@ import com.ctre.phoenix6.signals.ControlModeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.EncoderType;
 
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -19,7 +20,8 @@ public class ArmSubsystem extends SubsystemBase {
   private boolean direction = false; // ▌NEW▐
   /** Creates a new ArmSubsystem. */
   private final TalonFX armMotor = new TalonFX(Constants.armMotor);
-  private final Encoder boreEncoder = new Encoder(0, 1);
+  // Initializes a duty cycle encoder on DIO pins 0
+  DutyCycleEncoder dutyCycleEncoder = new DutyCycleEncoder(1);
 
   public ArmSubsystem() {
     armMotor.setNeutralMode(NeutralModeValue.Brake);
@@ -31,31 +33,28 @@ public class ArmSubsystem extends SubsystemBase {
 
   // @Override
   // public void periodic() { // don't need preiodic
-  //   distance = ; // Gets the distance traveled
-  //   direction = ; // Gets the current direction of the encoder // ▌NEW▐
+  // distance = ; // Gets the distance traveled
+  // direction = ; // Gets the current direction of the encoder // ▌NEW▐
   // }
 
   // Getter methods
   // TODO: find out what this returns
   public double getEncoder() {
-    return boreEncoder.get();
+    return dutyCycleEncoder.get();
   }
 
   public double getDistance() { // ▌NEW▐
-    return boreEncoder.getDistance();
-  }
-
-  public boolean getDirection() { // ▌NEW▐
-    return boreEncoder.getDirection();
+    return dutyCycleEncoder.getDistance();
   }
 
   // setter methods
   public void resetEncoder() {
-    boreEncoder.reset();
+    dutyCycleEncoder.reset();
   }
 
-  public boolean reverseDirection() { // ▌NEW▐
-    boreEncoder.setReverseDirection(true); // think this will reverst the direction tha arm travels when invoked, confirm later
-    return direction; // temporary, is here just for checking it works as intended
-  }
+  // public boolean reverseDirection() { // ▌NEW▐
+  //   dutyCycleEncoder.setReverseDirection(true); // think this will reverst the direction tha arm travels when invoked,
+  //                                          // confirm later
+  //   return direction; // temporary, is here just for checking it works as intended
+  // }
 }
