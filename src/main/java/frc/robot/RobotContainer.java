@@ -98,7 +98,7 @@ public class RobotContainer {
         ));
         
     arm.setDefaultCommand(new TESTMoveArm(arm, () -> joystick2.getRightY() * .3));
-    flyWheel.setDefaultCommand(new TESTFlywheel(flyWheel, () -> joystick2.getLeftY() * .45));
+    flyWheel.setDefaultCommand(new TESTFlywheel(flyWheel, () -> joystick2.getLeftY() * .75));
     
         // Abutton.onTrue(new SetFlywheelMotor()); // tells the flywheel to move
     // to trigger a command to cernter the robot on an AprilTag, get the flywheel
