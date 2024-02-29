@@ -20,7 +20,11 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void setIntakeMotor(double speed) {
+    if(canRun){
     IntakeMotor.set(speed);
+    } else {
+      IntakeMotor.set(0);
+    }
   }
 
   public double getIntakeVolts() {
