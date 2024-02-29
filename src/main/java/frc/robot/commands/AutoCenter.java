@@ -16,7 +16,7 @@ public class AutoCenter extends Command {
 // Instance Variables
 
 private double angle;
-private PIDController pidController = new PIDController(.4, 0, 1); //kp as 0.05 works, everything else as 0
+private PIDController pidController = new PIDController(.04, 0, 0); //kp as 0.05 works, everything else as 0
 //dont use I for pid
 private LimeLightSubsystem limeLightSubsystem;
 private CommandSwerveDrivetrain drivetrain;

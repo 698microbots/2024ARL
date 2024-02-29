@@ -17,7 +17,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.util.Units;
 
-public class AutoPosition extends Command {
+public class AutoPositionAmp extends Command {
   // instance variables
   private double hypot = 0;
   private double turnAngle = 0;
@@ -40,7 +40,7 @@ public class AutoPosition extends Command {
   private PIDController pidControllerAngleController = new PIDController(.3, 0, 0); // TODO - tune this
 
   /** Creates a new AutoPosition. */
-  public AutoPosition(CommandSwerveDrivetrain drivetrain, LimeLightSubsystem limeLightSubsystem) {
+  public AutoPositionAmp(CommandSwerveDrivetrain drivetrain, LimeLightSubsystem limeLightSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.limeLightSubsystem = limeLightSubsystem;
     this.drivetrain = drivetrain;
@@ -76,7 +76,7 @@ public class AutoPosition extends Command {
     
     System.out.println("x speed: " + xSpeed);
     System.out.println("y speed: " + ySpeed);
-    System.out.println("rotate speed: " + rotateSpeed);
+    System.out.println("rotate speed: " + rotateSpeed + "\n");
 
     // TODO: uncomment this once speeds are reasonable
     // drivetrain.setControl(swerveCentric.

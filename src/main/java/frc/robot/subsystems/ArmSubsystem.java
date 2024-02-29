@@ -21,10 +21,12 @@ public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ArmSubsystem. */
   private final TalonFX armMotor = new TalonFX(Constants.armMotor);
   // Initializes a duty cycle encoder on DIO pins 0
-  DutyCycleEncoder dutyCycleEncoder = new DutyCycleEncoder(1);
+  DutyCycleEncoder dutyCycleEncoder = new DutyCycleEncoder(0);
 
   public ArmSubsystem() {
-    armMotor.setNeutralMode(NeutralModeValue.Brake);
+    // armMotor.setNeutralMode(NeutralModeValue.Brake);
+    armMotor.setNeutralMode(NeutralModeValue.Coast);
+
   }
 
   public void moveArm(double speed) {

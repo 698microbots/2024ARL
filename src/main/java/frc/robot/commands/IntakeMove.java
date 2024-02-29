@@ -13,22 +13,22 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class IntakeMove extends Command {
   /** Creates a new IntakeMove. */
   private final IntakeSubsystem intakeSubsystem;
-  private  boolean yes = false;
+  // private  boolean yes = false;
   private int counter = 0;
-  public IntakeMove(IntakeSubsystem intakeSubsystem, boolean yes) {
+  public IntakeMove(IntakeSubsystem intakeSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intakeSubsystem = intakeSubsystem;
-    this.yes = yes;
+    // this.yes = yes;
     addRequirements(intakeSubsystem);
     
   }
 
-  public IntakeMove(IntakeSubsystem intakeSubsystem) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    this.intakeSubsystem = intakeSubsystem;
-    addRequirements(intakeSubsystem);
+  // public IntakeMove(IntakeSubsystem intakeSubsystem) {
+  //   // Use addRequirements() here to declare subsystem dependencies.
+  //   this.intakeSubsystem = intakeSubsystem;
+  //   addRequirements(intakeSubsystem);
     
-  }  
+  // }  
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
@@ -36,38 +36,55 @@ public class IntakeMove extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (yes){
-      intakeSubsystem.setIntakeMotor(-.5);
+    
+    if (intakeSubsystem.getBlocked()){
+      intakeSubsystem.setCanRun(false);
+      counter++; //only invoke if need to have a delay, comment out the line above if you use this
+      System.out.println("IS BLOCKED");
     } else {
-      intakeSubsystem.setIntakeMotor(0);
-    }
-
-    intakeSubsystem.setCanRun(true);
-    if (yes){
       intakeSubsystem.setCanRun(true);
       counter = 0;
+      System.out.println("IS NOT BLOCKED");
+ 
     }
+    
+    intakeSubsystem.setIntakeMotor(-.75);
+    
+    // if (counter > Constants.numSeconds(1.5)) {
+    //   intakeSubsystem.setCanRun(false);
+    // }   
+    
+    
+    // if (yes){
+    //   intakeSubsystem.setIntakeMotor(-.5);
+    // } else {
+    //   intakeSubsystem.setIntakeMotor(0);
+    // }
 
-    if (intakeSubsystem.getCanRun()){
-      intakeSubsystem.setIntakeMotor(-.75);
+    // intakeSubsystem.setCanRun(true);
+    // if (yes){
+    //   intakeSubsystem.setCanRun(true);
+    //   counter = 0;
+    // }
 
-    } 
+    // if (intakeSubsystem.getCanRun()){
+    //   intakeSubsystem.setIntakeMotor(-.75);
+
+    // } 
 
     // if (intakeSubsystem.canRun()){
     //   intakeSubsystem.setIntakeMotor(-.75);
       
     // } 
     
-    if (intakeSubsystem.getIntakeVolts() < Constants.intakeNoteVoltage) {
-      System.out.println("Intake Volts : " + intakeSubsystem.getIntakeVolts());
-      counter++;
-      System.out.println("Counter:" + counter);
+    // if (intakeSubsystem.getIntakeVolts() < Constants.intakeNoteVoltage) {
+    //   System.out.println("Intake Volts : " + intakeSubsystem.getIntakeVolts());
+    //   counter++;
+    //   System.out.println("Counter:" + counter);
 
-    }
+    // }
 
-    if (counter > Constants.numSeconds(1.5)) {
-      intakeSubsystem.setCanRun(false);
-    }
+
 
   }
 

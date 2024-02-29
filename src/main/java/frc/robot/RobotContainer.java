@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AutoCenter;
-import frc.robot.commands.AutoPosition;
+import frc.robot.commands.AutoPositionAmp;
 import frc.robot.commands.TESTauto;
 import frc.robot.commands.FlywheelSetIdle;
 import frc.robot.commands.IntakeMove;
@@ -98,7 +98,7 @@ public class RobotContainer {
         ));
         
     arm.setDefaultCommand(new TESTMoveArm(arm, () -> joystick2.getRightY() * .3));
-    flyWheel.setDefaultCommand(new TESTFlywheel(flyWheel, () -> joystick2.getLeftY() * .45));
+    flyWheel.setDefaultCommand(new TESTFlywheel(flyWheel, () -> joystick2.getLeftY() * .85));
     
         // Abutton.onTrue(new SetFlywheelMotor()); // tells the flywheel to move
     // to trigger a command to cernter the robot on an AprilTag, get the flywheel
@@ -115,14 +115,14 @@ public class RobotContainer {
      * 
      */
 
-    // joystick2.a().whileTrue(new AutoCenter(drivetrain, limeLight, 3.0));
+    joystick.x().whileTrue(new AutoCenter(drivetrain, limeLight, 3.0));
     // joystick2.b().whileTrue(new AutoPosition(drivetrain, limeLight));
     // joystick2.b().toggleOnTrue(new IntakeMove(intake, false));
     joystick2.b().whileTrue(new IntakeMove(intake));
     // joystick2.b().whileFalse(new IntakeMove(intake, false));
-    joystick2.a().whileTrue(new AutoPosition(drivetrain, limeLight));
-    joystick2.x().whileTrue(new IntakeMove(intake, true));
-    joystick2.x().whileTrue(new IntakeMove(intake, false));
+    joystick2.a().whileTrue(new AutoPositionAmp(drivetrain, limeLight));
+    // joystick2.x().whileTrue(new IntakeMove(intake, true));
+    // joystick2.x().whileTrue(new IntakeMove(intake, false));
     
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));

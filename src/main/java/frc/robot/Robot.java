@@ -40,6 +40,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Left Y", m_robotContainer.joystick.getLeftY());
     SmartDashboard.putNumber("Left X", m_robotContainer.joystick.getLeftX());
 
+
+    SmartDashboard.putNumber("Left2 Y", m_robotContainer.joystick2.getLeftY());
+    SmartDashboard.putNumber("Left2 X", m_robotContainer.joystick2.getLeftX());
     SmartDashboard.putNumber("Robot Y", m_robotContainer.drivetrain.getState().Pose.getY()); // says this is null when
                                                                                              // simulating
     SmartDashboard.putNumber("Robot X", m_robotContainer.drivetrain.getState().Pose.getX());
@@ -65,8 +68,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("FR DRIVE Velocity", m_robotContainer.driveTrainVoltages.FRDVoltage());
     SmartDashboard.putNumber("BR DRIVE Velocity", m_robotContainer.driveTrainVoltages.BRDVoltage());
 
-    SmartDashboard.putNumber("Robot Pose to amp X: ", m_robotContainer.limeLight.get2dBotPoseForAmp().getX());
-    SmartDashboard.putNumber("Robot Pose to amp Y:", m_robotContainer.limeLight.get2dBotPoseForAmp().getY());
+    SmartDashboard.putNumber("Robot Pose to amp X: ", m_robotContainer.limeLight.get3dBotPoseForAmp().getX());
+    SmartDashboard.putNumber("Robot Pose to amp Y:", m_robotContainer.limeLight.get3dBotPoseForAmp().getY());
+    SmartDashboard.putNumber("Robot Pose to amp Z:", m_robotContainer.limeLight.get3dBotPoseForAmp().getZ());
+    
     // SmartDashboard.putNumber("Target Space X", m_robotContainer.limeLight.getRobotPoseX());
     // SmartDashboard.putNumber("Target Pose Y", m_robotContainer.limeLight.getRobotPoseZ());
     // SmartDashboard.putData("Field2d", m_robotContainer.field2d);
@@ -75,6 +80,11 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("isBlocked", m_robotContainer.intake.getBlocked());
 
     SmartDashboard.putNumber("arm encoder", m_robotContainer.arm.getEncoder());
+    SmartDashboard.putNumber("Robot Y to AMP", m_robotContainer.limeLight.get2dBotPoseForAmp().getY()); // says this is null when
+                                                                                             // simulating
+  
+
+  
   }
 
   @Override
