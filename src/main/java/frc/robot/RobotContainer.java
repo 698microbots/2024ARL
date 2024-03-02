@@ -18,11 +18,13 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AutoCenter;
+import frc.robot.commands.AutoCenterNote;
 import frc.robot.commands.AutoPositionAmp;
 import frc.robot.commands.TESTauto;
 import frc.robot.commands.FlywheelSetIdle;
@@ -115,14 +117,19 @@ public class RobotContainer {
      * 
      */
 
-    joystick.x().whileTrue(new AutoCenter(drivetrain, limeLight, 3.0));
+    joystick.x().whileTrue(new AutoCenter(drivetrain, limeLight, MaxAngularRate));
+    joystick.y().whileTrue(new AutoCenterNote(() -> joystick.getLeftX() * MaxSpeed, () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight));    
+    // joystick.y().whileTrue(new ParallelCommandGroup(
+    //   new AutoCenterNote(() -> joystick.getLeftX() * MaxSpeed, () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight),
+    //   new IntakeMove(intake, limeLight)
+    // ));
+    
     // joystick2.b().whileTrue(new AutoPosition(drivetrain, limeLight));
     // joystick2.b().toggleOnTrue(new IntakeMove(intake, false));
-    joystick2.b().whileTrue(new IntakeMove(intake));
+    joystick2.b().whileTrue(new IntakeMove(intake, limeLight));
     // joystick2.b().whileFalse(new IntakeMove(intake, false));
     joystick2.a().whileTrue(new AutoPositionAmp(drivetrain, limeLight));
-    // joystick2.x().whileTrue(new IntakeMove(intake, true));
-    // joystick2.x().whileTrue(new IntakeMove(intake, false));
+
     
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));

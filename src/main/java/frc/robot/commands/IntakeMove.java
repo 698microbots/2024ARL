@@ -9,17 +9,21 @@ import java.lang.invoke.ConstantBootstraps;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LimeLightSubsystem;
 
 public class IntakeMove extends Command {
   /** Creates a new IntakeMove. */
   private final IntakeSubsystem intakeSubsystem;
+  private final LimeLightSubsystem limelight;
   // private  boolean yes = false;
   private int counter = 0;
-  public IntakeMove(IntakeSubsystem intakeSubsystem) {
+  public IntakeMove(IntakeSubsystem intakeSubsystem, LimeLightSubsystem limelight) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intakeSubsystem = intakeSubsystem;
+    this.limelight = limelight;
     // this.yes = yes;
     addRequirements(intakeSubsystem);
+    addRequirements(limelight);
     
   }
 
@@ -48,7 +52,10 @@ public class IntakeMove extends Command {
  
     }
     
+    if (limelight.getNoteArea() > Constants.noteAreaToRun){
     intakeSubsystem.setIntakeMotor(-.75);
+
+    }
     
     // if (counter > Constants.numSeconds(1.5)) {
     //   intakeSubsystem.setCanRun(false);

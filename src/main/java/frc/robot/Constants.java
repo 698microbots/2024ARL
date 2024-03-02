@@ -78,4 +78,5 @@ public final class Constants {
   public static final double ampEncoderUnits = 0;
   public static final double intakeNoteVoltage = 11.5;
 
+  public static final double noteAreaToRun = 2.5;
 }
