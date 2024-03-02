@@ -17,7 +17,7 @@ public class LimeLightSubsystem extends SubsystemBase {
 
   // creates the instance variables for the LimeLight Subsystem
   private NetworkTable limeLight, limeLight2;
-  private NetworkTableEntry V_angle, H_angle, hasTargets, botPose, aprilID;
+  private NetworkTableEntry V_angle, H_angle, TwoH_angle, hasTargets, noteArea, botPose, aprilID;
   private double[] poseList;
   private double zDistance;
   private double xDistance;
@@ -25,10 +25,14 @@ public class LimeLightSubsystem extends SubsystemBase {
   /** Creates a new LimeLight. */
   public LimeLightSubsystem() {
     limeLight = NetworkTableInstance.getDefault().getTable("limelight");
-    limeLight2 = NetworkTableInstance.getDefault().getTable("limelighttwo");
+    limeLight2 = NetworkTableInstance.getDefault().getTable("limelight-two");
+    //FIND THE LIMELIGHT 2 NAME IN THE HOSTNAME IN THE LIMELIGHT FINDER
     //make sure all the keys are exactly matching the docs, no capitals 
     V_angle = limeLight.getEntry("ty");
     H_angle = limeLight.getEntry("tx");
+    TwoH_angle = limeLight2.getEntry("tx");
+    noteArea = limeLight2.getEntry("ta");
+    
     hasTargets = limeLight.getEntry("tv");
     botPose = limeLight.getEntry("targetpose_robotspace");
     aprilID = limeLight.getEntry("tid");
@@ -39,6 +43,10 @@ public class LimeLightSubsystem extends SubsystemBase {
     return hasTargets.getDouble(0);
   }
 
+  public double getNoteHorizontalAngle(){
+    return TwoH_angle.getDouble(0);
+  }
+
   public double getV_angle() {
     return V_angle.getDouble(0);
   }
@@ -47,6 +55,9 @@ public class LimeLightSubsystem extends SubsystemBase {
     return H_angle.getDouble(0);
   }
 
+  public double getNoteArea(){
+    return noteArea.getDouble(0);
+  }  
   public Pose2d get2dBotPoseForAmp() {
     /*
      * Its specific because it determines what type of botpose we need

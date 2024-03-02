@@ -78,9 +78,12 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Intake Volts: ", m_robotContainer.intake.getIntakeVolts());
 
     SmartDashboard.putBoolean("isBlocked", m_robotContainer.intake.getBlocked());
-
+    SmartDashboard.putNumber("Note Angle", m_robotContainer.limeLight.getNoteHorizontalAngle());
+    SmartDashboard.putNumber("Note Area", m_robotContainer.limeLight.getNoteArea());
+    
+    SmartDashboard.putNumber("horizontal angle", m_robotContainer.limeLight.getH_angle());
     SmartDashboard.putNumber("arm encoder", m_robotContainer.arm.getEncoder());
-    SmartDashboard.putNumber("Robot Y to AMP", m_robotContainer.limeLight.get2dBotPoseForAmp().getY()); // says this is null when
+ // says this is null when
                                                                                              // simulating
   
 
