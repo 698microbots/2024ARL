@@ -8,17 +8,19 @@ import frc.robot.Constants;
 
 public class HangerSubsystem extends SubsystemBase {
 
-    private final CANSparkMax ArmMotorOne = new CANSparkMax(0, CANSparkMax.MotorType.kBrushed);
-    private final CANSparkMax ArmMotorTwo = new CANSparkMax(1, CANSparkMax.MotorType.kBrushed);
+    private final CANSparkMax HangarMotorOne = new CANSparkMax(0, CANSparkMax.MotorType.kBrushed);
+    private final CANSparkMax HangarMotorTwo = new CANSparkMax(1, CANSparkMax.MotorType.kBrushed);
 
     public HangerSubsystem(){
 
     }
 
     // sets the motor speed for the Hanger
-    public void setFlywheelMotorSpeed(double speed) {
-        ArmMotorOne.set(speed * .1);
-        ArmMotorTwo.set(speed * .1);
-        
-     }
+    public void setHangarMotorOne(double speed) {
+        HangarMotorOne.set(speed * .1);
+    }
+    
+    public void setHangarMotorTwo(double speed) {
+        HangarMotorOne.set(speed * .1);        
+    }
 }
