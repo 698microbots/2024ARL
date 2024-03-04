@@ -17,10 +17,12 @@ public class IntakeMove extends Command {
   private final LimeLightSubsystem limelight;
   // private  boolean yes = false;
   private int counter = 0;
-  public IntakeMove(IntakeSubsystem intakeSubsystem, LimeLightSubsystem limelight) {
+  private boolean reverse;
+  public IntakeMove(IntakeSubsystem intakeSubsystem, LimeLightSubsystem limelight, boolean reverse) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intakeSubsystem = intakeSubsystem;
     this.limelight = limelight;
+    this.reverse = reverse;
     // this.yes = yes;
     addRequirements(intakeSubsystem);
     addRequirements(limelight);
@@ -40,7 +42,7 @@ public class IntakeMove extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
+  if (!reverse){
     if (intakeSubsystem.getBlocked()){
       intakeSubsystem.setCanRun(false);
       counter++; //only invoke if need to have a delay, comment out the line above if you use this
@@ -53,9 +55,18 @@ public class IntakeMove extends Command {
     }
     
     if (limelight.getNoteArea() > Constants.noteAreaToRun){
-    intakeSubsystem.setIntakeMotor(-.75);
+    intakeSubsystem.setIntakeMotor(.75);
+    } else {
+      
+    intakeSubsystem.reverseIntakeMotor(-.75);
+
+
+
+
 
     }
+  }
+
     
     // if (counter > Constants.numSeconds(1.5)) {
     //   intakeSubsystem.setCanRun(false);

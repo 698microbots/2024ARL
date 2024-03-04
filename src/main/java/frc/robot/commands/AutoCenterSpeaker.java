@@ -10,27 +10,31 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.CommandSwerveDrivetrain;
 import frc.robot.Constants;
+import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 
-public class AutoCenter extends Command {
+public class AutoCenterSpeaker extends Command {
 // Instance Variables
 
 private double angle;
-private PIDController pidController = new PIDController(.04, 0, 0.1); //kp as 0.05 works, everything else as 0
+private PIDController pidController = new PIDController(.04, 0, 0.01); //kp as 0.05 works, everything else as 0
 //dont use I for pid
 private LimeLightSubsystem limeLightSubsystem;
 private CommandSwerveDrivetrain drivetrain;
+private FlywheelSubsystem flywheelSubsystem;
 private boolean end = false;
 private double maxRotationSpeed;
 private final SwerveRequest.RobotCentric swerveCentric = new SwerveRequest.RobotCentric();
 private int counter = 0;
 
   /** Creates a new AutoCenter. */
-  public AutoCenter(CommandSwerveDrivetrain drivetrain, LimeLightSubsystem limeLightSubsystem, double maxRotationSpeed) {
+  public AutoCenterSpeaker(CommandSwerveDrivetrain drivetrain, LimeLightSubsystem limeLightSubsystem, double maxRotationSpeed, FlywheelSubsystem flywheelSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.limeLightSubsystem = limeLightSubsystem;
     this.drivetrain = drivetrain;
     this.maxRotationSpeed = maxRotationSpeed;
+    this.flywheelSubsystem = flywheelSubsystem;
+    addRequirements(flywheelSubsystem);
     addRequirements(limeLightSubsystem);
     addRequirements(drivetrain);
   }
@@ -38,7 +42,7 @@ private int counter = 0;
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    flywheelSubsystem.setScoringAmpFlywheel(false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

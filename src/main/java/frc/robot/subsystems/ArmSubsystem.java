@@ -20,6 +20,7 @@ public class ArmSubsystem extends SubsystemBase {
   private boolean direction = false; // ▌NEW▐
   /** Creates a new ArmSubsystem. */
   private final TalonFX armMotor = new TalonFX(Constants.armMotor);
+  private final TalonFX armMotor2 = new TalonFX(Constants.armMotor2);
   // Initializes a duty cycle encoder on DIO pins 0
   DutyCycleEncoder dutyCycleEncoder = new DutyCycleEncoder(0);
 
@@ -31,6 +32,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void moveArm(double speed) {
     armMotor.set(speed);
+    armMotor2.set(speed);
   }
 
   // @Override

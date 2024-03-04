@@ -22,7 +22,6 @@ private PIDController pidController = new PIDController(.04, 0, 0.001); //kp as 
 private LimeLightSubsystem limeLightSubsystem;
 private CommandSwerveDrivetrain drivetrain;
 private final SwerveRequest.FieldCentric swerveCentric = new SwerveRequest.FieldCentric(); //might change this to swerve centric
-private int counter = 0;
 private double maxRotationSpeed = 3;
 private Supplier<Double> ySpeed, xSpeed;
   public AutoCenterNote(Supplier<Double> ySpeed, Supplier<Double> xSpeed, CommandSwerveDrivetrain drivetrain, LimeLightSubsystem limeLightSubsystem) {
@@ -59,7 +58,6 @@ private Supplier<Double> ySpeed, xSpeed;
     // System.out.println("Rotation Speed: " + rotationSpeed);
     // System.out.println("Angle: " + angle);
     drivetrain.setControl(swerveCentric.withVelocityX(-x).withVelocityY(-y).withRotationalRate(rotationSpeed));
-    counter++;    
   }
 
   // Called once the command ends or is interrupted.

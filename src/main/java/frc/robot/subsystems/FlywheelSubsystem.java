@@ -8,16 +8,34 @@ import frc.robot.Constants;
 public class FlywheelSubsystem extends SubsystemBase{
     private final TalonFX motor1 = new TalonFX(Constants.flywheelMotor1); // create a new motor object
     private final TalonFX motor2 = new TalonFX(Constants.flywheelMotor2);
+    private boolean scoreAmp = false;
     // constructor
     public FlywheelSubsystem(){
 
     }
 
     // sets the motor speed for the Flywheel
-    public void setFlywheelMotorSpeed(double speed) {
-        motor1.set(speed);
-        motor2.set(speed);
-        }
+    public void setFlywheelMotorSpeed() {
+        
+        if(scoreAmp){
+            motor1.set(-.5); //chage these to constants
+            motor2.set(-.5);
+        } else {
+            motor1.set(-1);
+            motor2.set(-1);
+        }         
+    }
 
+    public void stopFlywheel() {
+            motor1.set(0);
+            motor2.set(0);
+    }
 
+    public void setScoringAmpFlywheel(boolean willScoreAmp){
+        scoreAmp = willScoreAmp;
+    }
+
+    public boolean getScoringAmp(){
+        return scoreAmp;
+    }
 }
