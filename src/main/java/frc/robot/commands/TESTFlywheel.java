@@ -29,11 +29,11 @@ public class TESTFlywheel extends Command {
   public void execute() {
     double speed = ySpeed.get();
 
-    if (speed > 0){
-    flywheelSubsystem.setFlywheelMotorSpeed(-speed);
-    } else {
-    flywheelSubsystem.setFlywheelMotorSpeed(0);
-    }
+    // if (speed > 0){
+    // flywheelSubsystem.setFlywheelMotorSpeed(-speed);
+    // } else {
+    // flywheelSubsystem.setFlywheelMotorSpeed(0);
+    // }
   }
 
   // Called once the command ends or is interrupted.
