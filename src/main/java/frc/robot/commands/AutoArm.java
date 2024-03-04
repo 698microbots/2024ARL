@@ -15,7 +15,8 @@ public class AutoArm extends Command {
   private double encoderPosition;
   private ArmSubsystem armSubsystem;
   private LimeLightSubsystem limeLightSubsystem;
-  private PIDController pidController = new PIDController(0, 0, 0);
+  private PIDController pidController = new PIDController(0.001,
+   0, 0);
   private boolean scoringAmp;
   private double speed = 0;
   private double distance = 0;
@@ -44,7 +45,8 @@ public class AutoArm extends Command {
       System.out.println("Scoring Amp PID Speed: " + speed);
       // armSubsystem.moveArm(speed);
     } else {
-      distance = limeLightSubsystem.calculateZdistance(Constants.speakerTagHeightMeters);
+      // distance = limeLightSubsystem.calculateZdistance(Constants.speakerTagHeightMeters);
+      distance = limeLightSubsystem.getRelative3dBotPose().getZ();
       /* In y = mx + b format (for now, could be a different graph type)
        *  x axis: Distance away from the speaker
        *  y axis: angle of the arm that allowed the note to go in

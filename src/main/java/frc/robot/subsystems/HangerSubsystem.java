@@ -8,8 +8,8 @@ import frc.robot.Constants;
 
 public class HangerSubsystem extends SubsystemBase {
 
-    private final CANSparkMax HangarMotorOne = new CANSparkMax(0, CANSparkMax.MotorType.kBrushed);
-    private final CANSparkMax HangarMotorTwo = new CANSparkMax(1, CANSparkMax.MotorType.kBrushed);
+    private final CANSparkMax HangerMotorOne = new CANSparkMax(0, CANSparkMax.MotorType.kBrushed);
+    private final CANSparkMax HangerMotorTwo = new CANSparkMax(1, CANSparkMax.MotorType.kBrushed);
 
     public HangerSubsystem(){
 

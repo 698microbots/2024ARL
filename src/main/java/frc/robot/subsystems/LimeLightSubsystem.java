@@ -58,7 +58,7 @@ public class LimeLightSubsystem extends SubsystemBase {
   public double getNoteArea(){
     return noteArea.getDouble(0);
   }  
-  public Pose2d get2dBotPoseForAmp() {
+  public Pose2d getRelative2dBotPose() {
     /*
      * Its specific because it determines what type of botpose we need
      * For example, we may need the botpose, botpose_wpiblue, botpose_wpired, etc
@@ -87,7 +87,7 @@ public class LimeLightSubsystem extends SubsystemBase {
     return pose3d.toPose2d();
   }
 
-  public Pose3d get3dBotPoseForAmp() {
+  public Pose3d getRelative3dBotPose() {
     /*
      * Its specific because it determines what type of botpose we need
      * For example, we may need the botpose, botpose_wpiblue, botpose_wpired, etc

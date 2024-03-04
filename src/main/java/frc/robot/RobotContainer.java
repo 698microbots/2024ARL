@@ -25,11 +25,11 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.XboxController.Axis;
-import frc.robot.commands.AutoCenter;
+import frc.robot.commands.AutoCenterSpeaker;
 import frc.robot.commands.AutoCenterNote;
 import frc.robot.commands.AutoPositionAmp;
+import frc.robot.commands.FlyWheelShoot;
 import frc.robot.commands.TESTauto;
-import frc.robot.commands.FlywheelSetIdle;
 import frc.robot.commands.IntakeMove;
 import frc.robot.commands.TESTFlywheel;
 import frc.robot.commands.TESTMoveArm;
@@ -68,7 +68,6 @@ public class RobotContainer {
   private final JoystickButton RBbutton2 = new JoystickButton(xboxController2, Constants.Xbox_Button_RB);
   private final JoystickButton LBbutton2 = new JoystickButton(xboxController2, Constants.Xbox_Button_LB);
   
-  private final Axis LTrigger = new Axis()
   /* Setting up bindings for necessary control of the swerve drive platform */
   public LimeLightSubsystem limeLight = new LimeLightSubsystem();
   public final CommandXboxController joystick = new CommandXboxController(0); // My joystick
@@ -103,8 +102,8 @@ public class RobotContainer {
         ));
         
     arm.setDefaultCommand(new TESTMoveArm(arm, () -> joystick2.getRightY() * .3));
-    flyWheel.setDefaultCommand(new TESTFlywheel(flyWheel, () -> joystick2.getLeftY() * .85));
-    
+    // flyWheel.setDefaultCommand(new TESTFlywheel(flyWheel, () -> joystick2.getLeftY() * .85));
+    flyWheel.setDefaultCommand(new FlyWheelShoot(flyWheel, limeLight, intake, () -> joystick2.getLeftTriggerAxis()));
         // Abutton.onTrue(new SetFlywheelMotor()); // tells the flywheel to move
     // to trigger a command to cernter the robot on an AprilTag, get the flywheel
     // and hanger in position
@@ -114,14 +113,18 @@ public class RobotContainer {
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
     // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
+    joystick.x().whileTrue(new IntakeMove(intake, limeLight, false));
+    joystick2.y().whileTrue(new IntakeMove(intake, limeLight, true));
     /**
      * 
      * 2nd driver commands
      * 
      */
 
-    joystick.x().whileTrue(new AutoCenter(drivetrain, limeLight, MaxAngularRate));
-    joystick.y().whileTrue(new AutoCenterNote(() -> joystick.getLeftX() * MaxSpeed, () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight));    
+    // joystick.x().whileTrue(new AutoCenter(drivetrain, limeLight, MaxAngularRate));
+    // joystick.b().whileTrue(new AutoCenterNote(() -> joystick.getLeftX() * MaxSpeed, () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight));    
+    //RECOMENT ABOCE IF NOT WORKING
+    //TODO: this creates really weird can disabled errors for some reason
     // joystick.y().whileTrue(new ParallelCommandGroup(
     //   new AutoCenterNote(() -> joystick.getLeftX() * MaxSpeed, () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight),
     //   new IntakeMove(intake, limeLight)
@@ -129,10 +132,15 @@ public class RobotContainer {
     
     // joystick2.b().whileTrue(new AutoPosition(drivetrain, limeLight));
     // joystick2.b().toggleOnTrue(new IntakeMove(intake, false));
-    joystick2.b().whileTrue(new IntakeMove(intake, limeLight));
+    // joystick2.y().whileTrue(new IntakeMove(intake, limeLight));
     // joystick2.b().whileFalse(new IntakeMove(intake, false));
-    joystick2.a().whileTrue(new AutoPositionAmp(drivetrain, limeLight));
-
+    joystick2.a().whileTrue(new AutoPositionAmp(drivetrain, limeLight, flyWheel));
+    joystick2.b().whileTrue(new ParallelCommandGroup(
+      new IntakeMove(intake, limeLight, false),
+      new AutoCenterNote(() -> joystick.getLeftX() * MaxSpeed, () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight)
+    ));
+    joystick2.y().whileTrue(new AutoCenterSpeaker(drivetrain, limeLight, MaxAngularRate, flyWheel));
+    
     
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));

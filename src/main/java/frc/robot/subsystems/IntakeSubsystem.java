@@ -14,6 +14,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private final CANSparkMax IntakeMotor = new CANSparkMax(15, CANSparkMax.MotorType.kBrushless);
   // Initializes a DigitalInput on DIO 0
   private final DigitalInput photoSensor = new DigitalInput(2); //TODO - make this a constant
+  
   private boolean canRun = true;
 
   public IntakeSubsystem() {
@@ -21,10 +22,14 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void setIntakeMotor(double speed) {
     if(canRun){
-    IntakeMotor.set(speed);
+    IntakeMotor.set(-speed);
     } else {
       IntakeMotor.set(0);
     }
+  }
+
+  public void reverseIntakeMotor(double speed){
+    IntakeMotor.set(speed);
   }
 
   public double getIntakeVolts() {
