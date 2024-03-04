@@ -17,10 +17,10 @@ public class HangerSubsystem extends SubsystemBase {
 
     // sets the motor speed for the Hanger
     public void setHangarMotorOne(double speed) {
-        HangarMotorOne.set(speed * .1);
+        HangerMotorOne.set(speed * .1);
     }
     
     public void setHangarMotorTwo(double speed) {
-        HangarMotorOne.set(speed * .1);        
+        HangerMotorOne.set(speed * .1);        
     }
 }
