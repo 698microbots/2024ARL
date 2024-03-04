@@ -29,7 +29,6 @@ public class AutoHangar extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  // TODO - Use for loop to slow motor speed for raising hangar
   public void execute() { // TODO - find directionality of the motors
     if (leftMotor) {
       hangerSubsystem.setHangarMotorOne(.1);

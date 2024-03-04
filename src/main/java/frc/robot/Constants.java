@@ -41,6 +41,10 @@ public final class Constants {
   public static final int Xbox_Button_LS = 9;
   public static final int Xbox_Button_RS = 10;
 
+  // controller trigger IDs
+  public static final int XBox_Trigger_L = 2;
+  public static final int XBox_Trigger_R = 3;
+
   // constants for the LimeLight
   // public static final int goalHeight = 0; // get this from the game manual
   // later // shouldn't be needed
