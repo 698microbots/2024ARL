@@ -13,8 +13,9 @@ public class AutoHangar extends Command {
   private HangerSubsystem hangerSubsystem;
   private boolean leftMotor;
   private boolean hangarDown;
+
   /** Creates a new AutoHangar. */
-  public AutoHangar(boolean hangarDown, boolean leftMotor, HangerSubsystem hangerSubsystem) { // TODO - add a boolean for whether we want to raise hangar or not
+  public AutoHangar(boolean hangarDown, boolean leftMotor, HangerSubsystem hangerSubsystem) {
     this.hangarDown = hangarDown;
     this.leftMotor = leftMotor;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -23,7 +24,8 @@ public class AutoHangar extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -32,19 +34,28 @@ public class AutoHangar extends Command {
     if (leftMotor) {
       hangerSubsystem.setHangarMotorOne(.1);
       if (hangarDown) {
-        // TODO - add a for loop to decrease speed
+        double time = 5; // the time it takes for the hangar to go down
+        double rate = .1 / time;
+        for (var i = .1; i >= (0 - rate); i -= rate) {
+          System.out.println(Math.round(i * 100.0) / 100.0);
+        }
       }
     } else {
       hangerSubsystem.setHangarMotorTwo(.1);
       if (hangarDown) {
-        // TODO - add a for loop to decrease speed
+        double time = 5; // the time it takes for the hangar to go down
+        double rate = .1 / time;
+        for (var i = .1; i >= (0 - rate); i -= rate) {
+          System.out.println(Math.round(i * 100.0) / 100.0);
+        }
       }
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override
