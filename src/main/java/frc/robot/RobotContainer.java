@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import frc.robot.commands.AutoCenterSpeaker;
+import frc.robot.commands.AutoHangar;
 import frc.robot.commands.AutoArm;
 import frc.robot.commands.AutoCenterNote;
 import frc.robot.commands.AutoPositionAmp;
@@ -41,6 +42,7 @@ import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.driveTrainVoltages;
+import frc.robot.subsystems.HangerSubsystem;
 
 public class RobotContainer {
   private double MaxSpeed = 1.0; // 6 meters per second desired top speed (6 origin)
@@ -74,6 +76,7 @@ public class RobotContainer {
   public final CommandXboxController joystick = new CommandXboxController(0); // My joystick
   public final CommandXboxController joystick2 = new CommandXboxController(1);
   public final ArmSubsystem arm = new ArmSubsystem();
+  public final HangerSubsystem hanger = new HangerSubsystem();
   public FlywheelSubsystem flyWheel = new FlywheelSubsystem();
   public GyroSubsystem gyro = new GyroSubsystem();
   public Telemetry telemetry = new Telemetry(3.5);
@@ -129,6 +132,13 @@ public class RobotContainer {
      * 
      */
 
+    // handles the hanger movement
+    // raises the individual arms
+    joystick2.leftTrigger().whileTrue(new AutoHangar(false, true, hanger));
+    joystick2.rightTrigger().whileTrue(new AutoHangar(false, false, hanger));
+    // lowers the individual arms
+    joystick2.leftTrigger().whileFalse(new AutoHangar(true, true, hanger));
+    joystick2.rightTrigger().whileFalse(new AutoHangar(true, false, hanger));
 
     //reverse intake
     joystick2.y().whileTrue(new IntakeMove(intake, limeLight, true));
