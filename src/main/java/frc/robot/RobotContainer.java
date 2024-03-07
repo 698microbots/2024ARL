@@ -122,7 +122,7 @@ public class RobotContainer {
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
     
     //backup intake move
-    joystick.x().whileTrue(new IntakeMove(intake, limeLight, false));
+    joystick.x().whileTrue(new IntakeMove(xboxController, xboxController2,intake, limeLight, false));
     
     //intake move override for testing
     // joystick.y().whileTrue(new TESTIntakeMove(intake, flyWheel));
@@ -146,7 +146,7 @@ public class RobotContainer {
     flyWheel.setDefaultCommand(new FlyWheelShoot(flyWheel, limeLight, intake, () -> joystick2.getLeftTriggerAxis()));
     
     //reverse intake
-    joystick2.y().whileTrue(new IntakeMove(intake, limeLight, true));
+    joystick2.y().whileTrue(new IntakeMove(xboxController, xboxController, intake, limeLight, true));
     
     // //auto amp sequence to move up to the amp and arm
     // joystick2.a().whileTrue(new ParallelCommandGroup(

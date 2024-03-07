@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakeSubsystem extends SubsystemBase {
@@ -18,6 +20,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private boolean canRun = true;
 
   public IntakeSubsystem() {
+
   }
 
   public void setIntakeMotor(double speed) {
@@ -55,6 +58,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public boolean getBlocked() {
     return photoSensor.get();
+  }
+
+  public void rumbleController(XboxController xboxController) {
+    xboxController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
   }
 
   @Override
