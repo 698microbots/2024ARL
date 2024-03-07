@@ -30,6 +30,7 @@ import frc.robot.commands.AutoPositionAmp;
 import frc.robot.commands.FlyWheelShoot;
 import frc.robot.commands.TESTauto;
 import frc.robot.commands.IntakeMove;
+import frc.robot.commands.TESTBrokenButtons;
 import frc.robot.commands.TESTFlywheel;
 import frc.robot.commands.TESTIntakeMove;
 import frc.robot.commands.TESTMoveArm;
@@ -172,6 +173,7 @@ public class RobotContainer {
     //   new AutoCenterNote(() -> joystick.getLeftX() * MaxSpeed, () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight),
     //   new IntakeMove(intake, limeLight)
     // ));
+    joystick2.a().whileTrue(new TESTBrokenButtons());
     joystick2.b().whileTrue(new TESTIntakeMove(intake, flyWheel));
     // joystick2.b().whileTrue(new AutoPosition(drivetrain, limeLight));
     // joystick2.b().toggleOnTrue(new IntakeMove(intake, false));
