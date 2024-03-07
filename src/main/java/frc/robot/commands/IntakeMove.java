@@ -54,15 +54,10 @@ public class IntakeMove extends Command { // TODO - add CANdle (led strips) func
     
     if (limelight.getNoteArea() > Constants.noteAreaToRun){
     intakeSubsystem.setIntakeMotor(.75);
-    } else {
-      
-    intakeSubsystem.reverseIntakeMotor(-.75);
-
-
-
-
-
     }
+  
+  } else {
+    intakeSubsystem.reverseIntakeMotor(-.75);
   }
 
     

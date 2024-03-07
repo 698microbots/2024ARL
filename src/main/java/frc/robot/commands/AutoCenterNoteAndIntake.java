@@ -11,10 +11,12 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.CommandSwerveDrivetrain;
+import frc.robot.Constants;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.LimeLightHelpersSubsystem.LimelightResults;
 
-public class AutoCenterNote extends Command {
+public class AutoCenterNoteAndIntake extends Command {
   /** Creates a new AutoCenterNote. */
 private double angle;
 private PIDController pidController = new PIDController(.04, 0, 0.001); //kp as 0.05 works, everything else as 0
@@ -22,16 +24,27 @@ private PIDController pidController = new PIDController(.04, 0, 0.001); //kp as 
 private LimeLightSubsystem limeLightSubsystem;
 private CommandSwerveDrivetrain drivetrain;
 private final SwerveRequest.FieldCentric swerveCentric = new SwerveRequest.FieldCentric(); //might change this to swerve centric
-private double maxRotationSpeed = 3;
+private double maxRotationSpeed;
 private Supplier<Double> ySpeed, xSpeed;
-  public AutoCenterNote(Supplier<Double> ySpeed, Supplier<Double> xSpeed, CommandSwerveDrivetrain drivetrain, LimeLightSubsystem limeLightSubsystem) {
+private IntakeSubsystem intakeSubsystem;
+  public AutoCenterNoteAndIntake(
+    Supplier<Double> ySpeed, 
+    Supplier<Double> xSpeed, 
+    CommandSwerveDrivetrain drivetrain, 
+    LimeLightSubsystem limeLightSubsystem,
+    double maxRotationSpeed,
+    IntakeSubsystem intakeSubsystem
+    ) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.drivetrain = drivetrain;
     this.limeLightSubsystem = limeLightSubsystem;
     this.ySpeed = ySpeed;
     this.xSpeed = xSpeed;
+    this.maxRotationSpeed = maxRotationSpeed;
+    this.intakeSubsystem = intakeSubsystem;
     addRequirements(drivetrain);
     addRequirements(limeLightSubsystem);
+    addRequirements(intakeSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -46,7 +59,18 @@ private Supplier<Double> ySpeed, xSpeed;
 
     // System.out.println(limeLightSubsystem.getNoteHorizontalAngle());
     // System.out.println("THIS IS WORKING");
+    if (intakeSubsystem.getBlocked()){
+      intakeSubsystem.setCanRun(false);
+      System.out.println("IS BLOCKED");
+    } else {
+      intakeSubsystem.setCanRun(true);
+      System.out.println("IS NOT BLOCKED");
  
+    }
+    
+    if (limeLightSubsystem.getNoteArea() > Constants.noteAreaToRun){
+    intakeSubsystem.setIntakeMotor(.75);
+    } 
     
     angle = limeLightSubsystem.getNoteHorizontalAngle(); 
     double rotationSpeed = pidController.calculate(angle,0);

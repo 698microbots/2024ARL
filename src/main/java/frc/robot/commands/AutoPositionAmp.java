@@ -41,7 +41,10 @@ public class AutoPositionAmp extends Command {
   private PIDController pidControllerAngleController = new PIDController(.04, 0, 0.01); // TODO - tune this
 
   /** Creates a new AutoPosition. */
-  public AutoPositionAmp(CommandSwerveDrivetrain drivetrain, LimeLightSubsystem limeLightSubsystem, FlywheelSubsystem flywheelSubsystem) {
+  public AutoPositionAmp(
+    CommandSwerveDrivetrain drivetrain, 
+    LimeLightSubsystem limeLightSubsystem, 
+    FlywheelSubsystem flywheelSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.limeLightSubsystem = limeLightSubsystem;
     this.drivetrain = drivetrain;
@@ -59,6 +62,7 @@ public class AutoPositionAmp extends Command {
     yDisp = limeLightSubsystem.getRelative2dBotPose().getY();
     // turnAngle = Units.radiansToDegrees(limeLightSubsystem.get2dBotPoseForAmp().getRotation().getRadians());
     // angle constantly changes so this does not need to be here
+    flywheelSubsystem.setScoringAmpFlywheel(true);
   }
   //TODO: for pose, it initializes from the blue alliance driver station, get target pose and robot pose to estimate distance from the tags
   //maybe get poses from specific alliances
@@ -81,8 +85,8 @@ public class AutoPositionAmp extends Command {
     if (xSpeed < .05){
       xSpeed = 0;
     }
-    if (currentY < .05){
-      ySpeed= 0;
+    if (ySpeed < .05){
+      ySpeed = 0;
     }
   
     System.out.println("x speed: " + xSpeed);
