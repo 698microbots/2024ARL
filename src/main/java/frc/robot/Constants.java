@@ -80,4 +80,6 @@ public final class Constants {
   public static final double intakeNoteVoltage = 11.5;
 
   public static final double noteAreaToRun = 2.5;
+  public static final double ampFlywheelSpeed = -.5;
+  public static final double speakerScoringSpeed = -1;
 }

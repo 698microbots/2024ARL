@@ -28,6 +28,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
   }
 
+  //also use to override normal setIntakeMotor
   public void reverseIntakeMotor(double speed){
     IntakeMotor.set(speed);
   }

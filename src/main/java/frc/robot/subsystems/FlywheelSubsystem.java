@@ -18,11 +18,11 @@ public class FlywheelSubsystem extends SubsystemBase{
     public void setFlywheelMotorSpeed() {
         
         if(scoreAmp){
-            motor1.set(-.5); //chage these to constants
-            motor2.set(-.5);
+            motor1.set(Constants.ampFlywheelSpeed); //chage these to constants
+            motor2.set(Constants.ampFlywheelSpeed);
         } else {
-            motor1.set(-1);
-            motor2.set(-1);
+            motor1.set(Constants.speakerScoringSpeed);
+            motor2.set(Constants.speakerScoringSpeed);
         }         
     }
 

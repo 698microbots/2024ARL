@@ -20,6 +20,7 @@ public class FlyWheelShoot extends Command {
   private int counter = 0;
   private int seconds = 0;
   private Supplier<Double> RTrigger;
+  private double isPressed = 0;
   public FlyWheelShoot(FlywheelSubsystem flywheelSubsystem, LimeLightSubsystem limeLight, IntakeSubsystem intakeSubsystem, Supplier<Double> RTrigger) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.flywheelSubsystem = flywheelSubsystem;
@@ -56,9 +57,8 @@ public class FlyWheelShoot extends Command {
     // y axis is motorSpeed (for both motors)
     // might include a calculate angle if needed but most likely not needed    
     //we are probably not gonna do this ^ instead just set the motors either to 100% or 50%
-    double isPressed = RTrigger.get();
+    isPressed = RTrigger.get();
     
-
     if (isPressed > .05){
       flywheelSubsystem.setFlywheelMotorSpeed();
     }
@@ -84,6 +84,9 @@ public class FlyWheelShoot extends Command {
     // } else {
     //   return false;
     // }
+    if (isPressed < 0.5){
+      return true;
+    }
     return false;
   }
 }

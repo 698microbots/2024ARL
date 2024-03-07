@@ -25,12 +25,13 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AutoCenterSpeaker;
 import frc.robot.commands.AutoArm;
-import frc.robot.commands.AutoCenterNote;
+import frc.robot.commands.AutoCenterNoteAndIntake;
 import frc.robot.commands.AutoPositionAmp;
 import frc.robot.commands.FlyWheelShoot;
 import frc.robot.commands.TESTauto;
 import frc.robot.commands.IntakeMove;
 import frc.robot.commands.TESTFlywheel;
+import frc.robot.commands.TESTIntakeMove;
 import frc.robot.commands.TESTMoveArm;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
@@ -104,9 +105,6 @@ public class RobotContainer {
     //default arm command, move it with 2nd controller    
     arm.setDefaultCommand(new TESTMoveArm(arm, () -> joystick2.getRightY() * .3));
     
-    //default flywheel command, sets the speed either .5 or 1 based on which autospeaker or autoamp is called, will run reguardless if either is chosen but is decided by setScoringAmpFlywheel() in flywheel class
-    flyWheel.setDefaultCommand(new FlyWheelShoot(flyWheel, limeLight, intake, () -> joystick2.getLeftTriggerAxis()));
-    
     //brake mode
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
     
@@ -120,6 +118,9 @@ public class RobotContainer {
     //backup intake move
     joystick.x().whileTrue(new IntakeMove(intake, limeLight, false));
     
+    //intake move override for testing
+    // joystick.y().whileTrue(new TESTIntakeMove(intake, flyWheel));
+
 
     /**
      * 
@@ -127,27 +128,36 @@ public class RobotContainer {
      * 
      */
 
-
+    //default flywheel command, sets the speed either .5 or 1 based on which autospeaker or autoamp is called, will run reguardless if either is chosen but is decided by setScoringAmpFlywheel() in flywheel class
+    flyWheel.setDefaultCommand(new FlyWheelShoot(flyWheel, limeLight, intake, () -> joystick2.getLeftTriggerAxis()));
+    
     //reverse intake
     joystick2.y().whileTrue(new IntakeMove(intake, limeLight, true));
     
-    //auto amp sequence to move up to the amp and arm
-    joystick2.a().whileTrue(new ParallelCommandGroup(
-      new AutoPositionAmp(drivetrain, limeLight, flyWheel),
-      new AutoArm(arm, true, limeLight)
-    ));
+    // //auto amp sequence to move up to the amp and arm
+    // joystick2.a().whileTrue(new ParallelCommandGroup(
+    //   new AutoPositionAmp(drivetrain, limeLight, flyWheel),
+    //   new AutoArm(arm, true, limeLight)
+    // ));
     
     //auto center with speaker and move arm accordingly
-    joystick2.x().whileTrue(new ParallelCommandGroup(
-      new AutoCenterSpeaker(drivetrain, limeLight, MaxSpeed, flyWheel),
-      new AutoArm(arm, false, limeLight)
-    ));
+    joystick2.x().whileTrue(
+      new AutoCenterSpeaker(
+        () -> joystick.getLeftX() * MaxSpeed,
+        () -> joystick.getLeftY() * MaxSpeed,
+        drivetrain,
+        limeLight,
+        MaxSpeed,
+        flyWheel,
+        arm)
+    );
 
-    //auto center with note and run intake when close enough, this is probably gonna have CAN bad errors
-    joystick2.b().whileTrue(new ParallelCommandGroup(
-      new IntakeMove(intake, limeLight, false),
-      new AutoCenterNote(() -> joystick.getLeftX() * MaxSpeed, () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight)
-    
+    // //auto center with note and run intake when close enough, this is probably gonna have CAN bad errors
+    // joystick2.b().whileTrue(new ParallelCommandGroup(
+    //   new IntakeMove(intake, limeLight, false),
+    //   new AutoCenterNote(() -> joystick.getLeftX() * MaxSpeed, () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight)
+    // ));
+
     
     ////////////////////////////////////////////////////////////////////////////////
     
@@ -157,20 +167,18 @@ public class RobotContainer {
     // joystick.x().whileTrue(new AutoCenter(drivetrain, limeLight, MaxAngularRate));
     // joystick.b().whileTrue(new AutoCenterNote(() -> joystick.getLeftX() * MaxSpeed, () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight));    
     //RECOMENT ABOCE IF NOT WORKING
-    //TODO: this creates really weird can disabled errors for some reason
+    //TODO: this creates really weird can disabled errors for some reason: parallel command groups cannot use 2 of the same subsystems
     // joystick.y().whileTrue(new ParallelCommandGroup(
     //   new AutoCenterNote(() -> joystick.getLeftX() * MaxSpeed, () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight),
     //   new IntakeMove(intake, limeLight)
     // ));
-    
+    joystick2.b().whileTrue(new TESTIntakeMove(intake, flyWheel));
     // joystick2.b().whileTrue(new AutoPosition(drivetrain, limeLight));
     // joystick2.b().toggleOnTrue(new IntakeMove(intake, false));
     // joystick2.y().whileTrue(new IntakeMove(intake, limeLight));
     // joystick2.b().whileFalse(new IntakeMove(intake, false));    
     
-    
-      ));  
-    
+
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
     }
