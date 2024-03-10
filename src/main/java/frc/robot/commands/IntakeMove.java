@@ -45,10 +45,13 @@ public class IntakeMove extends Command {
   if (!reverse){
     if (intakeSubsystem.getBlocked()){
       intakeSubsystem.setCanRun(false);
+      intakeSubsystem.setLights();
       counter++; //only invoke if need to have a delay, comment out the line above if you use this
       System.out.println("IS BLOCKED");
     } else {
       intakeSubsystem.setCanRun(true);
+      intakeSubsystem.setLights();
+      
       counter = 0;
       System.out.println("IS NOT BLOCKED");
  

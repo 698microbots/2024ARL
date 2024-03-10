@@ -82,4 +82,5 @@ public final class Constants {
   public static final double noteAreaToRun = 2.5;
   public static final double ampFlywheelSpeed = -.5;
   public static final double speakerScoringSpeed = -1;
+  public static final int[] colorRGBIntake = {255, 153, 51};
 }

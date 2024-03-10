@@ -26,7 +26,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AutoCenterSpeaker;
 import frc.robot.commands.AutoArm;
 import frc.robot.commands.AutoCenterNoteAndIntake;
+import frc.robot.commands.BROKENAutoCenterNoteAndIntake;
 import frc.robot.commands.AutoPositionAmp;
+import frc.robot.commands.AutoSetLEDS;
 import frc.robot.commands.FlyWheelShoot;
 import frc.robot.commands.TESTauto;
 import frc.robot.commands.IntakeMove;
@@ -95,6 +97,7 @@ public class RobotContainer {
   private SwerveModuleState[] states = drivetrain.getState().ModuleStates;
 
   private void configureBindings() {
+    intake.setDefaultCommand(new AutoSetLEDS(intake));
     //drive command
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
@@ -159,6 +162,7 @@ public class RobotContainer {
     //   new AutoCenterNote(() -> joystick.getLeftX() * MaxSpeed, () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight)
     // ));
 
+    joystick2.x().whileTrue(new AutoPositionAmp(drivetrain, limeLight, flyWheel));
     
     ////////////////////////////////////////////////////////////////////////////////
     
@@ -173,8 +177,9 @@ public class RobotContainer {
     //   new AutoCenterNote(() -> joystick.getLeftX() * MaxSpeed, () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight),
     //   new IntakeMove(intake, limeLight)
     // ));
-    joystick2.a().whileTrue(new TESTBrokenButtons());
+    // joystick.y().whileTrue(new TESTBrokenButtons());
     joystick2.b().whileTrue(new TESTIntakeMove(intake, flyWheel));
+    joystick.y().whileTrue(new AutoCenterNoteAndIntake(() -> joystick.getLeftX() * MaxSpeed, () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight, MaxSpeed, intake));
     // joystick2.b().whileTrue(new AutoPosition(drivetrain, limeLight));
     // joystick2.b().toggleOnTrue(new IntakeMove(intake, false));
     // joystick2.y().whileTrue(new IntakeMove(intake, limeLight));
