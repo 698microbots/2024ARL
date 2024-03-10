@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import frc.robot.commands.AutoCenterSpeaker;
-import frc.robot.commands.AutoHangar;
+import frc.robot.commands.MoveHanger;
 import frc.robot.commands.AutoArm;
 import frc.robot.commands.AutoCenterNoteAndIntake;
 import frc.robot.commands.AutoPositionAmp;
@@ -136,11 +136,11 @@ public class RobotContainer {
 
     // handles the hanger movement
     // raises the individual arms
-    joystick2.leftTrigger().whileTrue(new AutoHangar(false, true, hanger));
-    joystick2.rightTrigger().whileTrue(new AutoHangar(false, false, hanger));
+    joystick2.leftTrigger().whileTrue(new MoveHanger(false, true, hanger));
+    joystick2.rightTrigger().whileTrue(new MoveHanger(false, false, hanger));
     // lowers the individual arms
-    joystick2.leftTrigger().whileFalse(new AutoHangar(true, true, hanger));
-    joystick2.rightTrigger().whileFalse(new AutoHangar(true, false, hanger));
+    joystick2.leftTrigger().whileFalse(new MoveHanger(true, true, hanger));
+    joystick2.rightTrigger().whileFalse(new MoveHanger(true, false, hanger));
 
     //default flywheel command, sets the speed either .5 or 1 based on which autospeaker or autoamp is called, will run reguardless if either is chosen but is decided by setScoringAmpFlywheel() in flywheel class
     flyWheel.setDefaultCommand(new FlyWheelShoot(flyWheel, limeLight, intake, () -> joystick2.getLeftTriggerAxis()));

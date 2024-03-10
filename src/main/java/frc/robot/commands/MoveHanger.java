@@ -8,15 +8,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.HangerSubsystem;
 
-public class AutoHangar extends Command {
+public class MoveHanger extends Command {
   // instance variables
   private HangerSubsystem hangerSubsystem;
   private boolean leftMotor;
-  private boolean hangarDown;
+  private boolean HangerDown;
 
-  /** Creates a new AutoHangar. */
-  public AutoHangar(boolean hangarDown, boolean leftMotor, HangerSubsystem hangerSubsystem) {
-    this.hangarDown = hangarDown;
+  /** Creates a new AutoHanger. */
+  public MoveHanger(boolean HangerDown, boolean leftMotor, HangerSubsystem hangerSubsystem) {
+    // this.HangerDown = HangerDown;
     this.leftMotor = leftMotor;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(hangerSubsystem);
@@ -31,20 +31,20 @@ public class AutoHangar extends Command {
   @Override
   public void execute() { // TODO - find directionality of the motors
     if (leftMotor) {
-      hangerSubsystem.setHangarMotorOne(.1);
-      // if (hangarDown) {
-      //   double time = 5; // the time it takes for the hangar to go down
+      hangerSubsystem.setHangerMotorOne(.1);
+      // if (HangerDown) {
+      //   double time = 5; // the time it takes for the Hanger to go down
       //   double rate = .1 / time;
       //   for (var i = .1; i >= (0 - rate); i -= rate) {
       //     // System.out.println(Math.round(i * 100.0) / 100.0);
-      //     hangerSubsystem.setHangarMotorOne(rate);
+      //     hangerSubsystem.setHangerMotorOne(rate);
           
       //   }
       // }
     } else {
-      hangerSubsystem.setHangarMotorTwo(.1);
-      // if (hangarDown) {
-      //   double time = 5; // the time it takes for the hangar to go down
+      hangerSubsystem.setHangerMotorTwo(.1);
+      // if (HangerDown) {
+      //   double time = 5; // the time it takes for the Hanger to go down
       //   double rate = .1 / time;
       //   for (var i = .1; i >= (0 - rate); i -= rate) {
       //     System.out.println(Math.round(i * 100.0) / 100.0);
