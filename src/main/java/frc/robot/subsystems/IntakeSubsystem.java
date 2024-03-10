@@ -24,26 +24,25 @@ public class IntakeSubsystem extends SubsystemBase {
   private final CANdle candle = new CANdle(0);
   private boolean canRun = true;
 
-  
- private final CANdleConfiguration config = new CANdleConfiguration();
- 
- public IntakeSubsystem() {
- CANdleConfiguration config = new CANdleConfiguration();
- config.stripType = LEDStripType.RGB; // set the strip type to RGB
- config.brightnessScalar = 0.5; // dim the LEDs to half brightness
- candle.configAllSettings(config);  
-}
+  private final CANdleConfiguration config = new CANdleConfiguration();
+
+  public IntakeSubsystem() {
+    CANdleConfiguration config = new CANdleConfiguration();
+    config.stripType = LEDStripType.RGB; // set the strip type to RGB
+    config.brightnessScalar = 0.5; // dim the LEDs to half brightness
+    candle.configAllSettings(config);
+  }
 
   public void setIntakeMotor(double speed) {
-    if(canRun){
-    IntakeMotor.set(-speed);
+    if (canRun) {
+      IntakeMotor.set(-speed);
     } else {
       IntakeMotor.set(0);
     }
   }
 
   //also use to override normal setIntakeMotor
-  public void reverseIntakeMotor(double speed){
+  public void reverseIntakeMotor(double speed) {
     IntakeMotor.set(speed);
   }
 
@@ -85,4 +84,5 @@ public class IntakeSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+}
 }
