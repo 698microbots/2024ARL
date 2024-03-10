@@ -36,8 +36,8 @@ public class AutoPositionAmp extends Command {
   private LimeLightSubsystem limeLightSubsystem;
   private final SwerveRequest.RobotCentric swerveCentric = new SwerveRequest.RobotCentric();
   private CommandSwerveDrivetrain drivetrain;
-  private PIDController pidControllerXController = new PIDController(.004, 0, 0.001); // TODO - tune this
-  private PIDController pidControllerYController = new PIDController(.004, 0, 0.001); // TODO - tune this
+  private PIDController pidControllerXController = new PIDController(.04, 0, 0.001); // TODO - tune this
+  private PIDController pidControllerYController = new PIDController(.04, 0, 0.001); // TODO - tune this
   private PIDController pidControllerAngleController = new PIDController(.04, 0, 0.01); // TODO - tune this
 
   /** Creates a new AutoPosition. */

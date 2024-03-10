@@ -10,18 +10,29 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+
+import com.ctre.phoenix.led.CANdle;
+import com.ctre.phoenix.led.CANdle.LEDStripType;
+import com.ctre.phoenix.led.CANdleConfiguration;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
   private final CANSparkMax IntakeMotor = new CANSparkMax(15, CANSparkMax.MotorType.kBrushless);
   // Initializes a DigitalInput on DIO 0
   private final DigitalInput photoSensor = new DigitalInput(2); //TODO - make this a constant
-  
+  private final CANdle candle = new CANdle(0);
   private boolean canRun = true;
 
-  public IntakeSubsystem() {
-
-  }
+  
+ private final CANdleConfiguration config = new CANdleConfiguration();
+ 
+ public IntakeSubsystem() {
+ CANdleConfiguration config = new CANdleConfiguration();
+ config.stripType = LEDStripType.RGB; // set the strip type to RGB
+ config.brightnessScalar = 0.5; // dim the LEDs to half brightness
+ candle.configAllSettings(config);  
+}
 
   public void setIntakeMotor(double speed) {
     if(canRun){
@@ -62,6 +73,12 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void rumbleController(XboxController xboxController) {
     xboxController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
+  public void setLights(){
+    if (photoSensor.get()){
+      candle.setLEDs(Constants.colorRGBIntake[0], Constants.colorRGBIntake[1], Constants.colorRGBIntake[2]);
+    } else {
+      candle.setLEDs(0, 0, 0);
+    }
   }
 
   @Override

@@ -15,8 +15,8 @@ import frc.robot.Constants;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 
-public class AutoCenterNoteAndIntake extends Command {
-  /** Creates a new AutoCenterNoteAndIntake. */
+public class BROKENAutoCenterNoteAndIntake extends Command {
+  /** Creates a new AutoCenterNote. */
 private double angle;
 private PIDController pidController = new PIDController(.04, 0, 0.001); //kp as 0.05 works, everything else as 0
 //dont use I for pid
@@ -25,24 +25,27 @@ private CommandSwerveDrivetrain drivetrain;
 private final SwerveRequest.FieldCentric swerveCentric = new SwerveRequest.FieldCentric(); //might change this to swerve centric
 private double maxRotationSpeed;
 private Supplier<Double> ySpeed, xSpeed;
-private IntakeSubsystem intakeSubsystem; 
-  public AutoCenterNoteAndIntake(
+private IntakeSubsystem intakeSubsystem;
+  public BROKENAutoCenterNoteAndIntake(
     Supplier<Double> ySpeed, 
     Supplier<Double> xSpeed, 
     CommandSwerveDrivetrain drivetrain, 
     LimeLightSubsystem limeLightSubsystem,
     double maxRotationSpeed,
     IntakeSubsystem intakeSubsystem
-  ) {
+    ) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.ySpeed = ySpeed;
-    this.xSpeed = xSpeed;
     this.drivetrain = drivetrain;
     this.limeLightSubsystem = limeLightSubsystem;
+    this.ySpeed = ySpeed;
+    this.xSpeed = xSpeed;
     this.maxRotationSpeed = maxRotationSpeed;
     this.intakeSubsystem = intakeSubsystem;
+    addRequirements(drivetrain);
+    addRequirements(limeLightSubsystem);
+    addRequirements(intakeSubsystem);
   }
-
+  //WHENEVER THIS COMMAND IS CALLED IT ONLY RUNS ONCE THEN STOPS AND NEVER RUNS AGAIN WE DO NOT KNOW WHY THIS HAPPENED BUT FIXED BY MAKING A NEW COMMAND WITH LITERALLY ALL THE SAME CODE???
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
@@ -50,40 +53,40 @@ private IntakeSubsystem intakeSubsystem;
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("this works!!!");
     double x = xSpeed.get();
     double y = ySpeed.get();
 
     // System.out.println(limeLightSubsystem.getNoteHorizontalAngle());
-    if (intakeSubsystem.getBlocked()){
-      intakeSubsystem.setCanRun(false);
-      System.out.println("IS BLOCKED");
-    } else {
-      intakeSubsystem.setCanRun(true);
-      System.out.println("IS NOT BLOCKED");
+    System.out.println("THIS IS WORKING");
+    // if (intakeSubsystem.getBlocked()){
+    //   intakeSubsystem.setCanRun(false);
+    //   System.out.println("IS BLOCKED");
+    // } else {
+    //   intakeSubsystem.setCanRun(true);
+    //   System.out.println("IS NOT BLOCKED");
  
-    }
+    // }
     
-    if (limeLightSubsystem.getNoteArea() > Constants.noteAreaToRun){
-    intakeSubsystem.setIntakeMotor(.75);
-    } 
+    // if (limeLightSubsystem.getNoteArea() > Constants.noteAreaToRun){
+    // intakeSubsystem.setIntakeMotor(.75);
+    // } 
     
-    angle = limeLightSubsystem.getNoteHorizontalAngle(); 
-    double rotationSpeed = pidController.calculate(angle,0);
-    if (Math.abs(maxRotationSpeed) > 1 ){
-      maxRotationSpeed = 1 * Math.signum(maxRotationSpeed);
-    }
+    // angle = limeLightSubsystem.getNoteHorizontalAngle(); 
+    // double rotationSpeed = pidController.calculate(angle,0);
+    // if (Math.abs(maxRotationSpeed) > 1 ){
+    //   maxRotationSpeed = 1 * Math.signum(maxRotationSpeed);
+    // }
 
 
-    System.out.println("Rotation Speed: " + rotationSpeed);
-    System.out.println("Angle: " + angle);
-    drivetrain.setControl(swerveCentric.withVelocityX(-x).withVelocityY(-y).withRotationalRate(rotationSpeed));
-   }
+    // System.out.println("Rotation Speed: " + rotationSpeed);
+    // System.out.println("Angle: " + angle);
+    // drivetrain.setControl(swerveCentric.withVelocityX(-x).withVelocityY(-y).withRotationalRate(rotationSpeed));
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intakeSubsystem.setIntakeMotor(0);
+    // intakeSubsystem.setIntakeMotor(0);
   }
 
   // Returns true when the command should end.
