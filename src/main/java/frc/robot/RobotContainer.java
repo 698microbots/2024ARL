@@ -15,6 +15,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -23,7 +24,9 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj.XboxController.Axis;
 import frc.robot.commands.AutoCenterSpeaker;
+import frc.robot.commands.MoveHanger;
 import frc.robot.commands.AutoArm;
 import frc.robot.commands.AutoCenterNoteAndIntake;
 import frc.robot.commands.BROKENAutoCenterNoteAndIntake;
@@ -43,6 +46,7 @@ import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.driveTrainVoltages;
+import frc.robot.subsystems.HangerSubsystem;
 
 public class RobotContainer {
   private double MaxSpeed = 1.0; // 6 meters per second desired top speed (6 origin)
@@ -76,6 +80,7 @@ public class RobotContainer {
   public final CommandXboxController joystick = new CommandXboxController(0); // My joystick
   public final CommandXboxController joystick2 = new CommandXboxController(1);
   public final ArmSubsystem arm = new ArmSubsystem();
+  public final HangerSubsystem hanger = new HangerSubsystem();
   public FlywheelSubsystem flyWheel = new FlywheelSubsystem();
   public GyroSubsystem gyro = new GyroSubsystem();
   public Telemetry telemetry = new Telemetry(3.5);
@@ -120,7 +125,7 @@ public class RobotContainer {
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
     
     //backup intake move
-    joystick.x().whileTrue(new IntakeMove(intake, limeLight, false));
+    joystick.x().whileTrue(new IntakeMove(xboxController, xboxController2,intake, limeLight, false));
     
     //intake move override for testing
     // joystick.y().whileTrue(new TESTIntakeMove(intake, flyWheel));
@@ -132,11 +137,19 @@ public class RobotContainer {
      * 
      */
 
+    // handles the hanger movement
+    // raises the individual arms
+    joystick2.leftTrigger().whileTrue(new MoveHanger(false, true, hanger));
+    joystick2.rightTrigger().whileTrue(new MoveHanger(false, false, hanger));
+    // lowers the individual arms
+    joystick2.leftTrigger().whileFalse(new MoveHanger(true, true, hanger));
+    joystick2.rightTrigger().whileFalse(new MoveHanger(true, false, hanger));
+
     //default flywheel command, sets the speed either .5 or 1 based on which autospeaker or autoamp is called, will run reguardless if either is chosen but is decided by setScoringAmpFlywheel() in flywheel class
     flyWheel.setDefaultCommand(new FlyWheelShoot(flyWheel, limeLight, intake, () -> joystick2.getLeftTriggerAxis()));
     
     //reverse intake
-    joystick2.y().whileTrue(new IntakeMove(intake, limeLight, true));
+    joystick2.y().whileTrue(new IntakeMove(xboxController, xboxController, intake, limeLight, true));
     
     // //auto amp sequence to move up to the amp and arm
     // joystick2.a().whileTrue(new ParallelCommandGroup(

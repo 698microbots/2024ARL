@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -22,26 +24,25 @@ public class IntakeSubsystem extends SubsystemBase {
   private final CANdle candle = new CANdle(0);
   private boolean canRun = true;
 
-  
- private final CANdleConfiguration config = new CANdleConfiguration();
- 
- public IntakeSubsystem() {
- CANdleConfiguration config = new CANdleConfiguration();
- config.stripType = LEDStripType.RGB; // set the strip type to RGB
- config.brightnessScalar = 0.5; // dim the LEDs to half brightness
- candle.configAllSettings(config);  
-}
+  private final CANdleConfiguration config = new CANdleConfiguration();
+
+  public IntakeSubsystem() {
+    CANdleConfiguration config = new CANdleConfiguration();
+    config.stripType = LEDStripType.RGB; // set the strip type to RGB
+    config.brightnessScalar = 0.5; // dim the LEDs to half brightness
+    candle.configAllSettings(config);
+  }
 
   public void setIntakeMotor(double speed) {
-    if(canRun){
-    IntakeMotor.set(-speed);
+    if (canRun) {
+      IntakeMotor.set(-speed);
     } else {
       IntakeMotor.set(0);
     }
   }
 
   //also use to override normal setIntakeMotor
-  public void reverseIntakeMotor(double speed){
+  public void reverseIntakeMotor(double speed) {
     IntakeMotor.set(speed);
   }
 
@@ -69,6 +70,8 @@ public class IntakeSubsystem extends SubsystemBase {
     return photoSensor.get();
   }
 
+  public void rumbleController(XboxController xboxController) {
+    xboxController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
   public void setLights(){
     if (photoSensor.get()){
       candle.setLEDs(Constants.colorRGBIntake[0], Constants.colorRGBIntake[1], Constants.colorRGBIntake[2]);
@@ -81,4 +84,5 @@ public class IntakeSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+}
 }
