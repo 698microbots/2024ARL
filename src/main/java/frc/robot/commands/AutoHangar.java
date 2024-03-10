@@ -32,22 +32,24 @@ public class AutoHangar extends Command {
   public void execute() { // TODO - find directionality of the motors
     if (leftMotor) {
       hangerSubsystem.setHangarMotorOne(.1);
-      if (hangarDown) {
-        double time = 5; // the time it takes for the hangar to go down
-        double rate = .1 / time;
-        for (var i = .1; i >= (0 - rate); i -= rate) {
-          System.out.println(Math.round(i * 100.0) / 100.0);
-        }
-      }
+      // if (hangarDown) {
+      //   double time = 5; // the time it takes for the hangar to go down
+      //   double rate = .1 / time;
+      //   for (var i = .1; i >= (0 - rate); i -= rate) {
+      //     // System.out.println(Math.round(i * 100.0) / 100.0);
+      //     hangerSubsystem.setHangarMotorOne(rate);
+          
+      //   }
+      // }
     } else {
       hangerSubsystem.setHangarMotorTwo(.1);
-      if (hangarDown) {
-        double time = 5; // the time it takes for the hangar to go down
-        double rate = .1 / time;
-        for (var i = .1; i >= (0 - rate); i -= rate) {
-          System.out.println(Math.round(i * 100.0) / 100.0);
-        }
-      }
+      // if (hangarDown) {
+      //   double time = 5; // the time it takes for the hangar to go down
+      //   double rate = .1 / time;
+      //   for (var i = .1; i >= (0 - rate); i -= rate) {
+      //     System.out.println(Math.round(i * 100.0) / 100.0);
+      //   }
+      // }
     }
   }
 
