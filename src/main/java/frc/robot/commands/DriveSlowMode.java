@@ -6,9 +6,9 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class SlowMode extends Command {
+public class DriveSlowMode extends Command {
   /** Creates a new SlowMode. */
-  public SlowMode() {
+  public DriveSlowMode() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -18,7 +18,9 @@ public class SlowMode extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    
+  }
 
   // Called once the command ends or is interrupted.
   @Override
