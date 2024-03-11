@@ -28,8 +28,10 @@ import edu.wpi.first.wpilibj.XboxController.Axis;
 import frc.robot.commands.AutoCenterSpeaker;
 import frc.robot.commands.MoveHanger;
 import frc.robot.commands.AutoArm;
+import frc.robot.commands.AutoCenterAmp;
 import frc.robot.commands.AutoCenterNoteAndIntake;
 import frc.robot.commands.BROKENAutoCenterNoteAndIntake;
+import frc.robot.commands.BackupIntake;
 import frc.robot.commands.AutoPositionAmp;
 import frc.robot.commands.AutoSetLEDS;
 import frc.robot.commands.FlyWheelShoot;
@@ -126,57 +128,56 @@ public class RobotContainer {
     // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
 
-    //backup intake move
-    joystick.x().whileTrue(new IntakeMove(xboxController, xboxController2, intake, limeLight, false));
+    //backup intake
+    joystick.x().whileTrue(new BackupIntake(intake));
 
-    //intake move override for testing
-    // joystick.y().whileTrue(new TESTIntakeMove(intake, flyWheel));
 
     /**
      * 
      * 2nd driver commands
      * 
      */
-
-
-
-    //default flywheel command, sets the speed either .5 or 1 based on which autospeaker or autoamp is called, will run reguardless if either is chosen but is decided by setScoringAmpFlywheel() in flywheel class
-    // flyWheel.setDefaultCommand(new FlyWheelShoot(flyWheel, limeLight, intake, () -> joystick2.getLeftTriggerAxis()));
-
-    //reverse intake
-    joystick2.y().whileTrue(new IntakeMove(xboxController, xboxController2, intake, limeLight, true));
-
-    // //auto amp sequence to move up to the amp and arm
-    // joystick2.a().whileTrue(new ParallelCommandGroup(
-    //   new AutoPositionAmp(drivetrain, limeLight, flyWheel),
-    //   new AutoArm(arm, true, limeLight)
-    // ));
-
-    //auto center with speaker and move arm accordingly
-    joystick2.x().whileTrue(
-        new AutoCenterSpeaker(
-            () -> joystick.getLeftX() * MaxSpeed,
-            () -> joystick.getLeftY() * MaxSpeed,
-            drivetrain,
-            limeLight,
-            MaxSpeed,
-            flyWheel,
-            arm));
-
-    // //auto center with note and run intake when close enough, this is probably gonna have CAN bad errors
-    // joystick2.b().whileTrue(new ParallelCommandGroup(
-    //   new IntakeMove(intake, limeLight, false),
-    //   new AutoCenterNote(() -> joystick.getLeftX() * MaxSpeed, () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight)
-    // ));
-
-    // joystick2.x().whileTrue(new AutoPositionAmp(drivetrain, limeLight, flyWheel));
-    ////////////////////////////////////////////////////////////////////////////////
     hanger.setDefaultCommand(new MoveHanger(
       hanger, 
       () -> joystick2.getLeftTriggerAxis(), 
       () -> joystick2.getRightTriggerAxis(), 
       () -> xboxController2.getLeftBumper(), 
       () -> xboxController2.getRightBumper()));
+
+
+    //default flywheel command, sets the speed either .5 or 1 based on which autospeaker or autoamp is called, will run reguardless if either is chosen but is decided by setScoringAmpFlywheel() in flywheel class
+
+    //reverse intake
+    joystick2.a().whileTrue(new IntakeMove(xboxController, xboxController2, intake, limeLight, true, lights));
+
+    // //auto amp sequence to move up to the amp and arm
+    joystick2.y().whileTrue(new AutoCenterAmp(drivetrain, () -> joystick2.getLeftY(), () -> joystick2.getLeftX(), MaxSpeed, MaxAngularRate));
+
+    //auto center with speaker and move arm accordingly
+      joystick2.x().whileTrue(
+          new AutoCenterSpeaker(
+              () -> joystick.getLeftX() * MaxSpeed,
+              () -> joystick.getLeftY() * MaxSpeed,
+              drivetrain,
+              limeLight,
+              MaxAngularRate,
+              flyWheel,
+              arm));
+
+    // //auto center with note and run intake when close enough, this is probably gonna have CAN bad errors
+       joystick2.b().whileTrue(new AutoCenterNoteAndIntake(
+        () -> joystick2.getLeftX() * MaxSpeed, 
+        () -> joystick2.getLeftY() * MaxSpeed, 
+        drivetrain,
+        limeLight,
+        MaxAngularRate, 
+        intake, 
+        lights, 
+        xboxController2, 
+        xboxController));
+
+    ////////////////////////////////////////////////////////////////////////////////
+
     // Xbutton.onTrue(new SequentialCommandGroup(new AutoCenter(), new SetFlywheelMotor()));
 
     // flyWheel.setDefaultCommand(new TESTFlywheel(flyWheel, () -> joystick2.getLeftY() * .85));    
@@ -190,8 +191,8 @@ public class RobotContainer {
     // ));
     // joystick.y().whileTrue(new TESTBrokenButtons());
     // joystick2.b().whileTrue(new MoveHanger(false, true, hanger));
-    joystick.y().whileTrue(new AutoCenterNoteAndIntake(() -> joystick.getLeftX() * MaxSpeed,
-        () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight, MaxSpeed, intake));
+    // joystick.y().whileTrue(new AutoCenterNoteAndIntake(() -> joystick.getLeftX() * MaxSpeed,
+    //     () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight, MaxSpeed, intake));
     
 
     if (Utils.isSimulation()) {

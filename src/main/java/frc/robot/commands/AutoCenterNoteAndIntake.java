@@ -9,10 +9,12 @@ import java.util.function.Supplier;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.CommandSwerveDrivetrain;
 import frc.robot.Constants;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LightSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 
 public class AutoCenterNoteAndIntake extends Command {
@@ -26,13 +28,18 @@ private final SwerveRequest.FieldCentric swerveCentric = new SwerveRequest.Field
 private double maxRotationSpeed;
 private Supplier<Double> ySpeed, xSpeed;
 private IntakeSubsystem intakeSubsystem; 
+private LightSubsystem lightSubsystem;
+private XboxController xbox1, xbox2;
   public AutoCenterNoteAndIntake(
     Supplier<Double> ySpeed, 
     Supplier<Double> xSpeed, 
     CommandSwerveDrivetrain drivetrain, 
     LimeLightSubsystem limeLightSubsystem,
     double maxRotationSpeed,
-    IntakeSubsystem intakeSubsystem
+    IntakeSubsystem intakeSubsystem,
+    LightSubsystem lightSubsystem,
+    XboxController xbox1,
+    XboxController xbobx2
   ) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.ySpeed = ySpeed;
@@ -41,7 +48,15 @@ private IntakeSubsystem intakeSubsystem;
     this.limeLightSubsystem = limeLightSubsystem;
     this.maxRotationSpeed = maxRotationSpeed;
     this.intakeSubsystem = intakeSubsystem;
+    this.lightSubsystem = lightSubsystem;
+    this.xbox1 = xbox1;
+    this.xbox2 = xbox2;
+    addRequirements(lightSubsystem);
+    addRequirements(drivetrain);
+    addRequirements(intakeSubsystem);
+    addRequirements(limeLightSubsystem);
   }
+
 
   // Called when the command is initially scheduled.
   @Override
@@ -57,11 +72,15 @@ private IntakeSubsystem intakeSubsystem;
     // System.out.println(limeLightSubsystem.getNoteHorizontalAngle());
     if (intakeSubsystem.getBlocked()){
       intakeSubsystem.setCanRun(false);
+      lightSubsystem.setLights(Constants.colorRGBIntake[0], Constants.colorRGBIntake[1], Constants.colorRGBIntake[2]);
+      intakeSubsystem.rumbleController(xbox1);
+      intakeSubsystem.rumbleController(xbox2);      
       System.out.println("IS BLOCKED");
     } else {
       intakeSubsystem.setCanRun(true);
       System.out.println("IS NOT BLOCKED");
- 
+      lightSubsystem.setLights(0, 0, 0);
+
     }
     
     if (limeLightSubsystem.getNoteArea() > Constants.noteAreaToRun){
