@@ -33,32 +33,6 @@ public class MoveHanger extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() { // TODO - find directionality of the motors
-    // if (!reverse && !both){
-    //   if (leftMotor) {
-    //     hangerSubsystem.setHangerMotorOne(.6);
-    //     System.out.println("left forward");
-    //   } else {
-    //     hangerSubsystem.setHangerMotorTwo(.6);
-    //     System.out.println("right forward");
-    //   }
-    // } else {
-    //   if (leftMotor) {
-    //     hangerSubsystem.setHangerMotorOne(-.6);
-    //     System.out.println("left reverse");
-    //   } else {
-    //     hangerSubsystem.setHangerMotorTwo(-.6);
-    //     System.out.println("right reverse");
-
-    //   }
-
-    //   if (both && !reverse) {
-    //     hangerSubsystem.setHangerMotorOne(.6);
-    //     hangerSubsystem.setHangerMotorTwo(.6);
-    //   } else if (both && !reverse) {
-    //     hangerSubsystem.setHangerMotorOne(-.6);
-    //     hangerSubsystem.setHangerMotorTwo(-.6);
-    //   }
-    // }
     if (leftMotor) {
       if (reverse) {
         hangerSubsystem.setHangerMotorOne(-.6);
