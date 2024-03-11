@@ -73,6 +73,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void rumbleController(XboxController xboxController) {
     xboxController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
+  }
   public void setLights(){
     if (photoSensor.get()){
       candle.setLEDs(Constants.colorRGBIntake[0], Constants.colorRGBIntake[1], Constants.colorRGBIntake[2], 120, 0, 255);
@@ -85,5 +86,4 @@ public class IntakeSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
-}
 }
