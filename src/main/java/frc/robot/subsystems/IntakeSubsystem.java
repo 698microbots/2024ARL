@@ -78,7 +78,7 @@ public class IntakeSubsystem extends SubsystemBase {
     if (photoSensor.get()){
       candle.setLEDs(Constants.colorRGBIntake[0], Constants.colorRGBIntake[1], Constants.colorRGBIntake[2], 120, 0, 255);
     } else {
-      candle.setLEDs(0, 0, 0, 255, 2, 500);
+      candle.setLEDs(0, 50, 255, 255, 2, 500);
       
     }
   }
