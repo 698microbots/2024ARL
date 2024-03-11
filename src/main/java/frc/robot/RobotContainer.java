@@ -142,16 +142,16 @@ public class RobotContainer {
     joystick2.leftTrigger().whileTrue(new MoveHanger(false, false, true, hanger));
     joystick2.rightTrigger().whileTrue(new MoveHanger(false, false, false, hanger));
     // lowers the individual arms
-    joystick2.leftTrigger().whileFalse(new MoveHanger(false, true, true, hanger));
-    joystick2.rightTrigger().whileFalse(new MoveHanger(false, true, false, hanger));
+    joystick2.leftTrigger().whileFalse(new MoveHanger(false, false, true, hanger));
+    joystick2.rightTrigger().whileFalse(new MoveHanger(false, false, false, hanger));
 
     if (joystick2.leftTrigger().getAsBoolean() && joystick2.leftTrigger().getAsBoolean()) {
-      new MoveHanger(false, false, false, hanger);
-    } else if (!(joystick2.leftTrigger().getAsBoolean() && joystick2.leftTrigger().getAsBoolean())) {
-      new MoveHanger(false, true, false, hanger);
+      new MoveHanger(true, false, false, hanger);
+    } else if (joystick2.leftBumper().getAsBoolean() && joystick2.rightBumper().getAsBoolean()) {
+      new MoveHanger(true, true, false, hanger);
     }
-    joystick2.leftBumper().whileTrue(new MoveHanger(true, true, hanger));
-    joystick2.rightBumper().whileTrue(new MoveHanger(true, false, hanger));
+    joystick2.leftBumper().whileTrue(new MoveHanger(false, true, true, hanger));
+    joystick2.rightBumper().whileTrue(new MoveHanger(false, true, false, hanger));
 
     //default flywheel command, sets the speed either .5 or 1 based on which autospeaker or autoamp is called, will run reguardless if either is chosen but is decided by setScoringAmpFlywheel() in flywheel class
     // flyWheel.setDefaultCommand(new FlyWheelShoot(flyWheel, limeLight, intake, () -> joystick2.getLeftTriggerAxis()));

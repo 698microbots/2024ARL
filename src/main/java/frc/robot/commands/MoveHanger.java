@@ -13,10 +13,10 @@ public class MoveHanger extends Command {
   private HangerSubsystem hangerSubsystem;
   private boolean leftMotor;
   private boolean reverse;
-  private boolean both;7
+  private boolean both;
 
   /** Creates a new AutoHanger. */
-  public MoveHanger(boolean reverse, boolean leftMotor, HangerSubsystem hangerSubsystem) {
+  public MoveHanger(boolean both, boolean reverse, boolean leftMotor, HangerSubsystem hangerSubsystem) {
     this.reverse = reverse;
     this.hangerSubsystem = hangerSubsystem;
     this.leftMotor = leftMotor;
@@ -33,7 +33,7 @@ public class MoveHanger extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() { // TODO - find directionality of the motors
-    if (!reverse){
+    if (!reverse && !both){
       if (leftMotor) {
         hangerSubsystem.setHangerMotorOne(.6);
         System.out.println("left forward");
@@ -45,10 +45,18 @@ public class MoveHanger extends Command {
       if (leftMotor){
         hangerSubsystem.setHangerMotorOne(-.6);
         System.out.println("left reverse");
-      }else {
+      } else {
         hangerSubsystem.setHangerMotorTwo(-.6);
         System.out.println("right reverse");
 
+      }
+      
+      if (both && !reverse) {
+        hangerSubsystem.setHangerMotorOne(.6);
+        hangerSubsystem.setHangerMotorTwo(.6);
+      } else if (both && !reverse) {
+        hangerSubsystem.setHangerMotorOne(-.6);
+        hangerSubsystem.setHangerMotorTwo(-.6);
       }
     }
     // hangerSubsystem.setHangerMotorOne(.5);
