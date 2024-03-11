@@ -8,24 +8,33 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LightSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 
 public class IntakeMove extends Command { // TODO - add CANdle (led strips) functionality
   /** Creates a new IntakeMove. */
   private final IntakeSubsystem intakeSubsystem;
   private final LimeLightSubsystem limelight;
+  private final LightSubsystem lightSubsystem;
   // private  boolean yes = false;
   private int counter = 0;
   private boolean reverse;
   private XboxController xboxController1;
     private XboxController xboxController2;
-  public IntakeMove(XboxController xboxController1, XboxController xboxController2, IntakeSubsystem intakeSubsystem, LimeLightSubsystem limelight, boolean reverse) {
+  public IntakeMove(
+    XboxController xboxController1, 
+    XboxController xboxController2, 
+    IntakeSubsystem intakeSubsystem, 
+    LimeLightSubsystem limelight, 
+    boolean reverse,
+    LightSubsystem lightSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intakeSubsystem = intakeSubsystem;
     this.limelight = limelight;
     this.reverse = reverse;
     this.xboxController1 = xboxController1;
     this.xboxController2 = xboxController2;
+    this.lightSubsystem = lightSubsystem;
     // this.yes = yes;
     addRequirements(intakeSubsystem);
     addRequirements(limelight);
@@ -48,14 +57,14 @@ public class IntakeMove extends Command { // TODO - add CANdle (led strips) func
   if (!reverse){
     if (intakeSubsystem.getBlocked()){
       intakeSubsystem.setCanRun(false);
-      intakeSubsystem.setLights();
+      lightSubsystem.setLights(Constants.colorRGBIntake[0], Constants.colorRGBIntake[1], Constants.colorRGBIntake[2]);
       counter++; //only invoke if need to have a delay, comment out the line above if you use this
       System.out.println("IS BLOCKED");
       intakeSubsystem.rumbleController(xboxController1);
       intakeSubsystem.rumbleController(xboxController2);
     } else {
       intakeSubsystem.setCanRun(true);
-      intakeSubsystem.setLights();
+      lightSubsystem.setLights(0, 0 ,0);
       
       counter = 0;
       System.out.println("IS NOT BLOCKED");

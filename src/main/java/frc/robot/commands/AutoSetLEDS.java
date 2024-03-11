@@ -6,14 +6,15 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LightSubsystem;
 
 public class AutoSetLEDS extends Command {
   /** Creates a new AutoSetLEDS. */
-  private final IntakeSubsystem intakeSubsystem;
-  public AutoSetLEDS(IntakeSubsystem intakeSubsystem) {
+  private final LightSubsystem lightSubsystem;
+  public AutoSetLEDS(LightSubsystem lightSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.intakeSubsystem = intakeSubsystem;
-    addRequirements(intakeSubsystem);
+    this.lightSubsystem = lightSubsystem;
+    addRequirements(lightSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -24,8 +25,7 @@ public class AutoSetLEDS extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("i am running lights");
-    intakeSubsystem.setLights();
+    lightSubsystem.setLights(0, 0, 0);
   }
 
   // Called once the command ends or is interrupted.
