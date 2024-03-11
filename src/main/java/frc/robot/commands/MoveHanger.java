@@ -12,12 +12,13 @@ public class MoveHanger extends Command {
   // instance variables
   private HangerSubsystem hangerSubsystem;
   private boolean leftMotor;
-  private boolean HangerDown;
-  private boolean both;
+  private boolean reverse;
+  private boolean both;7
 
   /** Creates a new AutoHanger. */
-  public MoveHanger(boolean both, boolean HangerDown, boolean leftMotor, HangerSubsystem hangerSubsystem) {
-    // this.HangerDown = HangerDown;
+  public MoveHanger(boolean reverse, boolean leftMotor, HangerSubsystem hangerSubsystem) {
+    this.reverse = reverse;
+    this.hangerSubsystem = hangerSubsystem;
     this.leftMotor = leftMotor;
     this.both = both;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -32,35 +33,35 @@ public class MoveHanger extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() { // TODO - find directionality of the motors
-    if (leftMotor) {
-      hangerSubsystem.setHangerMotorOne(.1);
-      // if (HangerDown) {
-      //   double time = 5; // the time it takes for the Hanger to go down
-      //   double rate = .1 / time;
-      //   for (var i = .1; i >= (0 - rate); i -= rate) {
-      //     // System.out.println(Math.round(i * 100.0) / 100.0);
-      //     hangerSubsystem.setHangerMotorOne(rate);
-          
-      //   }
-      // }
-    } else if (both) {
-      hangerSubsystem.setHangerMotorOne(.1);
-      hangerSubsystem.setHangerMotorTwo(.1);
-      // if (HangerDown) {
-      //   double time = 5; // the time it takes for the Hanger to go down
-      //   double rate = .1 / time;
-      //   for (var i = .1; i >= (0 - rate); i -= rate) {
-      //     System.out.println(Math.round(i * 100.0) / 100.0);
-      //   }
-      // }
+    if (!reverse){
+      if (leftMotor) {
+        hangerSubsystem.setHangerMotorOne(.6);
+        System.out.println("left forward");
+      } else {
+        hangerSubsystem.setHangerMotorTwo(.6);
+        System.out.println("right forward");
+      }
     } else {
-      hangerSubsystem.setHangerMotorTwo(.1);
+      if (leftMotor){
+        hangerSubsystem.setHangerMotorOne(-.6);
+        System.out.println("left reverse");
+      }else {
+        hangerSubsystem.setHangerMotorTwo(-.6);
+        System.out.println("right reverse");
+
+      }
     }
+    // hangerSubsystem.setHangerMotorOne(.5);
+    // hangerSubsystem.setHangerMotorTwo(.5);
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    hangerSubsystem.setHangerMotorOne(0);
+    hangerSubsystem.setHangerMotorTwo(0);
+   
   }
 
   // Returns true when the command should end.

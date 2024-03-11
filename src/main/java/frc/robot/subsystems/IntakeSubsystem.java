@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+import com.ctre.phoenix.led.Animation;
 import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
 import com.ctre.phoenix.led.CANdleConfiguration;
@@ -72,12 +73,11 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void rumbleController(XboxController xboxController) {
     xboxController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
-  } 
   public void setLights(){
     if (photoSensor.get()){
-      candle.setLEDs(Constants.colorRGBIntake[0], Constants.colorRGBIntake[1], Constants.colorRGBIntake[2]);
+      candle.setLEDs(Constants.colorRGBIntake[0], Constants.colorRGBIntake[1], Constants.colorRGBIntake[2], 120, 0, 255);
     } else {
-      candle.setLEDs(255, 255, 255);
+      candle.setLEDs(0, 0, 0);
     }
   }
 
@@ -85,4 +85,5 @@ public class IntakeSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+}
 }

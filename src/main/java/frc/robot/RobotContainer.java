@@ -150,9 +150,11 @@ public class RobotContainer {
     } else if (!(joystick2.leftTrigger().getAsBoolean() && joystick2.leftTrigger().getAsBoolean())) {
       new MoveHanger(false, true, false, hanger);
     }
+    joystick2.leftBumper().whileTrue(new MoveHanger(true, true, hanger));
+    joystick2.rightBumper().whileTrue(new MoveHanger(true, false, hanger));
 
     //default flywheel command, sets the speed either .5 or 1 based on which autospeaker or autoamp is called, will run reguardless if either is chosen but is decided by setScoringAmpFlywheel() in flywheel class
-    flyWheel.setDefaultCommand(new FlyWheelShoot(flyWheel, limeLight, intake, () -> joystick2.getLeftTriggerAxis()));
+    // flyWheel.setDefaultCommand(new FlyWheelShoot(flyWheel, limeLight, intake, () -> joystick2.getLeftTriggerAxis()));
     
     //reverse intake
     joystick2.y().whileTrue(new IntakeMove(xboxController, xboxController, intake, limeLight, true));
@@ -181,7 +183,7 @@ public class RobotContainer {
     //   new AutoCenterNote(() -> joystick.getLeftX() * MaxSpeed, () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight)
     // ));
 
-    joystick2.x().whileTrue(new AutoPositionAmp(drivetrain, limeLight, flyWheel));
+    // joystick2.x().whileTrue(new AutoPositionAmp(drivetrain, limeLight, flyWheel));
     
     ////////////////////////////////////////////////////////////////////////////////
     
@@ -197,7 +199,7 @@ public class RobotContainer {
     //   new IntakeMove(intake, limeLight)
     // ));
     // joystick.y().whileTrue(new TESTBrokenButtons());
-    joystick2.b().whileTrue(new TESTIntakeMove(intake, flyWheel));
+    // joystick2.b().whileTrue(new MoveHanger(false, true, hanger));
     joystick.y().whileTrue(new AutoCenterNoteAndIntake(() -> joystick.getLeftX() * MaxSpeed, () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight, MaxSpeed, intake));
     // joystick2.b().whileTrue(new AutoPosition(drivetrain, limeLight));
     // joystick2.b().toggleOnTrue(new IntakeMove(intake, false));
