@@ -73,8 +73,8 @@ private XboxController xbox1, xbox2;
     if (intakeSubsystem.getBlocked()){
       intakeSubsystem.setCanRun(false);
       lightSubsystem.setLights(Constants.colorRGBIntake[0], Constants.colorRGBIntake[1], Constants.colorRGBIntake[2]);
-      intakeSubsystem.rumbleController(xbox1);
-      intakeSubsystem.rumbleController(xbox2);      
+      intakeSubsystem.rumbleController(xbox1, 1);
+      intakeSubsystem.rumbleController(xbox2, 1);      
       System.out.println("IS BLOCKED");
     } else {
       intakeSubsystem.setCanRun(true);
