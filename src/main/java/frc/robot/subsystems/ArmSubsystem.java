@@ -25,14 +25,16 @@ public class ArmSubsystem extends SubsystemBase {
   DutyCycleEncoder dutyCycleEncoder = new DutyCycleEncoder(0);
 
   public ArmSubsystem() {
-    // armMotor.setNeutralMode(NeutralModeValue.Brake);
-    armMotor.setNeutralMode(NeutralModeValue.Coast);
+    armMotor.setNeutralMode(NeutralModeValue.Brake);
+    armMotor2.setNeutralMode(NeutralModeValue.Brake);
+    // armMotor.setNeutralMode(NeutralModeValue.Coast);
+
 
   }
 
   public void moveArm(double speed) {
     armMotor.set(speed);
-    armMotor2.set(speed);
+    armMotor2.set(-speed);
   }
 
   // @Override

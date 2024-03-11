@@ -44,6 +44,7 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LightSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.driveTrainVoltages;
 import frc.robot.subsystems.HangerSubsystem;
@@ -87,6 +88,7 @@ public class RobotContainer {
   public driveTrainVoltages driveTrainVoltages = new driveTrainVoltages();
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
   public final IntakeSubsystem intake = new IntakeSubsystem();
+  public final LightSubsystem lights = new LightSubsystem();
   private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
@@ -102,7 +104,7 @@ public class RobotContainer {
   private SwerveModuleState[] states = drivetrain.getState().ModuleStates;
 
   private void configureBindings() {
-    intake.setDefaultCommand(new AutoSetLEDS(intake));
+    lights.setDefaultCommand(new AutoSetLEDS(lights));
     //drive command
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
@@ -136,27 +138,13 @@ public class RobotContainer {
      * 
      */
 
-    // handles the hanger movement
-    // raises the individual arms
-    joystick2.leftTrigger().whileTrue(new MoveHanger(false, false, true, hanger));
-    joystick2.rightTrigger().whileTrue(new MoveHanger(false, false, false, hanger));
-    // lowers the individual arms
 
-    // if (joystick2.leftTrigger().getAsBoolean() && joystick2.rightTrigger().getAsBoolean()) {
-    //   new MoveHanger(true, false, false, hanger);
-    // } else if (joystick2.leftBumper().getAsBoolean() && joystick2.rightBumper().getAsBoolean()) {
-    //   new MoveHanger(true, true, false, hanger);
-    // }
-    joystick.leftTrigger().whileTrue(new MoveHanger(true, false, false, hanger));
-    joystick.rightBumper().whileTrue(new MoveHanger(true, true, false, hanger));
-    joystick2.leftBumper().whileTrue(new MoveHanger(false, true, true, hanger));
-    joystick2.rightBumper().whileTrue(new MoveHanger(false, true, false, hanger));
 
     //default flywheel command, sets the speed either .5 or 1 based on which autospeaker or autoamp is called, will run reguardless if either is chosen but is decided by setScoringAmpFlywheel() in flywheel class
     // flyWheel.setDefaultCommand(new FlyWheelShoot(flyWheel, limeLight, intake, () -> joystick2.getLeftTriggerAxis()));
 
     //reverse intake
-    joystick2.y().whileTrue(new IntakeMove(xboxController, xboxController, intake, limeLight, true));
+    joystick2.y().whileTrue(new IntakeMove(xboxController, xboxController2, intake, limeLight, true));
 
     // //auto amp sequence to move up to the amp and arm
     // joystick2.a().whileTrue(new ParallelCommandGroup(
@@ -182,9 +170,13 @@ public class RobotContainer {
     // ));
 
     // joystick2.x().whileTrue(new AutoPositionAmp(drivetrain, limeLight, flyWheel));
-
     ////////////////////////////////////////////////////////////////////////////////
-
+    hanger.setDefaultCommand(new MoveHanger(
+      hanger, 
+      () -> joystick2.getLeftTriggerAxis(), 
+      () -> joystick2.getRightTriggerAxis(), 
+      () -> xboxController2.getLeftBumper(), 
+      () -> xboxController2.getRightBumper()));
     // Xbutton.onTrue(new SequentialCommandGroup(new AutoCenter(), new SetFlywheelMotor()));
 
     // flyWheel.setDefaultCommand(new TESTFlywheel(flyWheel, () -> joystick2.getLeftY() * .85));    
@@ -200,10 +192,7 @@ public class RobotContainer {
     // joystick2.b().whileTrue(new MoveHanger(false, true, hanger));
     joystick.y().whileTrue(new AutoCenterNoteAndIntake(() -> joystick.getLeftX() * MaxSpeed,
         () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight, MaxSpeed, intake));
-    // joystick2.b().whileTrue(new AutoPosition(drivetrain, limeLight));
-    // joystick2.b().toggleOnTrue(new IntakeMove(intake, false));
-    // joystick2.y().whileTrue(new IntakeMove(intake, limeLight));
-    // joystick2.b().whileFalse(new IntakeMove(intake, false));    
+    
 
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));

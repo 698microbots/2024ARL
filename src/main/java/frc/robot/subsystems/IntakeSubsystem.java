@@ -71,16 +71,19 @@ public class IntakeSubsystem extends SubsystemBase {
     return photoSensor.get();
   }
 
-  public void rumbleController(XboxController xboxController, int value) {
-    xboxController.setRumble(GenericHID.RumbleType.kBothRumble, value);
-  }
-  public void setLights(){
+  public void rumbleController(XboxController xboxController) {
     if (photoSensor.get()){
-      candle.setLEDs(Constants.colorRGBIntake[0], Constants.colorRGBIntake[1], Constants.colorRGBIntake[2]);
-    } else {
-      candle.setLEDs(0, 0, 0);
+      xboxController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
     }
   }
+  
+  // public void setLights(){
+  //   if (photoSensor.get()){
+  //     candle.setLEDs(Constants.colorRGBIntake[0], Constants.colorRGBIntake[1], Constants.colorRGBIntake[2], 120, 0, 255);
+  //   } else {
+  //     candle.setLEDs(0, 0, 0);
+  //   }
+  // }
 
   @Override
   public void periodic() {
