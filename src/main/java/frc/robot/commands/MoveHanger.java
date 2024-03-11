@@ -13,11 +13,13 @@ public class MoveHanger extends Command {
   private HangerSubsystem hangerSubsystem;
   private boolean leftMotor;
   private boolean HangerDown;
+  private boolean both;
 
   /** Creates a new AutoHanger. */
-  public MoveHanger(boolean HangerDown, boolean leftMotor, HangerSubsystem hangerSubsystem) {
+  public MoveHanger(boolean both, boolean HangerDown, boolean leftMotor, HangerSubsystem hangerSubsystem) {
     // this.HangerDown = HangerDown;
     this.leftMotor = leftMotor;
+    this.both = both;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(hangerSubsystem);
   }
@@ -41,7 +43,8 @@ public class MoveHanger extends Command {
           
       //   }
       // }
-    } else {
+    } else if (both) {
+      hangerSubsystem.setHangerMotorOne(.1);
       hangerSubsystem.setHangerMotorTwo(.1);
       // if (HangerDown) {
       //   double time = 5; // the time it takes for the Hanger to go down
@@ -50,6 +53,8 @@ public class MoveHanger extends Command {
       //     System.out.println(Math.round(i * 100.0) / 100.0);
       //   }
       // }
+    } else {
+      hangerSubsystem.setHangerMotorTwo(.1);
     }
   }
 
