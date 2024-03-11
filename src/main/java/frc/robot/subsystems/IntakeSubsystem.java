@@ -47,6 +47,9 @@ public class IntakeSubsystem extends SubsystemBase {
     IntakeMotor.set(speed);
   }
 
+  public void backupIntakeMotor(double speed){
+    IntakeMotor.set(-speed);
+  }
   public double getIntakeVolts() {
     return IntakeMotor.getBusVoltage();
   }
