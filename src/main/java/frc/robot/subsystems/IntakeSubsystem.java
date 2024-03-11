@@ -71,8 +71,8 @@ public class IntakeSubsystem extends SubsystemBase {
     return photoSensor.get();
   }
 
-  public void rumbleController(XboxController xboxController) {
-    xboxController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
+  public void rumbleController(XboxController xboxController, int value) {
+    xboxController.setRumble(GenericHID.RumbleType.kBothRumble, value);
   }
   public void setLights(){
     if (photoSensor.get()){

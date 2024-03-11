@@ -4,9 +4,11 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 
@@ -51,8 +53,8 @@ public class IntakeMove extends Command { // TODO - add CANdle (led strips) func
       intakeSubsystem.setLights();
       counter++; //only invoke if need to have a delay, comment out the line above if you use this
       System.out.println("IS BLOCKED");
-      intakeSubsystem.rumbleController(xboxController1);
-      intakeSubsystem.rumbleController(xboxController2);
+      intakeSubsystem.rumbleController(xboxController1, 1);
+      intakeSubsystem.rumbleController(xboxController2, 1);
     } else {
       intakeSubsystem.setCanRun(true);
       intakeSubsystem.setLights();
