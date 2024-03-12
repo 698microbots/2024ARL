@@ -78,6 +78,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Intake Volts: ", m_robotContainer.intake.getIntakeVolts());
 
     SmartDashboard.putBoolean("isBlocked", m_robotContainer.intake.getBlocked());
+    SmartDashboard.putBoolean("isBlocked2", m_robotContainer.intake.getBlocked2());
+    
     SmartDashboard.putNumber("Note Angle", m_robotContainer.limeLight.getNoteHorizontalAngle());
     SmartDashboard.putNumber("Note Area", m_robotContainer.limeLight.getNoteArea());
     
