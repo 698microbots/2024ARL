@@ -54,28 +54,30 @@ public class IntakeMove extends Command { // TODO - add CANdle (led strips) func
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    //DO NOT USE THIS
   if (!reverse){
     if (intakeSubsystem.getBlocked()){
       intakeSubsystem.setCanRun(false);
       lightSubsystem.setLights(Constants.colorRGBIntake[0], Constants.colorRGBIntake[1], Constants.colorRGBIntake[2]);
       counter++; //only invoke if need to have a delay, comment out the line above if you use this
-      System.out.println("IS BLOCKED");
+      // System.out.println("IS BLOCKED");
       intakeSubsystem.rumbleController(xboxController1);
       intakeSubsystem.rumbleController(xboxController2);
     } else {
       intakeSubsystem.setCanRun(true);
       lightSubsystem.setLights(0, 0 ,0);
-      
+      intakeSubsystem.rumbleController(xboxController1);
+      intakeSubsystem.rumbleController(xboxController2);      
       counter = 0;
-      System.out.println("IS NOT BLOCKED");
+      // System.out.println("IS NOT BLOCKED");
     }
     
-    if (limelight.getNoteArea() > Constants.noteAreaToRun){
+    if (limelight.getNoteArea() > Constants.noteAreaToRun && intakeSubsystem.getCanRun()){
     intakeSubsystem.setIntakeMotor(.75);
     }
   
   } else {
-    intakeSubsystem.reverseIntakeMotor(-.75);
+    intakeSubsystem.reverseIntakeMotor(.75);
   }
 
     

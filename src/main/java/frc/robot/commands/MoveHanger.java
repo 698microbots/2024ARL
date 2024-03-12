@@ -46,20 +46,20 @@ public class MoveHanger extends Command {
   public void execute() { // TODO - find directionality of the motors
     if (leftTrigger.get() > 0){
     System.out.println("LT hanger");
-    hangerSubsystem.setHangerMotorOne(-.6);
+    hangerSubsystem.setHangerMotorOne(-1);
     } else if (leftBumper.get()){
     System.out.println("LB hanger");
-      hangerSubsystem.setHangerMotorOne(.6);
+      hangerSubsystem.setHangerMotorOne(1);
     } else {
       hangerSubsystem.setHangerMotorOne(0);
     }
 
     if (rightTrigger.get() > 0){
-      hangerSubsystem.setHangerMotorTwo(-.6);
+      hangerSubsystem.setHangerMotorTwo(-1);
     System.out.println("RT hanger");
 
     } else if (rightBumper.get()){
-      hangerSubsystem.setHangerMotorTwo(.6);
+      hangerSubsystem.setHangerMotorTwo(1);
     System.out.println("RB hanger");
 
     } else {

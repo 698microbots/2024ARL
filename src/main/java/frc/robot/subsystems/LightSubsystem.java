@@ -17,12 +17,13 @@ public class LightSubsystem extends SubsystemBase {
   public LightSubsystem() {
     CANdleConfiguration config = new CANdleConfiguration();
     config.stripType = LEDStripType.RGB; // set the strip type to RGB
-    config.brightnessScalar = 0.5; // dim the LEDs to half brightness
+    config.brightnessScalar = 1; // dim the LEDs to half brightness
     candle.configAllSettings(config);    
   }
 
   public void setLights(int r, int b, int g){
     candle.setLEDs(r, g, b);
+    // candle.setLEDs(r, g, b, 100, 0, 150); THERE ARE 300 LIGHTS
   }
   @Override
   public void periodic() {

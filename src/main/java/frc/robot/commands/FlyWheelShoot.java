@@ -19,14 +19,13 @@ public class FlyWheelShoot extends Command {
   private final IntakeSubsystem intakeSubsystem;
   private int counter = 0;
   private int seconds = 0;
-  private Supplier<Double> RTrigger;
+
   private double isPressed = 0;
-  public FlyWheelShoot(FlywheelSubsystem flywheelSubsystem, LimeLightSubsystem limeLight, IntakeSubsystem intakeSubsystem, Supplier<Double> RTrigger) {
+  public FlyWheelShoot(FlywheelSubsystem flywheelSubsystem, LimeLightSubsystem limeLight, IntakeSubsystem intakeSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.flywheelSubsystem = flywheelSubsystem;
     this.limeLight = limeLight;
     this.intakeSubsystem = intakeSubsystem;
-    this.RTrigger = RTrigger;
     addRequirements(flywheelSubsystem);
     addRequirements(intakeSubsystem);
     addRequirements(limeLight);
@@ -57,22 +56,25 @@ public class FlyWheelShoot extends Command {
     // y axis is motorSpeed (for both motors)
     // might include a calculate angle if needed but most likely not needed    
     //we are probably not gonna do this ^ instead just set the motors either to 100% or 50%
-    isPressed = RTrigger.get();
-    
-    if (isPressed > .05){
       flywheelSubsystem.setFlywheelMotorSpeed();
-    }
+      counter++;
+      if (counter > Constants.numSeconds(.5)){
+        intakeSubsystem.backupIntakeMotor(.75);
+      }
     
     // double speed = limeLight.calculateZdistance(Constants.speakerTagHeightMeters) * .5 + 1; 
 
     // flywheelSubsystem.setFlywheelMotorSpeed(speed);
     // counter++;
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     flywheelSubsystem.stopFlywheel();
+    intakeSubsystem.backupIntakeMotor(0);
+    counter = 0;
   }
 
   // Returns true when the command should end.
@@ -84,9 +86,7 @@ public class FlyWheelShoot extends Command {
     // } else {
     //   return false;
     // }
-    if (isPressed < 0.5){
-      return true;
-    }
+
     return false;
   }
 }
