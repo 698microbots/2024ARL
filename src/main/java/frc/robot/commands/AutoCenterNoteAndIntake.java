@@ -39,7 +39,7 @@ private XboxController xbox1, xbox2;
     IntakeSubsystem intakeSubsystem,
     LightSubsystem lightSubsystem,
     XboxController xbox1,
-    XboxController xbobx2
+    XboxController xbox2
   ) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.ySpeed = ySpeed;
@@ -65,11 +65,10 @@ private XboxController xbox1, xbox2;
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("this works!!!");
     double x = xSpeed.get();
     double y = ySpeed.get();
-
-    // System.out.println(limeLightSubsystem.getNoteHorizontalAngle());
+    System.out.println(intakeSubsystem.getBlocked());
+   
     if (intakeSubsystem.getBlocked()){
       intakeSubsystem.setCanRun(false);
       lightSubsystem.setLights(Constants.colorRGBIntake[0], Constants.colorRGBIntake[1], Constants.colorRGBIntake[2], .5);
@@ -83,10 +82,11 @@ private XboxController xbox1, xbox2;
 
     }
     
-    if (limeLightSubsystem.getNoteArea() > Constants.noteAreaToRun){
-    intakeSubsystem.setIntakeMotor(.75);
-    } 
-    
+      if (limeLightSubsystem.getNoteArea() > Constants.noteAreaToRun){
+      intakeSubsystem.setIntakeMotor(.75);
+      } 
+    intakeSubsystem.rumbleController(xbox1);
+    intakeSubsystem.rumbleController(xbox2);   
     angle = limeLightSubsystem.getNoteHorizontalAngle(); 
     double rotationSpeed = pidController.calculate(angle,0);
     if (Math.abs(maxRotationSpeed) > 1 ){
@@ -94,8 +94,8 @@ private XboxController xbox1, xbox2;
     }
 
 
-    System.out.println("Rotation Speed: " + rotationSpeed);
-    System.out.println("Angle: " + angle);
+    // System.out.println("Rotation Speed: " + rotationSpeed);
+    // System.out.println("Angle: " + angle);
     drivetrain.setControl(swerveCentric.withVelocityX(-x).withVelocityY(-y).withRotationalRate(rotationSpeed));
    }
 
@@ -103,6 +103,7 @@ private XboxController xbox1, xbox2;
   @Override
   public void end(boolean interrupted) {
     intakeSubsystem.setIntakeMotor(0);
+
   }
 
   // Returns true when the command should end.

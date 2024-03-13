@@ -31,7 +31,8 @@ import frc.robot.commands.AutoArm;
 import frc.robot.commands.AutoCenterAmp;
 import frc.robot.commands.AutoCenterNoteAndIntake;
 import frc.robot.commands.BROKENAutoCenterNoteAndIntake;
-import frc.robot.commands.BackupIntake;
+import frc.robot.commands.BackUpIntake;
+
 import frc.robot.commands.AutoPositionAmp;
 import frc.robot.commands.AutoSetLEDS;
 import frc.robot.commands.FlyWheelShoot;
@@ -108,6 +109,7 @@ public class RobotContainer {
   private void configureBindings() {
     lights.setDefaultCommand(new AutoSetLEDS(lights));
     //drive command
+    // flyWheel.setDefaultCommand(new FlyWheelShoot(flyWheel, limeLight, intake, () -> joystick.getLeftTriggerAxis()));
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
             // negative Y (forward)
@@ -129,12 +131,12 @@ public class RobotContainer {
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
 
     //backup intake
-    joystick.x().whileTrue(new BackupIntake(intake));
+    joystick.x().whileTrue(new BackUpIntake(intake));
 
-
+    joystick.leftTrigger().whileTrue(new FlyWheelShoot(flyWheel, limeLight, intake));
     /**
      * 
-     * 2nd driver commands
+     * 2nd driver commands\
      * 
      */
     hanger.setDefaultCommand(new MoveHanger(
@@ -151,7 +153,7 @@ public class RobotContainer {
     joystick2.a().whileTrue(new IntakeMove(xboxController, xboxController2, intake, limeLight, true, lights));
 
     // //auto amp sequence to move up to the amp and arm
-    joystick2.y().whileTrue(new AutoCenterAmp(drivetrain, () -> joystick2.getLeftY(), () -> joystick2.getLeftX(), MaxSpeed, MaxAngularRate));
+    joystick2.y().whileTrue(new AutoCenterAmp(drivetrain, () -> joystick2.getLeftY(), () -> joystick2.getLeftX(), MaxSpeed, limeLight));
 
     //auto center with speaker and move arm accordingly
       joystick2.x().whileTrue(
@@ -166,8 +168,8 @@ public class RobotContainer {
 
     // //auto center with note and run intake when close enough, this is probably gonna have CAN bad errors
        joystick2.b().whileTrue(new AutoCenterNoteAndIntake(
-        () -> joystick2.getLeftX() * MaxSpeed, 
-        () -> joystick2.getLeftY() * MaxSpeed, 
+        () -> joystick.getLeftX() * MaxSpeed, 
+        () -> joystick.getLeftY() * MaxSpeed, 
         drivetrain,
         limeLight,
         MaxAngularRate, 

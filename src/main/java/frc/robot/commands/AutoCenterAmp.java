@@ -29,9 +29,16 @@ public class AutoCenterAmp extends Command {
     Supplier<Double> xSpeed,
     Supplier<Double> ySpeed,
     double maxRotationSpeed,
-    double limeLightSubsystem
+    LimeLightSubsystem limeLightSubsystem
   ) {
+    this.drivetrain = drivetrain;
+    this.limeLightSubsystem = limeLightSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
+    this.xSpeed = xSpeed;
+    this.ySpeed = ySpeed;
+    this.maxRotationSpeed = maxRotationSpeed;
+    addRequirements(drivetrain);
+    addRequirements(limeLightSubsystem);
   }
 
   // Called when the command is initially scheduled.

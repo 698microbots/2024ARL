@@ -12,34 +12,32 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-import com.ctre.phoenix.led.Animation;
-import com.ctre.phoenix.led.CANdle;
-import com.ctre.phoenix.led.CANdle.LEDStripType;
-import com.ctre.phoenix.led.CANdleConfiguration;
-
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
   private final CANSparkMax IntakeMotor = new CANSparkMax(15, CANSparkMax.MotorType.kBrushless);
   // Initializes a DigitalInput on DIO 0
   private final DigitalInput photoSensor = new DigitalInput(2); //TODO - make this a constant
   private final DigitalInput photoSensor2 = new DigitalInput(1); //TODO - make this a constant
+<<<<<<< HEAD
   private final CANdle candle = new CANdle(0);
+=======
+  
+>>>>>>> a985dbb6f364028a8465e4b0944bb2626ffdbd75
   private boolean canRun = true;
 
-  private final CANdleConfiguration config = new CANdleConfiguration();
 
   public IntakeSubsystem() {
-    CANdleConfiguration config = new CANdleConfiguration();
-    config.stripType = LEDStripType.RGB; // set the strip type to RGB
-    config.brightnessScalar = 0.5; // dim the LEDs to half brightness
-    candle.configAllSettings(config);
+
   }
 
   public void setIntakeMotor(double speed) {
-    if (canRun) {
+    if (!getBlocked()) {
       IntakeMotor.set(-speed);
+      // System.out.println("setting motor");
     } else {
       IntakeMotor.set(0);
+      // System.out.println("stopping motor");
+    
     }
   }
 
@@ -56,6 +54,11 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void setCanRun(boolean run) {
+    // if (run){
+    //   System.out.println("I can run");
+    // } else {
+    //   System.out.println("I CANT  run");
+    // }
     canRun = run;
   }
 
@@ -78,6 +81,16 @@ public class IntakeSubsystem extends SubsystemBase {
   public void rumbleController(XboxController xboxController, int value) {
     if (getBlocked()){
       xboxController.setRumble(GenericHID.RumbleType.kBothRumble, value);
+    }
+  }
+
+  public void rumbleController(XboxController xboxController) {
+    if (photoSensor.get()){
+      xboxController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
+      System.out.println("rumbling");
+    } else {
+      xboxController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
+      System.out.println("no rumble");
     }
   }
   

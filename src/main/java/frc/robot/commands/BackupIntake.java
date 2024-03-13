@@ -4,17 +4,15 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
 
-public class BackupIntake extends Command {
-  /** Creates a new BackupIntake. */
+public class BackUpIntake extends Command {
+  /** Creates a new BackUpIntake. */
   private final IntakeSubsystem intakeSubsystem;
-  public BackupIntake(IntakeSubsystem intakeSubsystem) {
+  public BackUpIntake(IntakeSubsystem intakeSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intakeSubsystem = intakeSubsystem;
-
     addRequirements(intakeSubsystem);
   }
 
@@ -25,16 +23,14 @@ public class BackupIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println("this work backup intake");
     intakeSubsystem.backupIntakeMotor(.75);
-
-
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     intakeSubsystem.backupIntakeMotor(0);
-
   }
 
   // Returns true when the command should end.
