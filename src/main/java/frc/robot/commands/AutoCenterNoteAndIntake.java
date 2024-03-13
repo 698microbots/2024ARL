@@ -67,15 +67,15 @@ private XboxController xbox1, xbox2;
   public void execute() {
     double x = xSpeed.get();
     double y = ySpeed.get();
-    System.out.println(intakeSubsystem.getBlocked());
+    // System.out.println(intakeSubsystem.getBlocked());
    
     if (intakeSubsystem.getBlocked()){
-      intakeSubsystem.setCanRun(false);
+      // intakeSubsystem.setCanRun(false);
       lightSubsystem.setLights(Constants.colorRGBIntake[0], Constants.colorRGBIntake[1], Constants.colorRGBIntake[2]);
       
       // System.out.println("IS BLOCKED");
     } else {
-      intakeSubsystem.setCanRun(true);
+      // intakeSubsystem.setCanRun(true);
       // System.out.println("IS NOT BLOCKED");
       lightSubsystem.setLights(0, 0, 0);
       // intakeSubsystem.rumbleController(xbox1);
@@ -86,7 +86,6 @@ private XboxController xbox1, xbox2;
       if (limeLightSubsystem.getNoteArea() > Constants.noteAreaToRun){
       intakeSubsystem.setIntakeMotor(.75);
       } 
-    intakeSubsystem.rumbleController(xbox1);
     intakeSubsystem.rumbleController(xbox2);   
     angle = limeLightSubsystem.getNoteHorizontalAngle(); 
     double rotationSpeed = pidController.calculate(angle,0);

@@ -17,8 +17,8 @@ public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
   private final CANSparkMax IntakeMotor = new CANSparkMax(15, CANSparkMax.MotorType.kBrushless);
   // Initializes a DigitalInput on DIO 0
-  private final DigitalInput photoSensor = new DigitalInput(2); //TODO - make this a constant
-  private final DigitalInput photoSensor2 = new DigitalInput(1); //TODO - make this a constant
+  private final DigitalInput photoSensor = new DigitalInput(1); //TODO - make this a constant
+  private final DigitalInput photoSensor2 = new DigitalInput(3); //TODO - make this a constant
   
   private boolean canRun = true;
 
@@ -28,12 +28,12 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void setIntakeMotor(double speed) {
-    if (!getBlocked()) {
-      IntakeMotor.set(-speed);
-      // System.out.println("setting motor");
-    } else {
+    if (getBlocked()) {
       IntakeMotor.set(0);
       // System.out.println("stopping motor");
+    } else {
+      IntakeMotor.set(-speed);
+      // System.out.println("setting motor");
     
     }
   }
@@ -72,21 +72,25 @@ public class IntakeSubsystem extends SubsystemBase {
   // }
 
   public boolean getBlocked() {
-    return photoSensor.get();
+    return !photoSensor.get();
   }
 
   public boolean getBlocked2(){
-    return photoSensor2.get();
+    return !photoSensor2.get();
   }
 
   public void rumbleController(XboxController xboxController) {
-    if (photoSensor.get()){
+    if (getBlocked()){
       xboxController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
       System.out.println("rumbling");
     } else {
       xboxController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
       System.out.println("no rumble");
     }
+  }
+
+  public void stopRumble(XboxController xboxController){
+    xboxController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
   }
   
   // public void setLights(){

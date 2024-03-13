@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import java.util.function.Supplier;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.FlywheelSubsystem;
@@ -17,15 +18,24 @@ public class FlyWheelShoot extends Command {
   private final FlywheelSubsystem flywheelSubsystem;
   private final LimeLightSubsystem limeLight;
   private final IntakeSubsystem intakeSubsystem;
+  private final XboxController xboxController1;
+  private final XboxController xboxController2;
   private int counter = 0;
   private int seconds = 0;
 
   private double isPressed = 0;
-  public FlyWheelShoot(FlywheelSubsystem flywheelSubsystem, LimeLightSubsystem limeLight, IntakeSubsystem intakeSubsystem) {
+  public FlyWheelShoot(
+    FlywheelSubsystem flywheelSubsystem,
+    LimeLightSubsystem limeLight,
+    IntakeSubsystem intakeSubsystem,
+    XboxController xboxController1,
+    XboxController xboxController2) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.flywheelSubsystem = flywheelSubsystem;
     this.limeLight = limeLight;
     this.intakeSubsystem = intakeSubsystem;
+    this.xboxController1 = xboxController1;
+    this.xboxController2 = xboxController2;
     addRequirements(flywheelSubsystem);
     addRequirements(intakeSubsystem);
     addRequirements(limeLight);
@@ -45,6 +55,7 @@ public class FlyWheelShoot extends Command {
   @Override
   public void initialize() {
     // flywheelSubsystem.setFlywheelMotorSpeed(.4); //some speed so that it has an easier time getting up to speed
+    intakeSubsystem.rumbleController(xboxController2);
     
   }
 
@@ -75,6 +86,7 @@ public class FlyWheelShoot extends Command {
     flywheelSubsystem.stopFlywheel();
     intakeSubsystem.backupIntakeMotor(0);
     counter = 0;
+
   }
 
   // Returns true when the command should end.

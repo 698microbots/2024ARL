@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import frc.robot.commands.AutoCenterSpeaker;
 import frc.robot.commands.MoveHanger;
+import frc.robot.commands.TESTAutoArm;
 import frc.robot.commands.AutoArm;
 import frc.robot.commands.AutoCenterAmp;
 import frc.robot.commands.AutoCenterNoteAndIntake;
@@ -117,8 +118,7 @@ public class RobotContainer {
             .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
 
-    //default arm command, move it with 2nd controller    
-    arm.setDefaultCommand(new TESTMoveArm(arm, () -> joystick2.getRightY() * .3));
+
 
     //brake mode
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
@@ -133,7 +133,7 @@ public class RobotContainer {
     //backup intake
     joystick.x().whileTrue(new BackUpIntake(intake));
 
-    joystick.leftTrigger().whileTrue(new FlyWheelShoot(flyWheel, limeLight, intake));
+    joystick.leftTrigger().whileTrue(new FlyWheelShoot(flyWheel, limeLight, intake, xboxController, xboxController2));
     /**
      * 
      * 2nd driver commands\
@@ -147,8 +147,8 @@ public class RobotContainer {
       () -> xboxController2.getRightBumper()));
 
 
-    //default flywheel command, sets the speed either .5 or 1 based on which autospeaker or autoamp is called, will run reguardless if either is chosen but is decided by setScoringAmpFlywheel() in flywheel class
-
+    //default arm command, move it with 2nd controller    
+    arm.setDefaultCommand(new TESTMoveArm(arm, () -> joystick2.getLeftY() * .3));
     //reverse intake
     joystick2.a().whileTrue(new IntakeMove(xboxController, xboxController2, intake, limeLight, true, lights));
 
@@ -156,15 +156,15 @@ public class RobotContainer {
     joystick2.y().whileTrue(new AutoCenterAmp(drivetrain, () -> joystick2.getLeftY(), () -> joystick2.getLeftX(), MaxSpeed, limeLight));
 
     //auto center with speaker and move arm accordingly
-      joystick2.x().whileTrue(
-          new AutoCenterSpeaker(
-              () -> joystick.getLeftX() * MaxSpeed,
-              () -> joystick.getLeftY() * MaxSpeed,
-              drivetrain,
-              limeLight,
-              MaxAngularRate,
-              flyWheel,
-              arm));
+      // joystick2.x().whileTrue(
+      //     new AutoCenterSpeaker(
+      //         () -> joystick.getLeftX() * MaxSpeed,
+      //         () -> joystick.getLeftY() * MaxSpeed,
+      //         drivetrain,
+      //         limeLight,
+      //         MaxAngularRate,
+      //         flyWheel,
+      //         arm));
 
     // //auto center with note and run intake when close enough, this is probably gonna have CAN bad errors
        joystick2.b().whileTrue(new AutoCenterNoteAndIntake(
@@ -195,7 +195,7 @@ public class RobotContainer {
     // joystick2.b().whileTrue(new MoveHanger(false, true, hanger));
     // joystick.y().whileTrue(new AutoCenterNoteAndIntake(() -> joystick.getLeftX() * MaxSpeed,
     //     () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight, MaxSpeed, intake));
-    
+    joystick2.x().whileTrue(new TESTAutoArm(arm));
 
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));

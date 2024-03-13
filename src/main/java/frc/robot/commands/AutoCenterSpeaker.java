@@ -92,6 +92,7 @@ private ArmSubsystem armSubsystem;
     angle = 0.5 * distance + 1;
     speed = pidControllerArm.calculate(armSubsystem.getEncoder(), angle);
     System.out.println("Scoring Speaker PID Speed: " + speed);
+    
   }
 
   // Called once the command ends or is interrupted.
