@@ -103,7 +103,7 @@ private XboxController xbox1, xbox2;
   @Override
   public void end(boolean interrupted) {
     intakeSubsystem.setIntakeMotor(0);
-
+    
   }
 
   // Returns true when the command should end.
