@@ -29,12 +29,12 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void setIntakeMotor(double speed) {
-    if (!getBlocked()) {
-      IntakeMotor.set(-speed);
-      // System.out.println("setting motor");
-    } else {
+    if (getBlocked()) {
       IntakeMotor.set(0);
       // System.out.println("stopping motor");
+    } else {
+      IntakeMotor.set(-speed);
+      // System.out.println("setting motor");
     
     }
   }
@@ -73,6 +73,7 @@ public class IntakeSubsystem extends SubsystemBase {
   // }
 
   public boolean getBlocked() {
+<<<<<<< HEAD
     return (photoSensor.get() || photoSensor2.get());
   }
 
@@ -80,16 +81,27 @@ public class IntakeSubsystem extends SubsystemBase {
     if (getBlocked()){
       xboxController.setRumble(GenericHID.RumbleType.kBothRumble, value);
     }
+=======
+    return !photoSensor.get();
+  }
+
+  public boolean getBlocked2(){
+    return !photoSensor2.get();
+>>>>>>> c26d483da18930921f927a3e50e1b2941d881a38
   }
 
   public void rumbleController(XboxController xboxController) {
-    if (photoSensor.get()){
+    if (getBlocked()){
       xboxController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
       System.out.println("rumbling");
     } else {
       xboxController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
       System.out.println("no rumble");
     }
+  }
+
+  public void stopRumble(XboxController xboxController){
+    xboxController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
   }
   
   // public void setLights(){
