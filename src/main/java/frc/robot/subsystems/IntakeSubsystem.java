@@ -73,7 +73,6 @@ public class IntakeSubsystem extends SubsystemBase {
   // }
 
   public boolean getBlocked() {
-<<<<<<< HEAD
     return (photoSensor.get() || photoSensor2.get());
   }
 
@@ -81,13 +80,7 @@ public class IntakeSubsystem extends SubsystemBase {
     if (getBlocked()){
       xboxController.setRumble(GenericHID.RumbleType.kBothRumble, value);
     }
-=======
     return !photoSensor.get();
-  }
-
-  public boolean getBlocked2(){
-    return !photoSensor2.get();
->>>>>>> c26d483da18930921f927a3e50e1b2941d881a38
   }
 
   public void rumbleController(XboxController xboxController) {
