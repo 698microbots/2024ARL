@@ -21,8 +21,9 @@ public class LightSubsystem extends SubsystemBase {
     candle.configAllSettings(config);    
   }
 
-  public void setLights(int r, int b, int g){
+  public void setLights(int r, int b, int g, double brightnessScalar){
     candle.setLEDs(r, g, b);
+    candle.configBrightnessScalar(brightnessScalar);
   }
   @Override
   public void periodic() {

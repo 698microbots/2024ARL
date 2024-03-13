@@ -22,6 +22,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private final CANSparkMax IntakeMotor = new CANSparkMax(15, CANSparkMax.MotorType.kBrushless);
   // Initializes a DigitalInput on DIO 0
   private final DigitalInput photoSensor = new DigitalInput(2); //TODO - make this a constant
+  private final DigitalInput photoSensor2 = new DigitalInput(1); //TODO - make this a constant
   private final CANdle candle = new CANdle(0);
   private boolean canRun = true;
 
@@ -71,11 +72,11 @@ public class IntakeSubsystem extends SubsystemBase {
   // }
 
   public boolean getBlocked() {
-    return photoSensor.get();
+    return (photoSensor.get() || photoSensor2.get());
   }
 
   public void rumbleController(XboxController xboxController, int value) {
-    if (photoSensor.get()){
+    if (getBlocked()){
       xboxController.setRumble(GenericHID.RumbleType.kBothRumble, value);
     }
   }

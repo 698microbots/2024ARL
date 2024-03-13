@@ -72,14 +72,14 @@ private XboxController xbox1, xbox2;
     // System.out.println(limeLightSubsystem.getNoteHorizontalAngle());
     if (intakeSubsystem.getBlocked()){
       intakeSubsystem.setCanRun(false);
-      lightSubsystem.setLights(Constants.colorRGBIntake[0], Constants.colorRGBIntake[1], Constants.colorRGBIntake[2]);
+      lightSubsystem.setLights(Constants.colorRGBIntake[0], Constants.colorRGBIntake[1], Constants.colorRGBIntake[2], .5);
       intakeSubsystem.rumbleController(xbox1, 1);
       intakeSubsystem.rumbleController(xbox2, 1);      
       System.out.println("IS BLOCKED");
     } else {
       intakeSubsystem.setCanRun(true);
       System.out.println("IS NOT BLOCKED");
-      lightSubsystem.setLights(0, 0, 0);
+      lightSubsystem.setLights(0, 0, 0, .5);
 
     }
     
