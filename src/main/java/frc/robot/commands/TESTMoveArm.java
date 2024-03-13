@@ -7,6 +7,7 @@ package frc.robot.commands;
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.ArmSubsystem;
 
 public class TESTMoveArm extends Command {
@@ -14,6 +15,8 @@ public class TESTMoveArm extends Command {
   private final ArmSubsystem armSubsystem; 
   private Supplier<Double> ySpeed;
   private double speed = 0;
+  private int counter = 0;
+
   public TESTMoveArm(ArmSubsystem armSubsystem, Supplier<Double> ySpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.armSubsystem = armSubsystem;
@@ -31,6 +34,7 @@ public class TESTMoveArm extends Command {
   public void execute() {
     speed = ySpeed.get();
     armSubsystem.moveArm(speed * .3);
+    counter++;
   }
 
   // Called once the command ends or is interrupted.
@@ -40,6 +44,9 @@ public class TESTMoveArm extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if (counter > Constants.numSeconds(2)) {
+      return true;
+    }
   }
+
 }

@@ -208,11 +208,16 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    // return Commands.print("No autonomous command configured");
-    PathPlannerPath path = PathPlannerPath.fromPathFile("autotest");
-    // return new TESTauto(drivetrain, 5);
-    // return drivetrain.applyRequest(null);
-    return AutoBuilder.followPath(path);
-    
+    // // return Commands.print("No autonomous command configured");
+    // PathPlannerPath path = PathPlannerPath.fromPathFile("autotest");
+    // // return new TESTauto(drivetrain, 5);
+    // // return drivetrain.applyRequest(null);
+    // return AutoBuilder.followPath(path);
+
+    return new SequentialCommandGroup(
+      new AutoCenterNoteAndIntake(() -> joystick.getLeftX() * MaxSpeed, () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight, MaxSpeed, intake, lights, xboxController2, xboxController, 2);
+    );
+
+
   }
 }
