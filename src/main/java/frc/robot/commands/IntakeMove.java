@@ -18,18 +18,19 @@ public class IntakeMove extends Command { // TODO - add CANdle (led strips) func
   private final IntakeSubsystem intakeSubsystem;
   private final LimeLightSubsystem limelight;
   private final LightSubsystem lightSubsystem;
-  // private  boolean yes = false;
+  // private boolean yes = false;
   private int counter = 0;
   private boolean reverse;
   private XboxController xboxController1;
-    private XboxController xboxController2;
+  private XboxController xboxController2;
+
   public IntakeMove(
-    XboxController xboxController1, 
-    XboxController xboxController2, 
-    IntakeSubsystem intakeSubsystem, 
-    LimeLightSubsystem limelight, 
-    boolean reverse,
-    LightSubsystem lightSubsystem) {
+      XboxController xboxController1,
+      XboxController xboxController2,
+      IntakeSubsystem intakeSubsystem,
+      LimeLightSubsystem limelight,
+      boolean reverse,
+      LightSubsystem lightSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intakeSubsystem = intakeSubsystem;
     this.limelight = limelight;
@@ -40,18 +41,19 @@ public class IntakeMove extends Command { // TODO - add CANdle (led strips) func
     // this.yes = yes;
     addRequirements(intakeSubsystem);
     addRequirements(limelight);
-    
+
   }
 
   // public IntakeMove(IntakeSubsystem intakeSubsystem) {
-  //   // Use addRequirements() here to declare subsystem dependencies.
-  //   this.intakeSubsystem = intakeSubsystem;
-  //   addRequirements(intakeSubsystem);
-    
-  // }  
+  // // Use addRequirements() here to declare subsystem dependencies.
+  // this.intakeSubsystem = intakeSubsystem;
+  // addRequirements(intakeSubsystem);
+
+  // }
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override

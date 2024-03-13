@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.led.CANdle;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -18,11 +19,8 @@ public class IntakeSubsystem extends SubsystemBase {
   // Initializes a DigitalInput on DIO 0
   private final DigitalInput photoSensor = new DigitalInput(2); //TODO - make this a constant
   private final DigitalInput photoSensor2 = new DigitalInput(1); //TODO - make this a constant
-<<<<<<< HEAD
   private final CANdle candle = new CANdle(0);
-=======
   
->>>>>>> a985dbb6f364028a8465e4b0944bb2626ffdbd75
   private boolean canRun = true;
 
 
