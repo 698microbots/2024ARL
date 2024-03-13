@@ -117,7 +117,6 @@ public class AutoCenterNoteAndIntake extends Command {
       } 
     intakeSubsystem.rumbleController(xbox2);   
     angle = limeLightSubsystem.getNoteHorizontalAngle(); 
-    double rotationSpeed = pidController.calculate(angle,0);
     if (Math.abs(maxRotationSpeed) > 1 ){
       maxRotationSpeed = 1 * Math.signum(maxRotationSpeed);
     }
@@ -139,7 +138,7 @@ public class AutoCenterNoteAndIntake extends Command {
   @Override
   public boolean isFinished() {
     if (counter < Constants.numSeconds(numSeconds)) {
-      return true;\
+      return true;
     }
   }
 }
