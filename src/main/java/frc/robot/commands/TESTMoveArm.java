@@ -47,6 +47,7 @@ public class TESTMoveArm extends Command {
     if (counter > Constants.numSeconds(2)) {
       return true;
     }
+    return false;
   }
 
 }

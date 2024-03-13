@@ -139,6 +139,7 @@ public class AutoCenterNoteAndIntake extends Command {
   public boolean isFinished() {
     if (counter < Constants.numSeconds(numSeconds)) {
       return true;
-    }
+    } else {}
+  return false;
   }
 }

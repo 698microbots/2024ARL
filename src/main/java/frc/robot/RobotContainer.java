@@ -215,8 +215,8 @@ public class RobotContainer {
     // return AutoBuilder.followPath(path);
 
     return new SequentialCommandGroup(
-      new AutoCenterNoteAndIntake(() -> joystick.getLeftX() * MaxSpeed, () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight, MaxSpeed, intake, lights, xboxController2, xboxController, 2);
-    );
+      new IntakeMove(xboxController, xboxController2, intake, limeLight, false, lights)
+    )
 
 
   }
