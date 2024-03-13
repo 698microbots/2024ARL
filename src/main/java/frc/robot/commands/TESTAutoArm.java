@@ -11,7 +11,7 @@ import frc.robot.subsystems.ArmSubsystem;
 public class TESTAutoArm extends Command {
   /** Creates a new TESTAutoArm. */
   private final ArmSubsystem armSubsystem;
-  private final PIDController pidController = new PIDController(0.04, 0, 0);
+  private final PIDController pidController = new PIDController(1.1, 0, 0.0);
   public TESTAutoArm(ArmSubsystem armSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.\
     this.armSubsystem = armSubsystem;
@@ -26,8 +26,9 @@ public class TESTAutoArm extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = pidController.calculate(armSubsystem.getEncoder(), .317);
-    System.out.println(speed);
+    double speed = pidController.calculate(armSubsystem.getEncoder(), .39);
+    System.out.println("arm encoder: " + armSubsystem.getEncoder());
+    armSubsystem.moveArm(-speed);
   }
 
   // Called once the command ends or is interrupted.

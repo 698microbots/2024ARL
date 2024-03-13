@@ -84,6 +84,8 @@ public class Robot extends TimedRobot {
     
     SmartDashboard.putNumber("horizontal angle", m_robotContainer.limeLight.getH_angle());
     SmartDashboard.putNumber("arm encoder", m_robotContainer.arm.getEncoder());
+
+    SmartDashboard.putNumber("distance to speaker", m_robotContainer.limeLight.getDistToSpeaker())
  // says this is null when
                                                                                              // simulating
   

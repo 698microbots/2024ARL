@@ -58,28 +58,41 @@ public class RobotContainer {
   private double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
   public XboxController xboxController = new XboxController(0); // new XBox object
   public XboxController xboxController2 = new XboxController(1); // new XBox object
-  
+
   /*
    * 
-   * TODO: MaxAngularRate really effects driving in a straight line, if its too slow then swerve will drift off to the side in which its turning
+   * TODO: MaxAngularRate really effects driving in a straight line, if its too
+   * slow then swerve will drift off to the side in which its turning
    * Might have to desaturate wheel speeds in the SwerveRequest Class
    */
 
   // button definitions
-  // private final JoystickButton Xbutton = new JoystickButton(xboxController, Constants.Xbox_Button_X);
-  // private final JoystickButton Ybutton = new JoystickButton(xboxController, Constants.Xbox_Button_Y);
-  // private final JoystickButton Abutton = new JoystickButton(xboxController, Constants.Xbox_Button_A);
-  // private final JoystickButton Bbutton = new JoystickButton(xboxController, Constants.Xbox_Button_B);
-  // private final JoystickButton RBbutton = new JoystickButton(xboxController, Constants.Xbox_Button_RB);
-  // private final JoystickButton LBbutton = new JoystickButton(xboxController, Constants.Xbox_Button_LB);
+  // private final JoystickButton Xbutton = new JoystickButton(xboxController,
+  // Constants.Xbox_Button_X);
+  // private final JoystickButton Ybutton = new JoystickButton(xboxController,
+  // Constants.Xbox_Button_Y);
+  // private final JoystickButton Abutton = new JoystickButton(xboxController,
+  // Constants.Xbox_Button_A);
+  // private final JoystickButton Bbutton = new JoystickButton(xboxController,
+  // Constants.Xbox_Button_B);
+  // private final JoystickButton RBbutton = new JoystickButton(xboxController,
+  // Constants.Xbox_Button_RB);
+  // private final JoystickButton LBbutton = new JoystickButton(xboxController,
+  // Constants.Xbox_Button_LB);
 
-  // private final JoystickButton Xbutton2 = new JoystickButton(xboxController2, Constants.Xbox_Button_X);
-  // private final JoystickButton Ybutton2 = new JoystickButton(xboxController2, Constants.Xbox_Button_Y);
-  // private final JoystickButton Abutton2 = new JoystickButton(xboxController2, Constants.Xbox_Button_A);
-  // private final JoystickButton Bbutton2 = new JoystickButton(xboxController2, Constants.Xbox_Button_B);
-  // private final JoystickButton RBbutton2 = new JoystickButton(xboxController2, Constants.Xbox_Button_RB);
-  // private final JoystickButton LBbutton2 = new JoystickButton(xboxController2, Constants.Xbox_Button_LB);
-  
+  // private final JoystickButton Xbutton2 = new JoystickButton(xboxController2,
+  // Constants.Xbox_Button_X);
+  // private final JoystickButton Ybutton2 = new JoystickButton(xboxController2,
+  // Constants.Xbox_Button_Y);
+  // private final JoystickButton Abutton2 = new JoystickButton(xboxController2,
+  // Constants.Xbox_Button_A);
+  // private final JoystickButton Bbutton2 = new JoystickButton(xboxController2,
+  // Constants.Xbox_Button_B);
+  // private final JoystickButton RBbutton2 = new JoystickButton(xboxController2,
+  // Constants.Xbox_Button_RB);
+  // private final JoystickButton LBbutton2 = new JoystickButton(xboxController2,
+  // Constants.Xbox_Button_LB);
+
   /* Setting up bindings for necessary control of the swerve drive platform */
   public LimeLightSubsystem limeLight = new LimeLightSubsystem();
   public final CommandXboxController joystick = new CommandXboxController(0); // My joystick
@@ -100,17 +113,16 @@ public class RobotContainer {
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
   private final Telemetry logger = new Telemetry(MaxSpeed);
-  public Pose2d pose = drivetrain.getState().Pose; //could break the code 
+  public Pose2d pose = drivetrain.getState().Pose; // could break the code
   public final Field2d field2d = new Field2d();
-
-
 
   private SwerveModuleState[] states = drivetrain.getState().ModuleStates;
 
   private void configureBindings() {
     lights.setDefaultCommand(new AutoSetLEDS(lights));
-    //drive command
-    // flyWheel.setDefaultCommand(new FlyWheelShoot(flyWheel, limeLight, intake, () -> joystick.getLeftTriggerAxis()));
+    // drive command
+    // flyWheel.setDefaultCommand(new FlyWheelShoot(flyWheel, limeLight, intake, ()
+    // -> joystick.getLeftTriggerAxis()));
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
             // negative Y (forward)
@@ -118,19 +130,17 @@ public class RobotContainer {
             .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
 
-
-
-    //brake mode
+    // brake mode
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
 
-    //point wheels
+    // point wheels
     joystick.b().whileTrue(drivetrain
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
     // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
 
-    //backup intake
+    // backup intake
     joystick.x().whileTrue(new BackUpIntake(intake));
 
     joystick.leftTrigger().whileTrue(new FlyWheelShoot(flyWheel, limeLight, intake, xboxController, xboxController2));
@@ -140,61 +150,70 @@ public class RobotContainer {
      * 
      */
     hanger.setDefaultCommand(new MoveHanger(
-      hanger, 
-      () -> joystick2.getLeftTriggerAxis(), 
-      () -> joystick2.getRightTriggerAxis(), 
-      () -> xboxController2.getLeftBumper(), 
-      () -> xboxController2.getRightBumper()));
+        hanger,
+        () -> joystick2.getLeftTriggerAxis(),
+        () -> joystick2.getRightTriggerAxis(),
+        () -> xboxController2.getLeftBumper(),
+        () -> xboxController2.getRightBumper()));
 
-
-    //default arm command, move it with 2nd controller    
+    // default arm command, move it with 2nd controller
     arm.setDefaultCommand(new TESTMoveArm(arm, () -> joystick2.getLeftY() * .3));
-    //reverse intake
+    // reverse intake
     joystick2.a().whileTrue(new IntakeMove(xboxController, xboxController2, intake, limeLight, true, lights));
 
     // //auto amp sequence to move up to the amp and arm
-    joystick2.y().whileTrue(new AutoCenterAmp(drivetrain, () -> joystick2.getLeftY(), () -> joystick2.getLeftX(), MaxSpeed, limeLight));
+    joystick2.y().whileTrue(
+        new AutoCenterAmp(drivetrain, () -> joystick2.getLeftY(), () -> joystick2.getLeftX(), MaxSpeed, limeLight));
 
-    //auto center with speaker and move arm accordingly
-      // joystick2.x().whileTrue(
-      //     new AutoCenterSpeaker(
-      //         () -> joystick.getLeftX() * MaxSpeed,
-      //         () -> joystick.getLeftY() * MaxSpeed,
-      //         drivetrain,
-      //         limeLight,
-      //         MaxAngularRate,
-      //         flyWheel,
-      //         arm));
+    // auto center with speaker and move arm accordingly
+    // joystick2.x().whileTrue(
+    // new AutoCenterSpeaker(
+    // () -> joystick.getLeftX() * MaxSpeed,
+    // () -> joystick.getLeftY() * MaxSpeed,
+    // drivetrain,
+    // limeLight,
+    // MaxAngularRate,
+    // flyWheel,
+    // arm));
 
-    // //auto center with note and run intake when close enough, this is probably gonna have CAN bad errors
-       joystick2.b().whileTrue(new AutoCenterNoteAndIntake(
-        () -> joystick.getLeftX() * MaxSpeed, 
-        () -> joystick.getLeftY() * MaxSpeed, 
+    // //auto center with note and run intake when close enough, this is probably
+    // gonna have CAN bad errors
+    joystick2.b().whileTrue(new AutoCenterNoteAndIntake(
+        () -> joystick.getLeftX() * MaxSpeed,
+        () -> joystick.getLeftY() * MaxSpeed,
         drivetrain,
         limeLight,
-        MaxAngularRate, 
-        intake, 
-        lights, 
-        xboxController2, 
+        MaxAngularRate,
+        intake,
+        lights,
+        xboxController2,
         xboxController));
 
     ////////////////////////////////////////////////////////////////////////////////
 
-    // Xbutton.onTrue(new SequentialCommandGroup(new AutoCenter(), new SetFlywheelMotor()));
+    // Xbutton.onTrue(new SequentialCommandGroup(new AutoCenter(), new
+    // SetFlywheelMotor()));
 
-    // flyWheel.setDefaultCommand(new TESTFlywheel(flyWheel, () -> joystick2.getLeftY() * .85));    
-    // joystick.x().whileTrue(new AutoCenter(drivetrain, limeLight, MaxAngularRate));
-    // joystick.b().whileTrue(new AutoCenterNote(() -> joystick.getLeftX() * MaxSpeed, () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight));    
-    //RECOMENT ABOCE IF NOT WORKING
-    //TODO: this creates really weird can disabled errors for some reason: parallel command groups cannot use 2 of the same subsystems
+    // flyWheel.setDefaultCommand(new TESTFlywheel(flyWheel, () ->
+    // joystick2.getLeftY() * .85));
+    // joystick.x().whileTrue(new AutoCenter(drivetrain, limeLight,
+    // MaxAngularRate));
+    // joystick.b().whileTrue(new AutoCenterNote(() -> joystick.getLeftX() *
+    // MaxSpeed, () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight));
+    // RECOMENT ABOCE IF NOT WORKING
+    // TODO: this creates really weird can disabled errors for some reason: parallel
+    // command groups cannot use 2 of the same subsystems
     // joystick.y().whileTrue(new ParallelCommandGroup(
-    //   new AutoCenterNote(() -> joystick.getLeftX() * MaxSpeed, () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight),
-    //   new IntakeMove(intake, limeLight)
+    // new AutoCenterNote(() -> joystick.getLeftX() * MaxSpeed, () ->
+    // joystick.getLeftY() * MaxSpeed, drivetrain, limeLight),
+    // new IntakeMove(intake, limeLight)
     // ));
     // joystick.y().whileTrue(new TESTBrokenButtons());
     // joystick2.b().whileTrue(new MoveHanger(false, true, hanger));
-    // joystick.y().whileTrue(new AutoCenterNoteAndIntake(() -> joystick.getLeftX() * MaxSpeed,
-    //     () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight, MaxSpeed, intake));
+    // joystick.y().whileTrue(new AutoCenterNoteAndIntake(() -> joystick.getLeftX()
+    // * MaxSpeed,
+    // () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight, MaxSpeed,
+    // intake));
     joystick2.x().whileTrue(new TESTAutoArm(arm));
 
     if (Utils.isSimulation()) {
@@ -208,16 +227,14 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    // // return Commands.print("No autonomous command configured");
-    // PathPlannerPath path = PathPlannerPath.fromPathFile("autotest");
-    // // return new TESTauto(drivetrain, 5);
-    // // return drivetrain.applyRequest(null);
-    // return AutoBuilder.followPath(path);
+    // return Commands.print("No autonomous command configured");
+    PathPlannerPath path = PathPlannerPath.fromPathFile("autotest");
+    // return new TESTauto(drivetrain, 5);
+    // return drivetrain.applyRequest(null);
+    return AutoBuilder.followPath(path);
 
-    return new SequentialCommandGroup(
-      new IntakeMove(xboxController, xboxController2, intake, limeLight, false, lights)
-    )
 
+    
 
   }
 }

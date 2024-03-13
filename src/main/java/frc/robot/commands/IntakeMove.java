@@ -50,7 +50,7 @@ public class IntakeMove extends Command { // TODO - add CANdle (led strips) func
       IntakeSubsystem intakeSubsystem,
       LimeLightSubsystem limelight,
       boolean reverse,
-      LightSubsystem lightSubsystem, int numseconds) {
+      LightSubsystem lightSubsystem, int numSeconds) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intakeSubsystem = intakeSubsystem;
     this.limelight = limelight;
@@ -58,7 +58,7 @@ public class IntakeMove extends Command { // TODO - add CANdle (led strips) func
     this.xboxController1 = xboxController1;
     this.xboxController2 = xboxController2;
     this.lightSubsystem = lightSubsystem;
-    this.numSeconds = numseconds;
+    this.numSeconds = numSeconds;
     // this.yes = yes;
     addRequirements(intakeSubsystem);
     addRequirements(limelight);
