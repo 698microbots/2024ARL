@@ -58,7 +58,7 @@ public class IntakeMove extends Command { // TODO - add CANdle (led strips) func
   public void execute() {
   if (!reverse){
     if (intakeSubsystem.getBlocked()){
-      intakeSubsystem.setCanRun(false);, .5);
+      intakeSubsystem.setCanRun(false);
       counter++; //only invoke if need to have a delay, comment out the line above if you use this
       System.out.println("IS BLOCKED");
       intakeSubsystem.rumbleController(xboxController1, 1);
