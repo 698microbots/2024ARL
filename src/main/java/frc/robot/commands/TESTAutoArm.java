@@ -26,7 +26,7 @@ public class TESTAutoArm extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = pidController.calculate(armSubsystem.getEncoder(), .39);
+    double speed = pidController.calculate(armSubsystem.getEncoder(), .34);
     System.out.println("arm encoder: " + armSubsystem.getEncoder());
     armSubsystem.moveArm(-speed);
   }
