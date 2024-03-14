@@ -97,10 +97,10 @@ private IntakeSubsystem intakeSubsystem;
      */
     double distance = limeLightSubsystem.getV_angle();
     //    angle = -.0023 * distance + .3676; original
-    angle = -.0023 * distance + .39;
-    speed = pidControllerArm.calculate(armSubsystem.getEncoder(), angle);
-    System.out.println("Scoring Speaker PID Speed: " + speed);
-    armSubsystem.moveArm(-speed);   
+    double armAngle = -.0023 * distance + .39;
+    double armSpeed = pidControllerArm.calculate(armSubsystem.getEncoder(), armAngle);
+    // System.out.println("Scoring Speaker PID Speed: " + speed);
+    armSubsystem.moveArm(-armSpeed);   
 
 
     if (counter > Constants.numSeconds(2)){
@@ -111,18 +111,7 @@ private IntakeSubsystem intakeSubsystem;
       intakeSubsystem.backupIntakeMotor(.75);
     }
 
-    // if (leftTrigger.get() > .1){
-    //   flywheelSubsystem.setFlywheelMotorSpeed();
-    //   System.out.println("this one");
-    //   angle = -.0023 * distance + .3676;
-    //   speed = pidControllerArm.calculate(armSubsystem.getEncoder(), angle);
-    //   System.out.println("Scoring Speaker PID Speed: " + speed);
-    //   armSubsystem.moveArm(-speed);    
-    //   counterForFlywheel++;
-    //     if (counterForFlywheel > Constants.numSeconds(.5)){
-    //       intakeSubsystem.backupIntakeMotor(.75);
-    //     }
-    // }
+
   }
 
   // Called once the command ends or is interrupted.
