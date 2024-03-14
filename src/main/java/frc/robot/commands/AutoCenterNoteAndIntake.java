@@ -19,17 +19,19 @@ import frc.robot.subsystems.LimeLightSubsystem;
 
 public class AutoCenterNoteAndIntake extends Command {
   /** Creates a new AutoCenterNoteAndIntake. */
-private double angle;
-private PIDController pidController = new PIDController(.04, 0.01, 0.00); //kp as 0.05 works, everything else as 0
-//dont use I for pid
-private LimeLightSubsystem limeLightSubsystem;
-private CommandSwerveDrivetrain drivetrain;
-private final SwerveRequest.FieldCentric swerveCentric = new SwerveRequest.FieldCentric(); //might change this to swerve centric
-private double maxRotationSpeed;
-private Supplier<Double> ySpeed, xSpeed;
-private IntakeSubsystem intakeSubsystem; 
-private LightSubsystem lightSubsystem;
-private XboxController xbox1, xbox2;
+  private double angle;
+  private PIDController pidController = new PIDController(.04, 0.01, 0.00); // kp as 0.05 works, everything else as 0
+  // dont use I for pid
+  private LimeLightSubsystem limeLightSubsystem;
+  private CommandSwerveDrivetrain drivetrain;
+  private final SwerveRequest.FieldCentric swerveCentric = new SwerveRequest.FieldCentric(); // might change this to
+                                                                                             // swerve centric
+  private double maxRotationSpeed;
+  private Supplier<Double> ySpeed, xSpeed;
+  private IntakeSubsystem intakeSubsystem;
+  private LightSubsystem lightSubsystem;
+  private XboxController xbox1, xbox2;
+
   public AutoCenterNoteAndIntake(
       Supplier<Double> ySpeed,
       Supplier<Double> xSpeed,
@@ -50,26 +52,6 @@ private XboxController xbox1, xbox2;
     this.lightSubsystem = lightSubsystem;
     this.xbox1 = xbox1;
     this.xbox2 = xbox2;
-    addRequirements(lightSubsystem);
-    addRequirements(drivetrain);
-    addRequirements(intakeSubsystem);
-    addRequirements(limeLightSubsystem);
-  }
-
-  public AutoCenterNoteAndIntake(Supplier<Double> xSpeed, Supplier<Double> ySpeed, CommandSwerveDrivetrain drivetrain, LimeLightSubsystem limeLightSubsystem,
-      double maxRotationSpeed, IntakeSubsystem intakeSubsystem, LightSubsystem lightSubsystem, XboxController xbox2,
-      XboxController xbox1, int numSeconds) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    this.ySpeed = ySpeed;
-    this.xSpeed = xSpeed;
-    this.drivetrain = drivetrain;
-    this.limeLightSubsystem = limeLightSubsystem;
-    this.maxRotationSpeed = maxRotationSpeed;
-    this.intakeSubsystem = intakeSubsystem;
-    this.lightSubsystem = lightSubsystem;
-    this.xbox1 = xbox1;
-    this.xbox2 = xbox2;
-    this.numSeconds = numSeconds;
     addRequirements(lightSubsystem);
     addRequirements(drivetrain);
     addRequirements(intakeSubsystem);
@@ -110,32 +92,28 @@ private XboxController xbox1, xbox2;
     angle = limeLightSubsystem.getNoteHorizontalAngle();
     double rotationSpeed = pidController.calculate(angle, 0);
     if (Math.abs(maxRotationSpeed) > 1) {
-      } 
-    intakeSubsystem.rumbleController(xbox2);   
-    angle = limeLightSubsystem.getNoteHorizontalAngle(); 
-    if (Math.abs(maxRotationSpeed) > 1 ){
+    }
+    intakeSubsystem.rumbleController(xbox2);
+    angle = limeLightSubsystem.getNoteHorizontalAngle();
+    if (Math.abs(maxRotationSpeed) > 1) {
       maxRotationSpeed = 1 * Math.signum(maxRotationSpeed);
     }
 
     // System.out.println("Rotation Speed: " + rotationSpeed);
     // System.out.println("Angle: " + angle);
     drivetrain.setControl(swerveCentric.withVelocityX(-x).withVelocityY(-y).withRotationalRate(rotationSpeed));
-    counter++;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     intakeSubsystem.setIntakeMotor(0);
-    
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (counter < Constants.numSeconds(numSeconds)) {
-      return true;
-    } else {}
-  return false;
+    return false;
   }
 }
