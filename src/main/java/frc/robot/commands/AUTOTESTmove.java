@@ -10,17 +10,26 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.CommandSwerveDrivetrain;
 import frc.robot.Constants;
 
-public class TESTauto extends Command {
+public class AUTOTESTmove extends Command {
   /** Creates a new AutoTest. */
   private final CommandSwerveDrivetrain driveTrain;
   private int counter;
-  private final double seconds;
+  private final double seconds, x, y, theta;
   private final SwerveRequest.FieldCentric swerveRequest = new SwerveRequest.FieldCentric(); //type of field centric is in the class
   // private final SwerveRequestMODIFIED.FieldCentric s = new SwerveRequestMODIFIED.FieldCentric();
-  public TESTauto(CommandSwerveDrivetrain driveTrain, double seconds) {
+  public AUTOTESTmove(
+    CommandSwerveDrivetrain driveTrain, 
+    double seconds,
+    double x,
+    double y,
+    double theta
+    ) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.seconds = seconds;
     this.driveTrain = driveTrain;
+    this.x = x;
+    this.y = y;
+    this.theta = theta;
     addRequirements(driveTrain);
   }
 
@@ -35,10 +44,10 @@ public class TESTauto extends Command {
   public void execute() {
     // driveTrain.applyRequest(() -> swerveRequest.withVelocityX(0).withVelocityY(0).withRotationalRate(.5));
     //applyRequest RETURNS A COMMAND ()
-    driveTrain.setControl(swerveRequest.withVelocityX(1).withVelocityY(0).withRotationalRate(0));
+    driveTrain.setControl(swerveRequest.withVelocityX(x).withVelocityY(y).withRotationalRate(theta));
     
     counter++;
-    System.out.println("ITS RUNNING: " + counter);
+    // System.out.println("ITS RUNNING: " + counter);
 
 
 

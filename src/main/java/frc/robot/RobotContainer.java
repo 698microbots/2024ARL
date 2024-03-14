@@ -37,7 +37,7 @@ import frc.robot.commands.BackUpIntake;
 import frc.robot.commands.AutoPositionAmp;
 import frc.robot.commands.AutoSetLEDS;
 import frc.robot.commands.FlyWheelShoot;
-import frc.robot.commands.TESTauto;
+import frc.robot.commands.AUTOTESTmove;
 import frc.robot.commands.IntakeMove;
 import frc.robot.commands.TESTBrokenButtons;
 import frc.robot.commands.TESTFlywheel;
@@ -223,7 +223,8 @@ public class RobotContainer {
     // return AutoBuilder.followPath(path);
     // return runAuto;
     return new SequentialCommandGroup(
-      new TESTauto(drivetrain, 2)
+      new AUTOTESTmove(drivetrain, 1, 1, 0, 0)
+       
     );
   }
 }
