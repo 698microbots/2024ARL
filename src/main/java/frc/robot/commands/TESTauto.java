@@ -35,7 +35,7 @@ public class TESTauto extends Command {
   public void execute() {
     // driveTrain.applyRequest(() -> swerveRequest.withVelocityX(0).withVelocityY(0).withRotationalRate(.5));
     //applyRequest RETURNS A COMMAND ()
-    driveTrain.setControl(swerveRequest.withVelocityX(0).withVelocityY(0).withRotationalRate(01));
+    driveTrain.setControl(swerveRequest.withVelocityX(1).withVelocityY(0).withRotationalRate(0));
     
     counter++;
     System.out.println("ITS RUNNING: " + counter);

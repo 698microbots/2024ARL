@@ -14,24 +14,28 @@ import frc.robot.CommandSwerveDrivetrain;
 import frc.robot.Constants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 
 public class AutoCenterSpeaker extends Command {
 // Instance Variables
 
 private double angle;
-private final PIDController pidControllerCenter = new PIDController(.04, 0, 0.01); //kp as 0.05 works, everything else as 0
-private final PIDController pidControllerArm = new PIDController(0, 0, 0);
+private final PIDController pidControllerCenter = new PIDController(.04, 0.01, 0); //kp as 0.05 works, everything else as 0 I MADE IT SO MUCH SMOOTHER WTF??? (ty alex Nie)
+private final PIDController pidControllerArm = new PIDController(1.4, 0.01, 0);
 //dont use I for pid
 private LimeLightSubsystem limeLightSubsystem;
 private CommandSwerveDrivetrain drivetrain;
-private FlywheelSubsystem flywheelSubsystem;
 private boolean end = false;
 private double maxRotationSpeed;
-private final SwerveRequest.RobotCentric swerveCentric = new SwerveRequest.RobotCentric();
+private final SwerveRequest.FieldCentric swerveCentric = new SwerveRequest.FieldCentric();
 private int counter = 0;
-private Supplier<Double> ySpeed, xSpeed;
+private int counterForFlywheel = 0;
+private Supplier<Double> ySpeed, xSpeed, leftTrigger;
 private ArmSubsystem armSubsystem;
+private FlywheelSubsystem flywheelSubsystem;
+private IntakeSubsystem intakeSubsystem;
+
   /** Creates a new AutoCenter. */
   public AutoCenterSpeaker(
   Supplier<Double> ySpeed, 
@@ -39,26 +43,28 @@ private ArmSubsystem armSubsystem;
   CommandSwerveDrivetrain drivetrain,
   LimeLightSubsystem limeLightSubsystem, 
   double maxRotationSpeed, 
+  ArmSubsystem armSubsystem,
   FlywheelSubsystem flywheelSubsystem,
-  ArmSubsystem armSubsystem) {
+  IntakeSubsystem intakeSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.limeLightSubsystem = limeLightSubsystem;
     this.drivetrain = drivetrain;
     this.maxRotationSpeed = maxRotationSpeed;
-    this.flywheelSubsystem = flywheelSubsystem;
     this.xSpeed = xSpeed;
     this.ySpeed = ySpeed;
     this.armSubsystem = armSubsystem;
-    addRequirements(flywheelSubsystem);
+    this.flywheelSubsystem = flywheelSubsystem;
+    this.intakeSubsystem = intakeSubsystem;
     addRequirements(limeLightSubsystem);
     addRequirements(drivetrain);
     addRequirements(armSubsystem);
+    addRequirements(flywheelSubsystem);
+    addRequirements(intakeSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    flywheelSubsystem.setScoringAmpFlywheel(false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -77,28 +83,54 @@ private ArmSubsystem armSubsystem;
       end = true;
     }
 
-    System.out.println("Rotation Speed: " + speed);
-    System.out.println("Angle: " + angle);
+    // System.out.println("Rotation Speed: " + speed);
+    // System.out.println("Angle: " + angle);
     drivetrain.setControl(swerveCentric.withVelocityX(-x).withVelocityY(-y).withRotationalRate(speed));
     
     counter++;
     // distance = limeLightSubsystem.calculateZdistance(Constants.speakerTagHeightMeters);
-    double distance = limeLightSubsystem.getRelative3dBotPose().getZ();
+    // double distance = limeLightSubsystem.getRelative3dBotPose().getZ();
     /* In y = mx + b format (for now, could be a different graph type)
      *  x axis: Distance away from the speaker
      *  y axis: angle of the arm that allowed the note to go in
-     * 
+  
      */
-    angle = 0.5 * distance + 1;
+    double distance = limeLightSubsystem.getV_angle();
+    //    angle = -.0023 * distance + .3676; original
+    angle = -.0023 * distance + .39;
     speed = pidControllerArm.calculate(armSubsystem.getEncoder(), angle);
     System.out.println("Scoring Speaker PID Speed: " + speed);
-    
+    armSubsystem.moveArm(-speed);   
+
+
+    if (counter > Constants.numSeconds(2)){
+      flywheelSubsystem.setFlywheelMotorSpeed();
+    }
+
+    if (counter > Constants.numSeconds(2.5)){
+      intakeSubsystem.backupIntakeMotor(.75);
+    }
+
+    // if (leftTrigger.get() > .1){
+    //   flywheelSubsystem.setFlywheelMotorSpeed();
+    //   System.out.println("this one");
+    //   angle = -.0023 * distance + .3676;
+    //   speed = pidControllerArm.calculate(armSubsystem.getEncoder(), angle);
+    //   System.out.println("Scoring Speaker PID Speed: " + speed);
+    //   armSubsystem.moveArm(-speed);    
+    //   counterForFlywheel++;
+    //     if (counterForFlywheel > Constants.numSeconds(.5)){
+    //       intakeSubsystem.backupIntakeMotor(.75);
+    //     }
+    // }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
+    counter = 0;
+    flywheelSubsystem.stopFlywheel();
+    intakeSubsystem.backupIntakeMotor(0);
   }
 
   // Returns true when the command should end.

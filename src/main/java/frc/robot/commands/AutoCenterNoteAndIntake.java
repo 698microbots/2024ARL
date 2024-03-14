@@ -19,21 +19,17 @@ import frc.robot.subsystems.LimeLightSubsystem;
 
 public class AutoCenterNoteAndIntake extends Command {
   /** Creates a new AutoCenterNoteAndIntake. */
-  private double angle;
-  private PIDController pidController = new PIDController(.04, 0, 0.001); // kp as 0.05 works, everything else as 0
-  // dont use I for pid
-  private LimeLightSubsystem limeLightSubsystem;
-  private CommandSwerveDrivetrain drivetrain;
-  private final SwerveRequest.FieldCentric swerveCentric = new SwerveRequest.FieldCentric(); // might change this to
-                                                                                             // swerve centric
-  private double maxRotationSpeed;
-  private Supplier<Double> ySpeed, xSpeed;
-  private IntakeSubsystem intakeSubsystem;
-  private LightSubsystem lightSubsystem;
-  private XboxController xbox1, xbox2;
-  private int counter = 0;
-  private int numSeconds;
-
+private double angle;
+private PIDController pidController = new PIDController(.04, 0.01, 0.00); //kp as 0.05 works, everything else as 0
+//dont use I for pid
+private LimeLightSubsystem limeLightSubsystem;
+private CommandSwerveDrivetrain drivetrain;
+private final SwerveRequest.FieldCentric swerveCentric = new SwerveRequest.FieldCentric(); //might change this to swerve centric
+private double maxRotationSpeed;
+private Supplier<Double> ySpeed, xSpeed;
+private IntakeSubsystem intakeSubsystem; 
+private LightSubsystem lightSubsystem;
+private XboxController xbox1, xbox2;
   public AutoCenterNoteAndIntake(
       Supplier<Double> ySpeed,
       Supplier<Double> xSpeed,
@@ -131,7 +127,7 @@ public class AutoCenterNoteAndIntake extends Command {
   @Override
   public void end(boolean interrupted) {
     intakeSubsystem.setIntakeMotor(0);
-
+    
   }
 
   // Returns true when the command should end.

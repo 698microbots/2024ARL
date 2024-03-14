@@ -88,8 +88,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("distance to speaker", m_robotContainer.limeLight.getDistToSpeaker());
  // says this is null when
                                                                                              // simulating
-  
-
+    SmartDashboard.putNumber("distance to speaker", m_robotContainer.limeLight.getDistToSpeaker());
+    SmartDashboard.putNumber("v angle", m_robotContainer.limeLight.getV_angle());;//just giving directly from limelight
   
   }
 

@@ -8,11 +8,11 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ArmSubsystem;
 
-public class TESTAutoArm extends Command {
+public class SetAutoArm extends Command {
   /** Creates a new TESTAutoArm. */
   private final ArmSubsystem armSubsystem;
-  private final PIDController pidController = new PIDController(1.1, 0, 0.0);
-  public TESTAutoArm(ArmSubsystem armSubsystem) {
+  private final PIDController pidController = new PIDController(1.4, 0, 0);
+  public SetAutoArm(ArmSubsystem armSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.\
     this.armSubsystem = armSubsystem;
     addRequirements(armSubsystem);
@@ -27,7 +27,6 @@ public class TESTAutoArm extends Command {
   @Override
   public void execute() {
     double speed = pidController.calculate(armSubsystem.getEncoder(), .34);
-    System.out.println("arm encoder: " + armSubsystem.getEncoder());
     armSubsystem.moveArm(-speed);
   }
 

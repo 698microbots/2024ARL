@@ -16,7 +16,7 @@ import frc.robot.subsystems.LimeLightSubsystem;
 public class AutoCenterAmp extends Command {
   /** Creates a new AutoCenterAmp. */
   private double angle;
-  private PIDController pidControllerCenter = new PIDController(.04, 0, 0.001); //kp as 0.05 works, everything else as 0
+  private PIDController pidControllerCenter = new PIDController(.04, 0.01, 0.0); //kp as 0.05 works, everything else as 0
   private Supplier<Double> xSpeed, ySpeed;
   private double maxRotationSpeed;
   private boolean end = false;

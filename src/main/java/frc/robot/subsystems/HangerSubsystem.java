@@ -29,4 +29,6 @@ public class HangerSubsystem extends SubsystemBase {
         int bChange = 255 - (Constants.colorRGBHangerBlue[2]) / 5;
         int gChange = 255 - (Constants.colorRGBHangerBlue[1]) / 5;
     }
+
+
 }

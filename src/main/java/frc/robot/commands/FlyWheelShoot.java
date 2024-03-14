@@ -6,6 +6,8 @@ package frc.robot.commands;
 
 import java.util.function.Supplier;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
+
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
@@ -16,31 +18,45 @@ import frc.robot.subsystems.LimeLightSubsystem;
 public class FlyWheelShoot extends Command {
   /** Creates a new AutoFlyWheelShoot. */
   private final FlywheelSubsystem flywheelSubsystem;
-  private final LimeLightSubsystem limeLight;
   private final IntakeSubsystem intakeSubsystem;
   private final XboxController xboxController1;
   private final XboxController xboxController2;
   private int counter = 0;
   private int seconds = 0;
-
+  private Supplier<Double> leftTrigger;
   private double isPressed = 0;
+  private boolean ampShoot;
+  // public FlyWheelShoot(
+  //   FlywheelSubsystem flywheelSubsystem,
+  //   IntakeSubsystem intakeSubsystem,
+  //   XboxController xboxController1,
+  //   XboxController xboxController2,
+  //   boolean ampShoot) {
+  //   // Use addRequirements() here to declare subsystem dependencies.
+  //   this.flywheelSubsystem = flywheelSubsystem;
+  //   this.intakeSubsystem = intakeSubsystem;
+  //   this.xboxController1 = xboxController1;
+  //   this.xboxController2 = xboxController2;
+  //   this.ampShoot = ampShoot;
+  //   addRequirements(flywheelSubsystem);
+  //   addRequirements(intakeSubsystem);
+  // }
+
   public FlyWheelShoot(
     FlywheelSubsystem flywheelSubsystem,
-    LimeLightSubsystem limeLight,
     IntakeSubsystem intakeSubsystem,
     XboxController xboxController1,
-    XboxController xboxController2) {
+    XboxController xboxController2,
+    Supplier<Double> leftTrigger) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.flywheelSubsystem = flywheelSubsystem;
-    this.limeLight = limeLight;
     this.intakeSubsystem = intakeSubsystem;
     this.xboxController1 = xboxController1;
     this.xboxController2 = xboxController2;
+    this.leftTrigger = leftTrigger;
     addRequirements(flywheelSubsystem);
     addRequirements(intakeSubsystem);
-    addRequirements(limeLight);
-  }
-
+  }  
   // public AutoFlyWheelShoot(FlywheelSubsystem flywheelSubsystem, LimeLightSubsystem limeLight, IntakeSubsystem intakeSubsystem, int seconds) {
   //   // Use addRequirements() here to declare subsystem dependencies.
     
@@ -55,7 +71,6 @@ public class FlyWheelShoot extends Command {
   @Override
   public void initialize() {
     // flywheelSubsystem.setFlywheelMotorSpeed(.4); //some speed so that it has an easier time getting up to speed
-    intakeSubsystem.rumbleController(xboxController2);
     
   }
 
@@ -67,11 +82,17 @@ public class FlyWheelShoot extends Command {
     // y axis is motorSpeed (for both motors)
     // might include a calculate angle if needed but most likely not needed    
     //we are probably not gonna do this ^ instead just set the motors either to 100% or 50%
-      flywheelSubsystem.setFlywheelMotorSpeed();
+    double trigger= leftTrigger.get();
+    if (trigger > .1){
+    flywheelSubsystem.setFlywheelMotorSpeed();
       counter++;
       if (counter > Constants.numSeconds(.5)){
         intakeSubsystem.backupIntakeMotor(.75);
       }
+    } else {
+      flywheelSubsystem.stopFlywheel();
+      intakeSubsystem.backupIntakeMotor(0);
+    }
     
     // double speed = limeLight.calculateZdistance(Constants.speakerTagHeightMeters) * .5 + 1; 
 
@@ -85,6 +106,7 @@ public class FlyWheelShoot extends Command {
   public void end(boolean interrupted) {
     flywheelSubsystem.stopFlywheel();
     intakeSubsystem.backupIntakeMotor(0);
+    intakeSubsystem.stopRumble(xboxController2);
     counter = 0;
 
   }
