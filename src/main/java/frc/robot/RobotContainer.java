@@ -27,7 +27,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import frc.robot.commands.AutoCenterSpeaker;
 import frc.robot.commands.MoveHanger;
-import frc.robot.commands.TESTAutoArm;
+import frc.robot.commands.SetAutoArm;
 import frc.robot.commands.AutoArm;
 import frc.robot.commands.AutoCenterAmp;
 import frc.robot.commands.AutoCenterNoteAndIntake;
@@ -41,7 +41,7 @@ import frc.robot.commands.TESTauto;
 import frc.robot.commands.IntakeMove;
 import frc.robot.commands.TESTBrokenButtons;
 import frc.robot.commands.TESTFlywheel;
-import frc.robot.commands.TESTIntakeMove;
+import frc.robot.commands.AUTOTESTIntakeMove;
 import frc.robot.commands.TESTMoveArm;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
@@ -103,6 +103,7 @@ public class RobotContainer {
   public Pose2d pose = drivetrain.getState().Pose; //could break the code 
   public final Field2d field2d = new Field2d();
 
+  private Command runAuto = drivetrain.getAutoPath("Test Auto");
 
 
   private SwerveModuleState[] states = drivetrain.getState().ModuleStates;
@@ -119,7 +120,6 @@ public class RobotContainer {
         ));
 
 
-
     //brake mode
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
 
@@ -133,7 +133,7 @@ public class RobotContainer {
     //backup intake
     joystick.x().whileTrue(new BackUpIntake(intake));
 
-    joystick.leftTrigger().whileTrue(new FlyWheelShoot(flyWheel, limeLight, intake, xboxController, xboxController2));
+    joystick.leftTrigger().whileTrue(new FlyWheelShoot(flyWheel, intake, xboxController, xboxController2, () -> joystick.getLeftTriggerAxis()));
     /**
      * 
      * 2nd driver commands\
@@ -156,15 +156,23 @@ public class RobotContainer {
     joystick2.y().whileTrue(new AutoCenterAmp(drivetrain, () -> joystick2.getLeftY(), () -> joystick2.getLeftX(), MaxSpeed, limeLight));
 
     //auto center with speaker and move arm accordingly
-      // joystick2.x().whileTrue(
-      //     new AutoCenterSpeaker(
-      //         () -> joystick.getLeftX() * MaxSpeed,
-      //         () -> joystick.getLeftY() * MaxSpeed,
-      //         drivetrain,
-      //         limeLight,
-      //         MaxAngularRate,
-      //         flyWheel,
-      //         arm));
+      joystick2.x().whileTrue(
+           new AutoCenterSpeaker(
+              () -> joystick.getLeftX() * MaxSpeed,
+              () -> joystick.getLeftY() * MaxSpeed,
+              drivetrain,
+              limeLight,
+              MaxAngularRate,
+              arm,
+              flyWheel,
+              intake)
+               
+      );
+
+
+
+
+
 
     // //auto center with note and run intake when close enough, this is probably gonna have CAN bad errors
        joystick2.b().whileTrue(new AutoCenterNoteAndIntake(
@@ -195,7 +203,7 @@ public class RobotContainer {
     // joystick2.b().whileTrue(new MoveHanger(false, true, hanger));
     // joystick.y().whileTrue(new AutoCenterNoteAndIntake(() -> joystick.getLeftX() * MaxSpeed,
     //     () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight, MaxSpeed, intake));
-    joystick2.x().whileTrue(new TESTAutoArm(arm));
+    // joystick2.x().whileTrue(new SetAutoArm(arm));
 
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
@@ -209,10 +217,13 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     // return Commands.print("No autonomous command configured");
-    PathPlannerPath path = PathPlannerPath.fromPathFile("autotest");
-    // return new TESTauto(drivetrain, 5);
-    // return drivetrain.applyRequest(null);
-    return AutoBuilder.followPath(path);
-    
+    // PathPlannerPath path = PathPlannerPath.fromPathFile("New Auto");
+    // // return new TESTauto(drivetrain, 5);
+    // // return drivetrain.applyRequest(null);
+    // return AutoBuilder.followPath(path);
+    // return runAuto;
+    return new SequentialCommandGroup(
+      new TESTauto(drivetrain, 2)
+    );
   }
 }

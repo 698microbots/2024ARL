@@ -23,4 +23,6 @@ public class HangerSubsystem extends SubsystemBase {
     public void setHangerMotorTwo(double speed) {
         HangerMotorTwo.set(speed);        
     }
+
+
 }

@@ -5,20 +5,19 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.FlywheelSubsystem;
+import frc.robot.Constants;
 import frc.robot.subsystems.IntakeSubsystem;
 
-public class TESTIntakeMove extends Command {
-  /** Creates a new TESTIntakeMove. */
+public class PPIntakeIn extends Command {
+  /** Creates a new PPIntakeIn. */
   private final IntakeSubsystem intakeSubsystem;
-  private final FlywheelSubsystem flywheelSubsystem;
-  private double counter = 0;
-  public TESTIntakeMove(IntakeSubsystem intakeSubsystem, FlywheelSubsystem flywheelSubsystem) {
+  private double seconds;
+  private int counter = 0;
+  public PPIntakeIn(IntakeSubsystem intakeSubsystem, double seconds) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intakeSubsystem = intakeSubsystem;
-    this.flywheelSubsystem = flywheelSubsystem;
+    this.seconds = seconds;
     addRequirements(intakeSubsystem);
-    addRequirements(flywheelSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -28,19 +27,24 @@ public class TESTIntakeMove extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intakeSubsystem.reverseIntakeMotor(-.75);
-    System.out.println("reversed intake");
+    counter++;
+    intakeSubsystem.setIntakeMotor(.75);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intakeSubsystem.reverseIntakeMotor(0);
+    intakeSubsystem.backupIntakeMotor(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if (counter > Constants.numSeconds(seconds)){
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 }
