@@ -222,17 +222,9 @@ public class RobotContainer {
     // ));
     // joystick.y().whileTrue(new TESTBrokenButtons());
     // joystick2.b().whileTrue(new MoveHanger(false, true, hanger));
-<<<<<<< HEAD
-    // joystick.y().whileTrue(new AutoCenterNoteAndIntake(() -> joystick.getLeftX()
-    // * MaxSpeed,
-    // () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight, MaxSpeed,
-    // intake));
-    joystick2.x().whileTrue(new TESTAutoArm(arm));
-=======
     // joystick.y().whileTrue(new AutoCenterNoteAndIntake(() -> joystick.getLeftX() * MaxSpeed,
     //     () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight, MaxSpeed, intake));
     // joystick2.x().whileTrue(new SetAutoArm(arm));
->>>>>>> 550ea76aff54c2d203b70ce1d38b97984545d3d8
 
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
@@ -246,16 +238,6 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     // return Commands.print("No autonomous command configured");
-<<<<<<< HEAD
-    PathPlannerPath path = PathPlannerPath.fromPathFile("autotest");
-    // return new TESTauto(drivetrain, 5);
-    // return drivetrain.applyRequest(null);
-    return AutoBuilder.followPath(path);
-
-
-    
-
-=======
     // PathPlannerPath path = PathPlannerPath.fromPathFile("New Auto");
     // // return new TESTauto(drivetrain, 5);
     // // return drivetrain.applyRequest(null);
@@ -264,6 +246,5 @@ public class RobotContainer {
     return new SequentialCommandGroup(
       new TESTauto(drivetrain, 2)
     );
->>>>>>> 550ea76aff54c2d203b70ce1d38b97984545d3d8
   }
 }

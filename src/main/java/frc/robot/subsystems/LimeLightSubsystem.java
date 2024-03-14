@@ -204,25 +204,4 @@ public class LimeLightSubsystem extends SubsystemBase {
   // public void setLight(boolean on) {
   // limeLight.getEntry("ledMode").setNumber(1);
   // }
-
-  public double getDistToSpeaker() {
-
-
-    // how many degrees back is your limelight rotated from perfectly vertical?
-    double limelightMountAngleDegrees = 20.0;
-
-    // distance from the center of the Limelight lens to the floor
-    double limelightLensHeightInches = 10.5;
-
-    // distance from the target to the floor
-    double goalHeightInches = 54.88;
-
-    double angleToGoalDegrees = limelightMountAngleDegrees + getV_angle();
-    double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180.0);
-
-    // calculate distance
-    double distanceFromLimelightToGoalInches = (goalHeightInches - limelightLensHeightInches)
-        / Math.tan(angleToGoalRadians);
-    return distanceFromLimelightToGoalInches;
-  }
 }
