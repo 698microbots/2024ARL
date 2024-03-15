@@ -60,12 +60,14 @@ public class AUTOTESTautoArmShoot extends Command {
     double speed = pidControllerCenter.calculate(limeLightSubsystem.getH_angle(),0);
     drivetrain.setControl(swerveRequest.withRotationalRate(speed));
     counter++;
-    double distance = limeLightSubsystem.getV_angle();
-    //    angle = -.0023 * distance + .3676; original
-    double armAngle = -.0023 * distance + .361;
-    double armSpeed = pidControllerArm.calculate(armSubsystem.getEncoder(), armAngle);
-    // System.out.println("Scoring Speaker PID Speed: " + speed);
-    armSubsystem.moveArm(-armSpeed); 
+    // double distance = limeLightSubsystem.getV_angle();
+    // //    angle = -.0023 * distance + .3676; original
+    // double armAngle = -.0023 * distance + .361;
+    // double armSpeed = pidControllerArm.calculate(armSubsystem.getEncoder(), armAngle);
+    // // System.out.println("Scoring Speaker PID Speed: " + speed);
+    double armSpeed = pidControllerArm.calculate(armSubsystem.getEncoder(), Constants.encoderTrap);
+    armSubsystem.moveArm(-armSpeed);
+
     if (counter > Constants.numSeconds(2)){
       flywheelSubsystem.setFlywheelMotorSpeed();
     }

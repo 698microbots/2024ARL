@@ -42,7 +42,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private TalonFX motor3 = new TalonFX(5);
     private TalonFX motor4 = new TalonFX(6);
     
-    private CurrentLimitsConfigs config1 = new CurrentLimitsConfigs().withStatorCurrentLimit(60);
+    private CurrentLimitsConfigs config1 = new CurrentLimitsConfigs().withStatorCurrentLimit(40); // tis is used for current limiting
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency, SwerveModuleConstants... modules) {
         super(driveTrainConstants, OdometryUpdateFrequency, modules);
         configurePathPlanner();
