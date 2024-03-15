@@ -57,7 +57,7 @@ import frc.robot.subsystems.driveTrainVoltages;
 import frc.robot.subsystems.HangerSubsystem;
 
 public class RobotContainer {
-  private double MaxSpeed = 4.0; // 6 meters per second desired top speed (6 origin)
+  private double MaxSpeed = 3.0; // 6 meters per second desired top speed (6 origin)
   private double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
   public XboxController xboxController = new XboxController(0); // new XBox object
   public XboxController xboxController2 = new XboxController(1); // new XBox object
@@ -234,7 +234,7 @@ public class RobotContainer {
     // );
 
     return new SequentialCommandGroup(
-      new AUTOTESTmove(drivetrain, 2, 0, 0, 2 * Math.PI)
+      new AUTOTESTmove(drivetrain, 2, 0, 1, 0)
     );
 
 

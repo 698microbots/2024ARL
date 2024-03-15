@@ -2,7 +2,10 @@ package frc.robot;
 
 import java.util.function.Supplier;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
@@ -34,13 +37,23 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private double m_lastSimTime;
     private final SwerveRequest.ApplyChassisSpeeds autoRequest = new SwerveRequest.ApplyChassisSpeeds();
 
-
+    private TalonFX motor1 = new TalonFX(1);
+    private TalonFX motor2 = new TalonFX(3);
+    private TalonFX motor3 = new TalonFX(5);
+    private TalonFX motor4 = new TalonFX(6);
+    
+    private CurrentLimitsConfigs config1 = new CurrentLimitsConfigs().withStatorCurrentLimit(60);
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency, SwerveModuleConstants... modules) {
         super(driveTrainConstants, OdometryUpdateFrequency, modules);
         configurePathPlanner();
         if (Utils.isSimulation()) {
             startSimThread();
         }
+        motor1.getConfigurator().apply(config1);
+        motor2.getConfigurator().apply(config1);
+        motor3.getConfigurator().apply(config1);
+        motor4.getConfigurator().apply(config1);
+
     }
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
@@ -48,6 +61,10 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         if (Utils.isSimulation()) {
             startSimThread();
         }
+        motor1.getConfigurator().apply(config1);
+        motor2.getConfigurator().apply(config1);
+        motor3.getConfigurator().apply(config1);
+        motor4.getConfigurator().apply(config1);        
     }
     // TODO: try to add desaturate wheel speeds by adding a new SwerveDriveTrain
     // public void setControl(SwerveRequestMODIFIED request) {
