@@ -226,16 +226,33 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
+
+    // return new SequentialCommandGroup( //auto seq one
+    //   new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
+    //   new AUTOTESTmove(drivetrain, 1, 1, 0, 1),
+    //   new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 2, 1, 0 , 0)
+    // );
+
+    return new SequentialCommandGroup(
+      new AUTOTESTmove(drivetrain, 2, 0, 0, 2 * Math.PI)
+    );
+
+
+
+
+
+
+
+
+
+
+
+
     // return Commands.print("No autonomous command configured");
     // PathPlannerPath path = PathPlannerPath.fromPathFile("New Auto");
     // // return new TESTauto(drivetrain, 5);
     // // return drivetrain.applyRequest(null);
     // return AutoBuilder.followPath(path);
-    // return runAuto;
-    return new SequentialCommandGroup(
-      new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
-      new AUTOTESTmove(drivetrain, 2, 1, 0, 0),
-      new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 2, 1, 0 , 0)
-    );
+    // return runAuto;    
   }
 }
