@@ -35,6 +35,7 @@ import frc.robot.commands.BROKENAutoCenterNoteAndIntake;
 import frc.robot.commands.BackUpIntake;
 
 import frc.robot.commands.AutoPositionAmp;
+import frc.robot.commands.AutoScoreTrap;
 import frc.robot.commands.AutoSetLEDS;
 import frc.robot.commands.FlyWheelShoot;
 import frc.robot.commands.AUTOTESTmove;
@@ -42,6 +43,8 @@ import frc.robot.commands.IntakeMove;
 import frc.robot.commands.TESTBrokenButtons;
 import frc.robot.commands.TESTFlywheel;
 import frc.robot.commands.AUTOTESTIntakeMove;
+import frc.robot.commands.AUTOTESTIntakeMoveAndDriveTrain;
+import frc.robot.commands.AUTOTESTautoArmShoot;
 import frc.robot.commands.TESTMoveArm;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
@@ -54,7 +57,7 @@ import frc.robot.subsystems.driveTrainVoltages;
 import frc.robot.subsystems.HangerSubsystem;
 
 public class RobotContainer {
-  private double MaxSpeed = 1.0; // 6 meters per second desired top speed (6 origin)
+  private double MaxSpeed = 4.0; // 6 meters per second desired top speed (6 origin)
   private double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
   public XboxController xboxController = new XboxController(0); // new XBox object
   public XboxController xboxController2 = new XboxController(1); // new XBox object
@@ -137,9 +140,11 @@ public class RobotContainer {
     //brake mode
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
 
-    // point wheels
-    joystick.b().whileTrue(drivetrain
-        .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
+    //point wheels
+    // joystick.b().whileTrue(drivetrain
+    //     .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
+    //fixed trap angle
+    joystick.b().whileTrue(new AutoScoreTrap(arm));
 
     // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
@@ -153,16 +158,18 @@ public class RobotContainer {
      * 2nd driver commands\
      * 
      */
+    //hanger commands
     hanger.setDefaultCommand(new MoveHanger(
-        hanger,
-        () -> joystick2.getLeftTriggerAxis(),
-        () -> joystick2.getRightTriggerAxis(),
-        () -> xboxController2.getLeftBumper(),
+        hanger, 
+        () -> joystick2.getLeftTriggerAxis(), 
+        () -> joystick2.getRightTriggerAxis(), 
+        () -> xboxController2.getLeftBumper(), 
         () -> xboxController2.getRightBumper()));
 
     // default arm command, move it with 2nd controller
     arm.setDefaultCommand(new TESTMoveArm(arm, () -> joystick2.getLeftY() * .3));
-    // reverse intake
+    
+    //reverse intake
     joystick2.a().whileTrue(new IntakeMove(xboxController, xboxController2, intake, limeLight, true, lights));
 
     // //auto amp sequence to move up to the amp and arm
@@ -183,23 +190,25 @@ public class RobotContainer {
                
       );
 
-
-
-
-
-
-    // //auto center with note and run intake when close enough, this is probably
-    // gonna have CAN bad errors
-    joystick2.b().whileTrue(new AutoCenterNoteAndIntake(
-        () -> joystick.getLeftX() * MaxSpeed,
-        () -> joystick.getLeftY() * MaxSpeed,
-        drivetrain,
-        limeLight,
-        MaxAngularRate,
-        intake,
-        lights,
-        xboxController2,
-        xboxController));
+    // //auto center with note and run intake when close enough, this is probably gonna have CAN bad errors
+      //  joystick2.b().whileTrue(new AutoCenterNoteAndIntake(
+      //   () -> joystick.getLeftX() * MaxSpeed, 
+      //   () -> joystick.getLeftY() * MaxSpeed, 
+      //   drivetrain,
+      //   limeLight,
+      //   MaxAngularRate, 
+      //   intake, 
+      //   lights, 
+      //   xboxController2, 
+      //   xboxController));
+      joystick2.b().whileTrue(
+        new IntakeMove(
+          xboxController, 
+          xboxController2, 
+          intake, limeLight,
+           false, 
+           lights)
+      );
 
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -244,8 +253,9 @@ public class RobotContainer {
     // return AutoBuilder.followPath(path);
     // return runAuto;
     return new SequentialCommandGroup(
-      new AUTOTESTmove(drivetrain, 1, 1, 0, 0)
-       
+      new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
+      new AUTOTESTmove(drivetrain, 2, 1, 0, 0),
+      new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 2, 1, 0 , 0)
     );
   }
 }

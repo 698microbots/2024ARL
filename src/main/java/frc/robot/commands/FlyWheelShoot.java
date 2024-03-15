@@ -86,7 +86,7 @@ public class FlyWheelShoot extends Command {
     if (trigger > .1){
     flywheelSubsystem.setFlywheelMotorSpeed();
       counter++;
-      if (counter > Constants.numSeconds(.5)){
+      if (counter > Constants.numSeconds(1.5)){
         intakeSubsystem.backupIntakeMotor(.75);
       }
     } else {

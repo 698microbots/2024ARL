@@ -62,7 +62,7 @@ public class AUTOTESTautoArmShoot extends Command {
     
     double distance = limeLightSubsystem.getV_angle();
     //    angle = -.0023 * distance + .3676; original
-    double armAngle = -.0023 * distance + .39;
+    double armAngle = -.0023 * distance + .4;
     double armSpeed = pidControllerArm.calculate(armSubsystem.getEncoder(), armAngle);
     // System.out.println("Scoring Speaker PID Speed: " + speed);
     armSubsystem.moveArm(-armSpeed); 
@@ -71,7 +71,7 @@ public class AUTOTESTautoArmShoot extends Command {
     }
 
     if (counter > Constants.numSeconds(2.5)){
-      intakeSubsystem.backupIntakeMotor(.75);
+      intakeSubsystem.backupIntakeMotor(.9);
     }    
   }
 

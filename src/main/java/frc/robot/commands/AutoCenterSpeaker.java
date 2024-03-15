@@ -97,7 +97,7 @@ private IntakeSubsystem intakeSubsystem;
      */
     double distance = limeLightSubsystem.getV_angle();
     //    angle = -.0023 * distance + .3676; original
-    double armAngle = -.0023 * distance + .39;
+    double armAngle = -.0023 * distance + .36;
     double armSpeed = pidControllerArm.calculate(armSubsystem.getEncoder(), armAngle);
     // System.out.println("Scoring Speaker PID Speed: " + speed);
     armSubsystem.moveArm(-armSpeed);   
