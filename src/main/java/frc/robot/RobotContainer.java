@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import javax.print.attribute.standard.JobHoldUntil;
+
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
@@ -14,6 +16,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -40,6 +43,7 @@ import frc.robot.commands.AutoSetLEDS;
 import frc.robot.commands.FlyWheelShoot;
 import frc.robot.commands.AUTOTESTmove;
 import frc.robot.commands.IntakeMove;
+import frc.robot.commands.JoystickLimitDrive;
 import frc.robot.commands.TESTBrokenButtons;
 import frc.robot.commands.TESTFlywheel;
 import frc.robot.commands.AUTOTESTIntakeMove;
@@ -129,12 +133,13 @@ public class RobotContainer {
     // drive command
     // flyWheel.setDefaultCommand(new FlyWheelShoot(flyWheel, limeLight, intake, ()
     // -> joystick.getLeftTriggerAxis()));
-    drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-        drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
-            // negative Y (forward)
-            .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-            .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
-        ));
+    // drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
+    //     drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
+    //         // negative Y (forward)
+    //         .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+    //         .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+    //     ));
+    drivetrain.setDefaultCommand(new JoystickLimitDrive(drivetrain, () -> joystick.getLeftX(), () -> joystick.getLeftY(), () -> joystick.getRightX(), MaxSpeed, MaxAngularRate));
 
 
     //brake mode
