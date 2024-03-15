@@ -57,7 +57,7 @@ import frc.robot.subsystems.driveTrainVoltages;
 import frc.robot.subsystems.HangerSubsystem;
 
 public class RobotContainer {
-  private double MaxSpeed = 4.0; // 6 meters per second desired top speed (6 origin)
+  private double MaxSpeed = 3.0; // 6 meters per second desired top speed (6 origin)
   private double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
   public XboxController xboxController = new XboxController(0); // new XBox object
   public XboxController xboxController2 = new XboxController(1); // new XBox object
@@ -246,16 +246,33 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
+
+    // return new SequentialCommandGroup( //auto seq one
+    //   new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
+    //   new AUTOTESTmove(drivetrain, 1, 1, 0, 1),
+    //   new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 2, 1, 0 , 0)
+    // );
+
+    return new SequentialCommandGroup(
+      new AUTOTESTmove(drivetrain, 2, 0, 1, 0)
+    );
+
+
+
+
+
+
+
+
+
+
+
+
     // return Commands.print("No autonomous command configured");
     // PathPlannerPath path = PathPlannerPath.fromPathFile("New Auto");
     // // return new TESTauto(drivetrain, 5);
     // // return drivetrain.applyRequest(null);
     // return AutoBuilder.followPath(path);
-    // return runAuto;
-    return new SequentialCommandGroup(
-      new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
-      new AUTOTESTmove(drivetrain, 2, 1, 0, 0),
-      new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 2, 1, 0 , 0)
-    );
+    // return runAuto;    
   }
 }
