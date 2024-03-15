@@ -44,6 +44,7 @@ import frc.robot.commands.TESTBrokenButtons;
 import frc.robot.commands.TESTFlywheel;
 import frc.robot.commands.AUTOTESTIntakeMove;
 import frc.robot.commands.AUTOTESTIntakeMoveAndDriveTrain;
+import frc.robot.commands.AUTOTESTarmDown;
 import frc.robot.commands.AUTOTESTautoArmShoot;
 import frc.robot.commands.TESTMoveArm;
 import frc.robot.generated.TunerConstants;
@@ -57,8 +58,8 @@ import frc.robot.subsystems.driveTrainVoltages;
 import frc.robot.subsystems.HangerSubsystem;
 
 public class RobotContainer {
-  private double MaxSpeed = 3.0; // 6 meters per second desired top speed (6 origin)
-  private double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
+  private double MaxSpeed = 2.9; // 6 meters per second desired top speed (6 origin)
+  private double MaxAngularRate = 1.3 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
   public XboxController xboxController = new XboxController(0); // new XBox object
   public XboxController xboxController2 = new XboxController(1); // new XBox object
   
@@ -154,7 +155,7 @@ public class RobotContainer {
 
 
     //default arm command, move it with 2nd controller    
-    arm.setDefaultCommand(new TESTMoveArm(arm, () -> joystick2.getLeftY() * .3));
+    arm.setDefaultCommand(new TESTMoveArm(arm, () -> joystick2.getLeftY() * .6));
     
     //reverse intake
     joystick2.a().whileTrue(new IntakeMove(xboxController, xboxController2, intake, limeLight, true, lights));
@@ -233,12 +234,21 @@ public class RobotContainer {
     //   new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 2, 1, 0 , 0)
     // );
 
+    // return new SequentialCommandGroup(
+    //   new AUTOTESTmove(drivetrain, 5, 0, 0, 2)
+    // );
+
+    //shoots note infront of speaker drives back picks up note and shoots again
     return new SequentialCommandGroup(
-      new AUTOTESTmove(drivetrain, 2, 0, 1, 0)
+      new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
+      new ParallelCommandGroup(
+        new AUTOTESTarmDown(arm),
+        new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 1.5, -1, 0, 0)
+      ),
+      new AUTOTESTmove(drivetrain, 1.5, 1, 0, 0), 
+      new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2)
+
     );
-
-
-
 
 
 
