@@ -41,8 +41,15 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private TalonFX motor2 = new TalonFX(3);
     private TalonFX motor3 = new TalonFX(5);
     private TalonFX motor4 = new TalonFX(6);
+
     
+    private TalonFX Tmotor1 = new TalonFX(0);
+    private TalonFX Tmotor2 = new TalonFX(2);
+    private TalonFX Tmotor3 = new TalonFX(4);
+    private TalonFX Tmotor4 = new TalonFX(7);    
     private CurrentLimitsConfigs config1 = new CurrentLimitsConfigs().withStatorCurrentLimit(40); // tis is used for current limiting
+    private CurrentLimitsConfigs config2 = new CurrentLimitsConfigs().withStatorCurrentLimit(20); // tis is used for current limiting
+   
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency, SwerveModuleConstants... modules) {
         super(driveTrainConstants, OdometryUpdateFrequency, modules);
         configurePathPlanner();
@@ -53,6 +60,11 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         motor2.getConfigurator().apply(config1);
         motor3.getConfigurator().apply(config1);
         motor4.getConfigurator().apply(config1);
+       
+        Tmotor1.getConfigurator().apply(config2);
+        Tmotor2.getConfigurator().apply(config2);
+        Tmotor3.getConfigurator().apply(config2);
+        Tmotor4.getConfigurator().apply(config2);        
 
     }
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
@@ -64,7 +76,12 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         motor1.getConfigurator().apply(config1);
         motor2.getConfigurator().apply(config1);
         motor3.getConfigurator().apply(config1);
-        motor4.getConfigurator().apply(config1);        
+        motor4.getConfigurator().apply(config1);      
+       
+        Tmotor1.getConfigurator().apply(config2);
+        Tmotor2.getConfigurator().apply(config2);
+        Tmotor3.getConfigurator().apply(config2);
+        Tmotor4.getConfigurator().apply(config2);        
     }
     // TODO: try to add desaturate wheel speeds by adding a new SwerveDriveTrain
     // public void setControl(SwerveRequestMODIFIED request) {

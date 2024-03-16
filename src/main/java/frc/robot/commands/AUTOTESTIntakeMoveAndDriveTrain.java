@@ -45,6 +45,7 @@ public class AUTOTESTIntakeMoveAndDriveTrain extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    counter++;
     intakeSubsystem.setIntakeMotor(.75);
     drivetrain.setControl(swerveRequest.withVelocityX(x).withVelocityY(y).withRotationalRate(theta));
   }

@@ -12,12 +12,12 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
-public class AutoScoreTrap extends Command {
+public class AutoScoreSpeakerArm extends Command {
   /** Creates a new AutoScoreTrap. */
   private final ArmSubsystem armSubsystem;
   private final PIDController pidControllerArm = new PIDController(1.4, 0.01, 0);
   private int counter = 0;
-  public AutoScoreTrap(
+  public AutoScoreSpeakerArm(
     ArmSubsystem armSubsystem
     ) {
     // Use addRequirements() here to declare subsystem dependencies.
