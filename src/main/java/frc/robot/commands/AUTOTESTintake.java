@@ -5,17 +5,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
-import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
-public class AUTOTESTarmDown extends Command {
-  /** Creates a new AUTOTESTarmDown. */
-  private final ArmSubsystem armSubsystem;
+public class AUTOTESTintake extends Command {
+  /** Creates a new AUTOTESTintake. */
+  private final IntakeSubsystem intakeSubsystem;
+  private double seconds;
   private int counter = 0;
-  public AUTOTESTarmDown(ArmSubsystem armSubsystem) {
+  public AUTOTESTintake(IntakeSubsystem intakeSubsystem, double seconds) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.armSubsystem = armSubsystem;
-    addRequirements(armSubsystem);
+    this.intakeSubsystem = intakeSubsystem;
+    this.seconds = seconds;
+    addRequirements(null);
   }
 
   // Called when the command is initially scheduled.
@@ -24,25 +25,15 @@ public class AUTOTESTarmDown extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    counter++;
-    armSubsystem.moveArm(.4);
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    armSubsystem.moveArm(0);
-
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (counter > Constants.numSeconds(.1)){
-      return true;
-    } else {
-      return false;
-    }
+    return false;
   }
 }

@@ -38,9 +38,10 @@ import frc.robot.commands.BROKENAutoCenterNoteAndIntake;
 import frc.robot.commands.BackUpIntake;
 
 import frc.robot.commands.AutoPositionAmp;
-import frc.robot.commands.AutoScoreTrap;
+import frc.robot.commands.AutoScoreSpeakerArm;
 import frc.robot.commands.AutoSetLEDS;
 import frc.robot.commands.FlyWheelShoot;
+import frc.robot.commands.FlywheelShootAmp;
 import frc.robot.commands.AUTOTESTmove;
 import frc.robot.commands.IntakeMove;
 import frc.robot.commands.JoystickLimitDrive;
@@ -150,7 +151,7 @@ public class RobotContainer {
     // joystick.b().whileTrue(drivetrain
     //     .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
     //fixed trap angle
-    joystick.b().whileTrue(new AutoScoreTrap(arm));
+    joystick.b().whileTrue(new AutoScoreSpeakerArm(arm));
 
     // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
@@ -158,7 +159,11 @@ public class RobotContainer {
     // backup intake
     joystick.x().whileTrue(new BackUpIntake(intake));
 
+    //speaker score
     joystick.leftTrigger().whileTrue(new FlyWheelShoot(flyWheel, intake, xboxController, xboxController2, () -> joystick.getLeftTriggerAxis()));
+    
+    //amp score
+    joystick.rightTrigger().whileTrue(new FlywheelShootAmp(flyWheel, intake));
     /**
      * 
      * 2nd driver commands\
@@ -260,23 +265,36 @@ public class RobotContainer {
     //   new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 2, 1, 0 , 0)
     // );
 
+    //(0 note) move out of alliance 
     // return new SequentialCommandGroup(
-    //   new AUTOTESTmove(drivetrain, 5, 0, 0, 2)
+    //   new AUTOTESTmove(drivetrain, 2, -1, 0, 0)
     // );
 
-    //shoots note infront of speaker drives back picks up note and shoots again
+    //(2 note) shoots note infront of speaker drives back picks up note and shoots again,then moves out of alliance
     return new SequentialCommandGroup(
       new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
-      new ParallelCommandGroup(
-        new AUTOTESTarmDown(arm),
-        new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 1.5, -1, 0, 0)
-      ),
-      new AUTOTESTmove(drivetrain, 1.5, 1, 0, 0), 
-      new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2)
-
+      new AUTOTESTarmDown(arm),
+      new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 1.75, 1, 0, 0),
+      new AUTOTESTmove(drivetrain, 1.75, -1, 0, 0), 
+      new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
+      new AUTOTESTarmDown(arm),
+      new AUTOTESTmove(drivetrain, 2.5, 1, 0, 0)
     );
 
+    //(1 note)
+    // return new SequentialCommandGroup(
+    //   new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
+    //   new AUTOTESTarmDown(arm),
+    //   new AUTOTESTmove(drivetrain, 2, 1, 0, 0)
+    // );
 
+    // //(2 note) shoots note picks up another note and shots again, amp side
+    // return new SequentialCommandGroup(
+    //   new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
+    //   new AUTOTESTarmDown(arm),
+    //   new AUTOTESTmove(drivetrain, 1, 0, 1, Math.PI * .5),
+    //   new 
+    // );
 
 
 

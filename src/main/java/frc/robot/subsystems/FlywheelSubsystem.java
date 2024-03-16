@@ -15,15 +15,17 @@ public class FlywheelSubsystem extends SubsystemBase{
     }
 
     // sets the motor speed for the Flywheel
-    public void setFlywheelMotorSpeed() {
+    public void setFlywheelMotorSpeed(double speed) {
         
-        if(scoreAmp){
-            motor1.set(Constants.ampFlywheelSpeed); //chage these to constants
-            motor2.set(Constants.ampFlywheelSpeed);
-        } else {
-            motor1.set(Constants.speakerScoringSpeed);
-            motor2.set(Constants.speakerScoringSpeed);
-        }         
+        // if(scoreAmp){
+        //     motor1.set(Constants.ampFlywheelSpeed); //chage these to constants
+        //     motor2.set(Constants.ampFlywheelSpeed);
+        // } else {
+        //     motor1.set(Constants.speakerScoringSpeed);
+        //     motor2.set(Constants.speakerScoringSpeed);
+        // }  
+        motor1.set(-speed); 
+        motor2.set(-speed);      
     }
 
     public void stopFlywheel() {

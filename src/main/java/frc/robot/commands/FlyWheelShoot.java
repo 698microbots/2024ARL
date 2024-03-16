@@ -84,9 +84,9 @@ public class FlyWheelShoot extends Command {
     //we are probably not gonna do this ^ instead just set the motors either to 100% or 50%
     double trigger= leftTrigger.get();
     if (trigger > .1){
-    flywheelSubsystem.setFlywheelMotorSpeed();
+    flywheelSubsystem.setFlywheelMotorSpeed(1);
       counter++;
-      if (counter > Constants.numSeconds(.5)){
+      if (counter > Constants.numSeconds(.4)){
         intakeSubsystem.backupIntakeMotor(.75);
       }
     } else {

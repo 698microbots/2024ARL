@@ -101,7 +101,7 @@ public class IntakeMove extends Command { // TODO - add CANdle (led strips) func
     // }
   
   } else {
-    intakeSubsystem.reverseIntakeMotor(.75);
+    intakeSubsystem.reverseIntakeMotor(.9);
   }
     
     // if (counter > Constants.numSeconds(1.5)) {

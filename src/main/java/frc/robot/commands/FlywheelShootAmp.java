@@ -5,17 +5,19 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
-import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.FlywheelSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
-public class AUTOTESTarmDown extends Command {
-  /** Creates a new AUTOTESTarmDown. */
-  private final ArmSubsystem armSubsystem;
-  private int counter = 0;
-  public AUTOTESTarmDown(ArmSubsystem armSubsystem) {
+public class FlywheelShootAmp extends Command {
+  private final FlywheelSubsystem flywheelSubsystem;
+  private final IntakeSubsystem intakeSubsystem;
+  /** Creates a new FlywheelShootAmp. */
+  public FlywheelShootAmp(FlywheelSubsystem flywheelSubsystem, IntakeSubsystem intakeSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.armSubsystem = armSubsystem;
-    addRequirements(armSubsystem);
+    this.flywheelSubsystem = flywheelSubsystem;
+    this.intakeSubsystem = intakeSubsystem;
+    addRequirements(flywheelSubsystem);
+    addRequirements(intakeSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -25,24 +27,20 @@ public class AUTOTESTarmDown extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    counter++;
-    armSubsystem.moveArm(.4);
+    intakeSubsystem.backupIntakeMotor(.75);
+    flywheelSubsystem.setFlywheelMotorSpeed(.5);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    armSubsystem.moveArm(0);
-
+    intakeSubsystem.backupIntakeMotor(0);
+    flywheelSubsystem.stopFlywheel();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (counter > Constants.numSeconds(.1)){
-      return true;
-    } else {
-      return false;
-    }
+    return false;
   }
 }
