@@ -69,7 +69,7 @@ public class AUTOTESTautoArmShoot extends Command {
     armSubsystem.moveArm(-armSpeed);
 
     if (counter > Constants.numSeconds(2)){
-      flywheelSubsystem.setFlywheelMotorSpeed();
+      flywheelSubsystem.setFlywheelMotorSpeed(1);
     }
 
     if (counter > Constants.numSeconds(2.5)){

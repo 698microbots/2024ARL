@@ -33,8 +33,8 @@ public class TunerConstants {
     private static final ClosedLoopOutputType driveClosedLoopOutput = ClosedLoopOutputType.Voltage;
 
     // The stator current at which the wheels start to slip;
-    // This needs to be tuned to your individual robot
-    private static final double kSlipCurrentA = 300.0;
+    // This needs to be tuned to your individual robot WHAT CAUSES INSANE P
+    private static final double kSlipCurrentA = 60.0;
 
     // Theoretical free speed (m/s) at 12v applied output;
     // This needs to be tuned to your individual robot

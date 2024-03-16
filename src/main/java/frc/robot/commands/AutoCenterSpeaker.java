@@ -104,7 +104,7 @@ private IntakeSubsystem intakeSubsystem;
 
 
     if (counter > Constants.numSeconds(2)){
-      flywheelSubsystem.setFlywheelMotorSpeed();
+      flywheelSubsystem.setFlywheelMotorSpeed(1);
     }
 
     if (counter > Constants.numSeconds(2.5)){
