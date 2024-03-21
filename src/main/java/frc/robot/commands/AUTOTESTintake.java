@@ -16,7 +16,7 @@ public class AUTOTESTintake extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intakeSubsystem = intakeSubsystem;
     this.seconds = seconds;
-    addRequirements(null);
+    addRequirements(intakeSubsystem);
   }
 
   // Called when the command is initially scheduled.

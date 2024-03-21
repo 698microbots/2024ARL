@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import javax.print.attribute.standard.JobHoldUntil;
-
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
@@ -17,7 +15,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -37,7 +34,7 @@ import frc.robot.commands.AutoCenterAmp;
 import frc.robot.commands.AutoCenterNoteAndIntake;
 import frc.robot.commands.BROKENAutoCenterNoteAndIntake;
 import frc.robot.commands.BackUpIntake;
-
+import frc.robot.commands.DriveSlowMode;
 import frc.robot.commands.AutoPositionAmp;
 import frc.robot.commands.AutoScoreSpeakerArm;
 import frc.robot.commands.AutoSetLEDS;
@@ -45,7 +42,6 @@ import frc.robot.commands.FlyWheelShoot;
 import frc.robot.commands.FlywheelShootAmp;
 import frc.robot.commands.AUTOTESTmove;
 import frc.robot.commands.IntakeMove;
-import frc.robot.commands.JoystickLimitDrive;
 import frc.robot.commands.TESTBrokenButtons;
 import frc.robot.commands.TESTFlywheel;
 import frc.robot.commands.AUTOTESTIntakeMove;
@@ -135,18 +131,12 @@ public class RobotContainer {
     // drive command
     // flyWheel.setDefaultCommand(new FlyWheelShoot(flyWheel, limeLight, intake, ()
     // -> joystick.getLeftTriggerAxis()));
-    // drivetrain.setDefaultCommand( // Drivetrain will execute this command
-    // periodically
-    // drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() *
-    // MaxSpeed) // Drive forward with
-    // // negative Y (forward)
-    // .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X
-    // (left)
-    // .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive
-    // counterclockwise with negative X (left)
-    // ));
-    drivetrain.setDefaultCommand(new JoystickLimitDrive(drivetrain, () -> joystick.getLeftX(),
-        () -> joystick.getLeftY(), () -> joystick.getRightX(), MaxSpeed, MaxAngularRate));
+    drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
+        drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
+            // negative Y (forward)
+            .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+            .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+        ));
 
     // brake mode
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
@@ -156,18 +146,18 @@ public class RobotContainer {
     // .applyRequest(() -> point.withModuleDirection(new
     // Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
     // fixed trap angle
-    joystick.b().whileTrue(new AutoScoreSpeakerArm(arm));
+    joystick.b().whileTrue(new AutoScoreSpeakerArm(arm)); // raises the arm to the correct angle for the speaker, then fires
 
     // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
 
     // backup intake
-    joystick.x().whileTrue(new BackUpIntake(intake, () -> joystick.getLeftX(), () -> joystick.getLeftY(),
-        () -> joystick.getRightX(), drivetrain)); // TODO - restrict drivetrain speed here
+    joystick.x().whileTrue(new BackUpIntake(intake, () -> joystick.getLeftX(), () -> joystick.getRightY(), () -> joystick.getRightX(), drivetrain)); // it's a backup in case the main intake command fails
+    // joystick.y().whileTrue(new DriveSlowMode(() -> joystick.getLeftX(), () -> joystick.getLeftY(), () -> joystick.getRightX()));
 
     // speaker score
     joystick.leftTrigger().whileTrue(
-        new FlyWheelShoot(flyWheel, intake, xboxController, xboxController2, () -> joystick.getLeftTriggerAxis()));
+        new FlyWheelShoot(flyWheel, intake, xboxController, xboxController2, () -> joystick.getLeftTriggerAxis())); // runs the flywheel
 
     // amp score
     joystick.rightTrigger().whileTrue(new FlywheelShootAmp(flyWheel, intake));
@@ -189,10 +179,7 @@ public class RobotContainer {
 
     // reverse intake
     joystick2.a().whileTrue(new IntakeMove(xboxController, xboxController2, intake, limeLight, true, lights,
-        () -> joystick.getLeftX(), () -> joystick.getLeftY(), () -> joystick.getRightX(), drivetrain)); // TODO -
-                                                                                                        // restrict
-                                                                                                        // drivetrain
-                                                                                                        // speed here
+        () -> joystick.getLeftX(), () -> joystick.getRightY(), () -> joystick.getRightX(), drivetrain));
 
     // //auto amp sequence to move up to the amp and arm
     joystick2.y().whileTrue(
@@ -230,7 +217,7 @@ public class RobotContainer {
             xboxController2,
             intake, limeLight,
             false,
-            lights, () -> joystick.getLeftX(), () -> joystick.getLeftY(), () -> joystick.getRightX(), drivetrain));
+            lights, () -> joystick.getLeftX(), () -> joystick.getRightY(), () -> joystick.getRightX(), drivetrain));
 
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -267,8 +254,8 @@ public class RobotContainer {
 
   public RobotContainer() {
     configureBindings();
-    NamedCommands.registerCommand("IntakeMove", new IntakeMove(xboxController, xboxController2, intake, limeLight, false, lights, () -> joystick.getLeftX(),
-        () -> joystick.getLeftY(), () -> joystick.getRightX(), drivetrain));
+    NamedCommands.registerCommand("IntakeMove", new IntakeMove(xboxController, xboxController2, intake, limeLight,
+        false, lights, () -> joystick.getLeftX(), () -> joystick.getRightY(), () -> joystick.getRightX(), drivetrain));
     NamedCommands.registerCommand("AUTOTESTarmDown", new AUTOTESTarmDown(arm));
 
   }
@@ -286,15 +273,16 @@ public class RobotContainer {
     // new AUTOTESTmove(drivetrain, 2, -1, 0, 0)
     // );
 
-    //(2 note) ***USING shoots note infront of speaker drives back picks up note and shoots again,then moves out of alliance
+    // (2 note) ***USING shoots note infront of speaker drives back picks up note
+    // and shoots again,then moves out of alliance
     // return new SequentialCommandGroup(
-    //   new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
-    //   new AUTOTESTarmDown(arm),
-    //   new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 1.75, 1, 0, 0),
-    //   new AUTOTESTmove(drivetrain, 1.99, -1, 0, 0), 
-    //   new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
-    //   new AUTOTESTarmDown(arm),
-    //   new AUTOTESTmove(drivetrain, 2.5, 1, 0, 0)
+    // new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
+    // new AUTOTESTarmDown(arm),
+    // new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 1.75, 1, 0, 0),
+    // new AUTOTESTmove(drivetrain, 1.99, -1, 0, 0),
+    // new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
+    // new AUTOTESTarmDown(arm),
+    // new AUTOTESTmove(drivetrain, 2.5, 1, 0, 0)
     // );
 
     // (1 note)
@@ -317,6 +305,6 @@ public class RobotContainer {
     // // return new TESTauto(drivetrain, 5);
     // // return drivetrain.applyRequest(null);
     // return AutoBuilder.followPath(path);
-    return runAuto;    
+    return runAuto;
   }
 }

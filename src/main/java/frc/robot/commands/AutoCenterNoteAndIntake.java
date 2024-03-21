@@ -19,29 +19,28 @@ import frc.robot.subsystems.LimeLightSubsystem;
 
 public class AutoCenterNoteAndIntake extends Command {
   /** Creates a new AutoCenterNoteAndIntake. */
-  private double angle;
-  private PIDController pidController = new PIDController(.04, 0.01, 0.00); // kp as 0.05 works, everything else as 0
-  // dont use I for pid
-  private LimeLightSubsystem limeLightSubsystem;
-  private CommandSwerveDrivetrain drivetrain;
-  private final SwerveRequest.FieldCentric swerveCentric = new SwerveRequest.FieldCentric(); // might change this to
-                                                                                             // swerve centric
-  private double maxRotationSpeed;
-  private Supplier<Double> ySpeed, xSpeed;
-  private IntakeSubsystem intakeSubsystem;
-  private LightSubsystem lightSubsystem;
-  private XboxController xbox1, xbox2;
-
+private double angle;
+private PIDController pidController = new PIDController(.04, 0.01, 0.00); //kp as 0.05 works, everything else as 0
+//dont use I for pid
+private LimeLightSubsystem limeLightSubsystem;
+private CommandSwerveDrivetrain drivetrain;
+private final SwerveRequest.FieldCentric swerveCentric = new SwerveRequest.FieldCentric(); //might change this to swerve centric
+private double maxRotationSpeed;
+private Supplier<Double> ySpeed, xSpeed;
+private IntakeSubsystem intakeSubsystem; 
+private LightSubsystem lightSubsystem;
+private XboxController xbox1, xbox2;
   public AutoCenterNoteAndIntake(
-      Supplier<Double> ySpeed,
-      Supplier<Double> xSpeed,
-      CommandSwerveDrivetrain drivetrain,
-      LimeLightSubsystem limeLightSubsystem,
-      double maxRotationSpeed,
-      IntakeSubsystem intakeSubsystem,
-      LightSubsystem lightSubsystem,
-      XboxController xbox1,
-      XboxController xbox2) {
+    Supplier<Double> ySpeed, 
+    Supplier<Double> xSpeed, 
+    CommandSwerveDrivetrain drivetrain, 
+    LimeLightSubsystem limeLightSubsystem,
+    double maxRotationSpeed,
+    IntakeSubsystem intakeSubsystem,
+    LightSubsystem lightSubsystem,
+    XboxController xbox1,
+    XboxController xbox2
+  ) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.ySpeed = ySpeed;
     this.xSpeed = xSpeed;
@@ -58,57 +57,53 @@ public class AutoCenterNoteAndIntake extends Command {
     addRequirements(limeLightSubsystem);
   }
 
+
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     double x = xSpeed.get();
     double y = ySpeed.get();
-    System.out.println(intakeSubsystem.getBlocked());
-
-    if (intakeSubsystem.getBlocked()) {
-      intakeSubsystem.setCanRun(false);
-      lightSubsystem.setLights(Constants.colorRGBIntake[0], Constants.colorRGBIntake[1], Constants.colorRGBIntake[2],
-          .5);
-      intakeSubsystem.rumbleController(xbox1, 1);
-      intakeSubsystem.rumbleController(xbox2, 1);
-      System.out.println("IS BLOCKED");
+    // System.out.println(intakeSubsystem.getBlocked());
+   
+    if (intakeSubsystem.getBlocked()){
+      // intakeSubsystem.setCanRun(false);
+      lightSubsystem.setLights(Constants.colorRGBIntake[0], Constants.colorRGBIntake[1], Constants.colorRGBIntake[2]);
+      
+      // System.out.println("IS BLOCKED");
     } else {
-      intakeSubsystem.setCanRun(true);
-      System.out.println("IS NOT BLOCKED");
-      lightSubsystem.setLights(0, 0, 0, .5);
+      // intakeSubsystem.setCanRun(true);
+      // System.out.println("IS NOT BLOCKED");
+      lightSubsystem.setLights(0, 0, 0);
+      // intakeSubsystem.rumbleController(xbox1);
+      // intakeSubsystem.rumbleController(xbox2);      
 
     }
-
-    if (limeLightSubsystem.getNoteArea() > Constants.noteAreaToRun) {
+    
+      if (limeLightSubsystem.getNoteArea() > Constants.noteAreaToRun){
       intakeSubsystem.setIntakeMotor(.75);
-    }
-    intakeSubsystem.rumbleController(xbox1);
-    intakeSubsystem.rumbleController(xbox2);
-    angle = limeLightSubsystem.getNoteHorizontalAngle();
-    double rotationSpeed = pidController.calculate(angle, 0);
-    if (Math.abs(maxRotationSpeed) > 1) {
-    }
-    intakeSubsystem.rumbleController(xbox2);
-    angle = limeLightSubsystem.getNoteHorizontalAngle();
-    if (Math.abs(maxRotationSpeed) > 1) {
+      } 
+    intakeSubsystem.rumbleController(xbox2);   
+    angle = limeLightSubsystem.getNoteHorizontalAngle(); 
+    double rotationSpeed = pidController.calculate(angle,0);
+    if (Math.abs(maxRotationSpeed) > 1 ){
       maxRotationSpeed = 1 * Math.signum(maxRotationSpeed);
     }
+
 
     // System.out.println("Rotation Speed: " + rotationSpeed);
     // System.out.println("Angle: " + angle);
     drivetrain.setControl(swerveCentric.withVelocityX(-x).withVelocityY(-y).withRotationalRate(rotationSpeed));
-  }
+   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     intakeSubsystem.setIntakeMotor(0);
-
+    
   }
 
   // Returns true when the command should end.

@@ -169,8 +169,9 @@ public class IntakeMove extends Command { // TODO - add CANdle (led strips) func
     // }
 
     counter++;
-    commandSwerveDrivetrain.setControl(fieldCentric.withVelocityX(- xSpeed.get()).withVelocityY(- ySpeed.get()).withRotationalRate(rotationSpeed.get() * (1.5 * Math.PI)));
-  } 
+    commandSwerveDrivetrain.setControl(fieldCentric.withVelocityX(-xSpeed.get()).withVelocityY(-ySpeed.get())
+        .withRotationalRate(rotationSpeed.get() * (1.5 * Math.PI)));
+  }
 
   // Called once the command ends or is interrupted.
   @Override

@@ -21,13 +21,7 @@ public class HangerSubsystem extends SubsystemBase {
     }
     
     public void setHangerMotorTwo(double speed) {
-        HangerMotorTwo.set(speed);
-    }
-    
-    public void setLights() {
-        int rChange = 255 - (Constants.colorRGBHangerBlue[0]) / 5;
-        int bChange = 255 - (Constants.colorRGBHangerBlue[2]) / 5;
-        int gChange = 255 - (Constants.colorRGBHangerBlue[1]) / 5;
+        HangerMotorTwo.set(speed);        
     }
 
 

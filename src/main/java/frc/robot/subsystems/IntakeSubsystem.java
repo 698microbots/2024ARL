@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.led.CANdle;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -13,12 +12,13 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
   private final CANSparkMax IntakeMotor = new CANSparkMax(15, CANSparkMax.MotorType.kBrushless);
   // Initializes a DigitalInput on DIO 0
   private final DigitalInput photoSensor = new DigitalInput(1); //TODO - make this a constant
-  private final CANdle candle = new CANdle(0);
+  private final DigitalInput photoSensor2 = new DigitalInput(3); //TODO - make this a constant
   
   private boolean canRun = true;
 
@@ -72,13 +72,11 @@ public class IntakeSubsystem extends SubsystemBase {
   // }
 
   public boolean getBlocked() {
-    return (!photoSensor.get());
+    return !photoSensor.get();
   }
 
-  public void rumbleController(XboxController xboxController, int value) {
-    if (getBlocked()){
-      xboxController.setRumble(GenericHID.RumbleType.kBothRumble, value);
-    }
+  public boolean getBlocked2(){
+    return !photoSensor2.get();
   }
 
   public void rumbleController(XboxController xboxController) {

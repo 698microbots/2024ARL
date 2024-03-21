@@ -17,10 +17,13 @@ public class DriveSlowMode extends Command {
   private PIDController pidControllerCenter = new PIDController(.04, 0, 0.001); // kp as 0.05 works, everything else as 0
   private CommandSwerveDrivetrain drivetrain;
   private final SwerveRequest.FieldCentric swerveCentric = new SwerveRequest.FieldCentric(); // might change this to swerve centric
-  private Supplier<Double> xSpeed, ySpeed;
+  private Supplier<Double> xSpeed, ySpeed, rotationRate;
 
   /** Creates a new SlowMode. */
-  public DriveSlowMode() {
+  public DriveSlowMode(Supplier<Double> xSpeed, Supplier<Double> ySpeed, Supplier<Double> rotationRate) {
+    this.xSpeed = xSpeed;
+    this.ySpeed = ySpeed;
+    this.rotationRate = rotationRate;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -32,14 +35,16 @@ public class DriveSlowMode extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double xSpeed = this.xSpeed.get() * .5;
-    double ySpeed = this.ySpeed.get() * .5;
-    drivetrain.setControl(swerveCentric.withVelocityX(xSpeed).withVelocityY(ySpeed));
+    double x = xSpeed.get() * .5;
+    double y = ySpeed.get() * .5;
+    double rotateRate = rotationRate.get() * .5;
+    drivetrain.setControl(swerveCentric.withVelocityX(x).withVelocityY(y).withRotationalRate(rotateRate));
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    drivetrain.setControl(swerveCentric.withVelocityX(0).withVelocityY(0));
   }
 
   // Returns true when the command should end.

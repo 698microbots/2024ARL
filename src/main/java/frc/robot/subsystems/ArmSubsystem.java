@@ -18,7 +18,6 @@ public class ArmSubsystem extends SubsystemBase {
   // new instance var for distcnce travelled
   private double distance = 0;
   private boolean direction = false;
-  private boolean runArm;
   /** Creates a new ArmSubsystem. */
   private final TalonFX armMotor = new TalonFX(Constants.armMotor);
   private final TalonFX armMotor2 = new TalonFX(Constants.armMotor2);
@@ -37,11 +36,6 @@ public class ArmSubsystem extends SubsystemBase {
   public void moveArm(double speed) {
     armMotor.set(speed);
     armMotor2.set(-speed);
-    if (speed > 0) {
-      runArm = true;
-    } else {
-      runArm = false;
-    }
   }
 
   // @Override
@@ -63,10 +57,6 @@ public class ArmSubsystem extends SubsystemBase {
   // setter methods
   public void resetEncoder() {
     dutyCycleEncoder.reset();
-  }
-
-  public boolean getRunArm() {
-    return runArm;
   }
 
   // public boolean reverseDirection() {
