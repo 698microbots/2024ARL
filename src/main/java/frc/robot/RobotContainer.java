@@ -10,6 +10,7 @@ import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -63,7 +64,7 @@ import frc.robot.subsystems.driveTrainVoltages;
 import frc.robot.subsystems.HangerSubsystem;
 
 public class RobotContainer {
-  private double MaxSpeed = 2.9; // 6 meters per second desired top speed (6 origin)
+  private double MaxSpeed = 4; // 6 meters per second desired top speed (6 origin)
   private double MaxAngularRate = 1.3 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
   public XboxController xboxController = new XboxController(0); // new XBox object
   public XboxController xboxController2 = new XboxController(1); // new XBox object
@@ -266,6 +267,10 @@ public class RobotContainer {
 
   public RobotContainer() {
     configureBindings();
+    NamedCommands.registerCommand("IntakeMove", new IntakeMove(xboxController, xboxController2, intake, limeLight, false, lights, () -> joystick.getLeftX(),
+        () -> joystick.getLeftY(), () -> joystick.getRightX(), drivetrain));
+    NamedCommands.registerCommand("AUTOTESTarmDown", new AUTOTESTarmDown(arm));
+
   }
 
   public Command getAutonomousCommand() {
@@ -281,16 +286,16 @@ public class RobotContainer {
     // new AUTOTESTmove(drivetrain, 2, -1, 0, 0)
     // );
 
-    // (2 note) shoots note infront of speaker drives back picks up note and shoots
-    // again,then moves out of alliance
-    return new SequentialCommandGroup(
-        new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
-        new AUTOTESTarmDown(arm),
-        new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 1.75, 1, 0, 0),
-        new AUTOTESTmove(drivetrain, 1.75, -1, 0, 0),
-        new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
-        new AUTOTESTarmDown(arm),
-        new AUTOTESTmove(drivetrain, 2.5, 1, 0, 0));
+    //(2 note) ***USING shoots note infront of speaker drives back picks up note and shoots again,then moves out of alliance
+    // return new SequentialCommandGroup(
+    //   new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
+    //   new AUTOTESTarmDown(arm),
+    //   new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 1.75, 1, 0, 0),
+    //   new AUTOTESTmove(drivetrain, 1.99, -1, 0, 0), 
+    //   new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
+    //   new AUTOTESTarmDown(arm),
+    //   new AUTOTESTmove(drivetrain, 2.5, 1, 0, 0)
+    // );
 
     // (1 note)
     // return new SequentialCommandGroup(
@@ -312,6 +317,6 @@ public class RobotContainer {
     // // return new TESTauto(drivetrain, 5);
     // // return drivetrain.applyRequest(null);
     // return AutoBuilder.followPath(path);
-    // return runAuto;
+    return runAuto;    
   }
 }

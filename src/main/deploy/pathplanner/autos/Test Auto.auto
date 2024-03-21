@@ -1,14 +1,33 @@
 {
   "version": 1.0,
-  "startingPose": null,
+  "startingPose": {
+    "position": {
+      "x": 1.9213727316343523,
+      "y": 1.3664600168706516
+    },
+    "rotation": 0
+  },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Test Path"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "autes"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeMove"
+                }
+              }
+            ]
           }
         }
       ]

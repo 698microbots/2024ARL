@@ -38,13 +38,13 @@ public class TunerConstants {
 
     // Theoretical free speed (m/s) at 12v applied output;
     // This needs to be tuned to your individual robot
-    public static final double kSpeedAt12VoltsMps = 3.91;
+    public static final double kSpeedAt12VoltsMps = 3.55; //original is 3.91 for L3
 
     // Every 1 rotation of the azimuth results in kCoupleRatio drive motor turns;
     // This may need to be tuned to your individual robot
     private static final double kCoupleRatio = 3.5714285714285716;
 
-    private static final double kDriveGearRatio = 6.122448979591837;
+    private static final double kDriveGearRatio = 6.746031746031747; // L3 is 6.122448979591837 we are using L2 rate right now
     private static final double kSteerGearRatio = 12.8;
     private static final double kWheelRadiusInches = 1.5;
 
