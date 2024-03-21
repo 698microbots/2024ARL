@@ -127,7 +127,6 @@ public class RobotContainer {
 
   private Command runAuto = drivetrain.getAutoPath("Test Auto");
 
-
   private SwerveModuleState[] states = drivetrain.getState().ModuleStates;
 
   private void configureBindings() {
@@ -135,92 +134,102 @@ public class RobotContainer {
     // drive command
     // flyWheel.setDefaultCommand(new FlyWheelShoot(flyWheel, limeLight, intake, ()
     // -> joystick.getLeftTriggerAxis()));
-    // drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-    //     drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
-    //         // negative Y (forward)
-    //         .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-    //         .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
-    //     ));
-    drivetrain.setDefaultCommand(new JoystickLimitDrive(drivetrain, () -> joystick.getLeftX(), () -> joystick.getLeftY(), () -> joystick.getRightX(), MaxSpeed, MaxAngularRate));
+    // drivetrain.setDefaultCommand( // Drivetrain will execute this command
+    // periodically
+    // drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() *
+    // MaxSpeed) // Drive forward with
+    // // negative Y (forward)
+    // .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X
+    // (left)
+    // .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive
+    // counterclockwise with negative X (left)
+    // ));
+    drivetrain.setDefaultCommand(new JoystickLimitDrive(drivetrain, () -> joystick.getLeftX(),
+        () -> joystick.getLeftY(), () -> joystick.getRightX(), MaxSpeed, MaxAngularRate));
 
-
-    //brake mode
+    // brake mode
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
 
-    //point wheels
+    // point wheels
     // joystick.b().whileTrue(drivetrain
-    //     .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
-    //fixed trap angle
+    // .applyRequest(() -> point.withModuleDirection(new
+    // Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
+    // fixed trap angle
     joystick.b().whileTrue(new AutoScoreSpeakerArm(arm));
 
     // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
 
     // backup intake
-    joystick.x().whileTrue(new BackUpIntake(intake));
+    joystick.x().whileTrue(new BackUpIntake(intake, () -> joystick.getLeftX(), () -> joystick.getLeftY(),
+        () -> joystick.getRightX(), drivetrain)); // TODO - restrict drivetrain speed here
 
-    //speaker score
-    joystick.leftTrigger().whileTrue(new FlyWheelShoot(flyWheel, intake, xboxController, xboxController2, () -> joystick.getLeftTriggerAxis()));
-    
-    //amp score
+    // speaker score
+    joystick.leftTrigger().whileTrue(
+        new FlyWheelShoot(flyWheel, intake, xboxController, xboxController2, () -> joystick.getLeftTriggerAxis()));
+
+    // amp score
     joystick.rightTrigger().whileTrue(new FlywheelShootAmp(flyWheel, intake));
     /**
      * 
      * 2nd driver commands\
      * 
      */
-    //hanger commands
+    // hanger commands
     hanger.setDefaultCommand(new MoveHanger(
-        hanger, 
-        () -> joystick2.getLeftTriggerAxis(), 
-        () -> joystick2.getRightTriggerAxis(), 
-        () -> xboxController2.getLeftBumper(), 
+        hanger,
+        () -> joystick2.getLeftTriggerAxis(),
+        () -> joystick2.getRightTriggerAxis(),
+        () -> xboxController2.getLeftBumper(),
         () -> xboxController2.getRightBumper()));
 
-
-    //default arm command, move it with 2nd controller    
+    // default arm command, move it with 2nd controller
     arm.setDefaultCommand(new TESTMoveArm(arm, () -> joystick2.getLeftY() * .6));
-    
-    //reverse intake
-    joystick2.a().whileTrue(new IntakeMove(xboxController, xboxController2, intake, limeLight, true, lights));
+
+    // reverse intake
+    joystick2.a().whileTrue(new IntakeMove(xboxController, xboxController2, intake, limeLight, true, lights,
+        () -> joystick.getLeftX(), () -> joystick.getLeftY(), () -> joystick.getRightX(), drivetrain)); // TODO -
+                                                                                                        // restrict
+                                                                                                        // drivetrain
+                                                                                                        // speed here
 
     // //auto amp sequence to move up to the amp and arm
     joystick2.y().whileTrue(
         new AutoCenterAmp(drivetrain, () -> joystick2.getLeftY(), () -> joystick2.getLeftX(), MaxSpeed, limeLight));
 
-    //auto center with speaker and move arm accordingly
-      joystick2.x().whileTrue(
-           new AutoCenterSpeaker(
-              () -> joystick.getLeftX() * MaxSpeed,
-              () -> joystick.getLeftY() * MaxSpeed,
-              drivetrain,
-              limeLight,
-              MaxAngularRate,
-              arm,
-              flyWheel,
-              intake)
-               
-      );
+    // auto center with speaker and move arm accordingly
+    joystick2.x().whileTrue(
+        new AutoCenterSpeaker(
+            () -> joystick.getLeftX() * MaxSpeed,
+            () -> joystick.getLeftY() * MaxSpeed,
+            drivetrain,
+            limeLight,
+            MaxAngularRate,
+            arm,
+            flyWheel,
+            intake)
 
-    // //auto center with note and run intake when close enough, this is probably gonna have CAN bad errors
-      //  joystick2.b().whileTrue(new AutoCenterNoteAndIntake(
-      //   () -> joystick.getLeftX() * MaxSpeed, 
-      //   () -> joystick.getLeftY() * MaxSpeed, 
-      //   drivetrain,
-      //   limeLight,
-      //   MaxAngularRate, 
-      //   intake, 
-      //   lights, 
-      //   xboxController2, 
-      //   xboxController));
-      joystick2.b().whileTrue(
+    );
+
+    // //auto center with note and run intake when close enough, this is probably
+    // gonna have CAN bad errors
+    // joystick2.b().whileTrue(new AutoCenterNoteAndIntake(
+    // () -> joystick.getLeftX() * MaxSpeed,
+    // () -> joystick.getLeftY() * MaxSpeed,
+    // drivetrain,
+    // limeLight,
+    // MaxAngularRate,
+    // intake,
+    // lights,
+    // xboxController2,
+    // xboxController));
+    joystick2.b().whileTrue(
         new IntakeMove(
-          xboxController, 
-          xboxController2, 
-          intake, limeLight,
-           false, 
-           lights)
-      );
+            xboxController,
+            xboxController2,
+            intake, limeLight,
+            false,
+            lights, () -> joystick.getLeftX(), () -> joystick.getLeftY(), () -> joystick.getRightX(), drivetrain));
 
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -243,8 +252,10 @@ public class RobotContainer {
     // ));
     // joystick.y().whileTrue(new TESTBrokenButtons());
     // joystick2.b().whileTrue(new MoveHanger(false, true, hanger));
-    // joystick.y().whileTrue(new AutoCenterNoteAndIntake(() -> joystick.getLeftX() * MaxSpeed,
-    //     () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight, MaxSpeed, intake));
+    // joystick.y().whileTrue(new AutoCenterNoteAndIntake(() -> joystick.getLeftX()
+    // * MaxSpeed,
+    // () -> joystick.getLeftY() * MaxSpeed, drivetrain, limeLight, MaxSpeed,
+    // intake));
     // joystick2.x().whileTrue(new SetAutoArm(arm));
 
     if (Utils.isSimulation()) {
@@ -260,53 +271,47 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
 
     // return new SequentialCommandGroup( //auto seq one
-    //   new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
-    //   new AUTOTESTmove(drivetrain, 1, 1, 0, 1),
-    //   new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 2, 1, 0 , 0)
+    // new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
+    // new AUTOTESTmove(drivetrain, 1, 1, 0, 1),
+    // new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 2, 1, 0 , 0)
     // );
 
-    //(0 note) move out of alliance 
+    // (0 note) move out of alliance
     // return new SequentialCommandGroup(
-    //   new AUTOTESTmove(drivetrain, 2, -1, 0, 0)
+    // new AUTOTESTmove(drivetrain, 2, -1, 0, 0)
     // );
 
-    //(2 note) shoots note infront of speaker drives back picks up note and shoots again,then moves out of alliance
+    // (2 note) shoots note infront of speaker drives back picks up note and shoots
+    // again,then moves out of alliance
     return new SequentialCommandGroup(
-      new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
-      new AUTOTESTarmDown(arm),
-      new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 1.75, 1, 0, 0),
-      new AUTOTESTmove(drivetrain, 1.75, -1, 0, 0), 
-      new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
-      new AUTOTESTarmDown(arm),
-      new AUTOTESTmove(drivetrain, 2.5, 1, 0, 0)
-    );
+        new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
+        new AUTOTESTarmDown(arm),
+        new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 1.75, 1, 0, 0),
+        new AUTOTESTmove(drivetrain, 1.75, -1, 0, 0),
+        new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
+        new AUTOTESTarmDown(arm),
+        new AUTOTESTmove(drivetrain, 2.5, 1, 0, 0));
 
-    //(1 note)
+    // (1 note)
     // return new SequentialCommandGroup(
-    //   new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
-    //   new AUTOTESTarmDown(arm),
-    //   new AUTOTESTmove(drivetrain, 2, 1, 0, 0)
+    // new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
+    // new AUTOTESTarmDown(arm),
+    // new AUTOTESTmove(drivetrain, 2, 1, 0, 0)
     // );
 
     // //(2 note) shoots note picks up another note and shots again, amp side
     // return new SequentialCommandGroup(
-    //   new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
-    //   new AUTOTESTarmDown(arm),
-    //   new AUTOTESTmove(drivetrain, 1, 0, 1, Math.PI * .5),
-    //   new 
+    // new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
+    // new AUTOTESTarmDown(arm),
+    // new AUTOTESTmove(drivetrain, 1, 0, 1, Math.PI * .5),
+    // new
     // );
-
-
-
-
-
-
 
     // return Commands.print("No autonomous command configured");
     // PathPlannerPath path = PathPlannerPath.fromPathFile("New Auto");
     // // return new TESTauto(drivetrain, 5);
     // // return drivetrain.applyRequest(null);
     // return AutoBuilder.followPath(path);
-    // return runAuto;    
+    // return runAuto;
   }
 }

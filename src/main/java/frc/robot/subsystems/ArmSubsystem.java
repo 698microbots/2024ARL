@@ -17,7 +17,8 @@ import frc.robot.Constants;
 public class ArmSubsystem extends SubsystemBase {
   // new instance var for distcnce travelled
   private double distance = 0;
-  private boolean direction = false; // ▌NEW▐
+  private boolean direction = false;
+  private boolean runArm;
   /** Creates a new ArmSubsystem. */
   private final TalonFX armMotor = new TalonFX(Constants.armMotor);
   private final TalonFX armMotor2 = new TalonFX(Constants.armMotor2);
@@ -36,12 +37,17 @@ public class ArmSubsystem extends SubsystemBase {
   public void moveArm(double speed) {
     armMotor.set(speed);
     armMotor2.set(-speed);
+    if (speed > 0) {
+      runArm = true;
+    } else {
+      runArm = false;
+    }
   }
 
   // @Override
   // public void periodic() { // don't need preiodic
   // distance = ; // Gets the distance traveled
-  // direction = ; // Gets the current direction of the encoder // ▌NEW▐
+  // direction = ; // Gets the current direction of the encoder
   // }
 
   // Getter methods
@@ -50,7 +56,7 @@ public class ArmSubsystem extends SubsystemBase {
     return dutyCycleEncoder.get();
   }
 
-  public double getDistance() { // ▌NEW▐
+  public double getDistance() {
     return dutyCycleEncoder.getDistance();
   }
 
@@ -59,7 +65,11 @@ public class ArmSubsystem extends SubsystemBase {
     dutyCycleEncoder.reset();
   }
 
-  // public boolean reverseDirection() { // ▌NEW▐
+  public boolean getRunArm() {
+    return runArm;
+  }
+
+  // public boolean reverseDirection() {
   //   dutyCycleEncoder.setReverseDirection(true); // think this will reverst the direction tha arm travels when invoked,
   //                                          // confirm later
   //   return direction; // temporary, is here just for checking it works as intended

@@ -6,53 +6,56 @@ package frc.robot.commands;
 
 import java.util.function.Supplier;
 
+import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.CommandSwerveDrivetrain;
+import frc.robot.RobotContainer;
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.HangerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.driveTrainVoltages;
 
-public class BackUpIntake extends Command {
-  /** Creates a new BackUpIntake. */
-  private final IntakeSubsystem intakeSubsystem;
+public class TEMPVoltageRegulator extends Command {
+  private IntakeSubsystem intakeSubsystem;
+  private CommandSwerveDrivetrain commandSwerveDrivetrain;
+  private ArmSubsystem armSubsystem;
+  private final SwerveRequest.FieldCentric fieldCentric = new SwerveRequest.FieldCentric();
+
   private Supplier<Double> xSpeed;
   private Supplier<Double> ySpeed;
   private Supplier<Double> rotationSpeed; // multiple by 1.5 * pi
-  private final SwerveRequest.FieldCentric fieldCentric = new SwerveRequest.FieldCentric();
-    private CommandSwerveDrivetrain commandSwerveDrivetrain;
 
-  public BackUpIntake(IntakeSubsystem intakeSubsystem,
-      Supplier<Double> xSpeed,
-      Supplier<Double> ySpeed,
-      Supplier<Double> rotationSpeed,
-      CommandSwerveDrivetrain commandSwerveDrivetrain) {
+  /** Creates a new TMPVoltageRegulator. */
+  public TEMPVoltageRegulator(IntakeSubsystem intakeSubsystem, CommandSwerveDrivetrain commandSwerveDrivetrain, ArmSubsystem armSubsystem, Supplier<Double> xSpeed, Supplier<Double> ySpeed, Supplier<Double> rotationSpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intakeSubsystem = intakeSubsystem;
+    this.commandSwerveDrivetrain = commandSwerveDrivetrain;
+    this.armSubsystem = armSubsystem;
     this.xSpeed = xSpeed;
     this.ySpeed = ySpeed;
     this.rotationSpeed = rotationSpeed;
-    this.commandSwerveDrivetrain = commandSwerveDrivetrain;
+    addRequirements(armSubsystem);
     addRequirements(intakeSubsystem);
-    addRequirements(commandSwerveDrivetrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    commandSwerveDrivetrain.setControl(fieldCentric.withVelocityX(- xSpeed.get()).withVelocityY(- ySpeed.get()).withRotationalRate(rotationSpeed.get() * (1.5 * Math.PI)));
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("this work backup intake");
-    intakeSubsystem.backupIntakeMotor(.75);
-    commandSwerveDrivetrain.setControl(fieldCentric.withVelocityX(- xSpeed.get()).withVelocityY(- ySpeed.get()).withRotationalRate(rotationSpeed.get() * (1.5 * Math.PI)));
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intakeSubsystem.backupIntakeMotor(0);
     commandSwerveDrivetrain.setControl(fieldCentric.withVelocityX(0).withVelocityY(0).withRotationalRate(0));
   }
 
