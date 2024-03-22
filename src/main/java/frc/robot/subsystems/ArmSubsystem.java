@@ -30,17 +30,16 @@ public class ArmSubsystem extends SubsystemBase {
     armMotor.setNeutralMode(NeutralModeValue.Coast);
     armMotor.setNeutralMode(NeutralModeValue.Coast);
 
-
   }
 
   public void moveArm(double speed) {
-    armMotor.set(speed);
-    armMotor2.set(-speed);
-    // soft locks the arm motors when fully up or down
-    if (getEncoder() < 2 && speed < 0) {
+    if (getEncoder() < 2 && getEncoder() > 5) {
+      armMotor.set(speed);
+      armMotor2.set(-speed);
+    } else if (getEncoder() < 2 && speed < 0) { // soft locks the arm motors when fully up or down
       armMotor.set(0); // 2 is a placeholder value
       armMotor2.set(0);
-    } else if (getEncoder() > 5 && speed > 0) { // 5 is a placeholder value
+    } else { // 5 is a placeholder value
       armMotor.set(0);
       armMotor2.set(0);
     }
@@ -67,8 +66,10 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   // public boolean reverseDirection() {
-  //   dutyCycleEncoder.setReverseDirection(true); // think this will reverst the direction tha arm travels when invoked,
-  //                                          // confirm later
-  //   return direction; // temporary, is here just for checking it works as intended
+  // dutyCycleEncoder.setReverseDirection(true); // think this will reverst the
+  // direction tha arm travels when invoked,
+  // // confirm later
+  // return direction; // temporary, is here just for checking it works as
+  // intended
   // }
 }
