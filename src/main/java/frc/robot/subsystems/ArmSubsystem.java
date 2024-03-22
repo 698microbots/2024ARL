@@ -36,6 +36,14 @@ public class ArmSubsystem extends SubsystemBase {
   public void moveArm(double speed) {
     armMotor.set(speed);
     armMotor2.set(-speed);
+    // soft locks the arm motors when fully up or down
+    if (getEncoder() < 2 && speed < 0) {
+      armMotor.set(0); // 2 is a placeholder value
+      armMotor2.set(0);
+    } else if (getEncoder() > 5 && speed > 0) { // 5 is a placeholder value
+      armMotor.set(0);
+      armMotor2.set(0);
+    }
   }
 
   // @Override
@@ -45,7 +53,6 @@ public class ArmSubsystem extends SubsystemBase {
   // }
 
   // Getter methods
-  // TODO: find out what this returns
   public double getEncoder() {
     return dutyCycleEncoder.get();
   }

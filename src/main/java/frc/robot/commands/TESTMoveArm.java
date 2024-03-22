@@ -11,7 +11,7 @@ import frc.robot.subsystems.ArmSubsystem;
 
 public class TESTMoveArm extends Command {
   /** Creates a new MoveArm. */
-  private final ArmSubsystem armSubsystem; 
+  private final ArmSubsystem armSubsystem;
   private Supplier<Double> ySpeed;
   private double speed = 0;
   public TESTMoveArm(ArmSubsystem armSubsystem, Supplier<Double> ySpeed) {
