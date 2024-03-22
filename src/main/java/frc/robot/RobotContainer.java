@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-<<<<<<< HEAD
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import frc.robot.commands.AutoCenterSpeaker;
@@ -40,8 +39,6 @@ import frc.robot.commands.IntakeMove;
 import frc.robot.commands.TESTBrokenButtons;
 import frc.robot.commands.TESTFlywheel;
 import frc.robot.commands.AUTOTESTIntakeMove;
-=======
->>>>>>> 542b85656694f2e7da4b2291389abf12f2e8003e
 import frc.robot.commands.AUTOTESTIntakeMoveAndDriveTrain;
 import frc.robot.commands.AUTOTESTarmDown;
 import frc.robot.commands.AUTOTESTautoArmShoot;
@@ -264,13 +261,9 @@ public class RobotContainer {
   }
 
   public RobotContainer() {
-<<<<<<< HEAD
     configureBindings();
     NamedCommands.registerCommand("IntakeMove", new IntakeMove(xboxController, xboxController2, intake, limeLight,
         false, lights, () -> joystick.getLeftX(), () -> joystick.getRightY(), () -> joystick.getRightX(), drivetrain));
-=======
-    NamedCommands.registerCommand("IntakeMove", new IntakeMove(xboxController, xboxController2, intake, limeLight, false, lights));
->>>>>>> 542b85656694f2e7da4b2291389abf12f2e8003e
     NamedCommands.registerCommand("AUTOTESTarmDown", new AUTOTESTarmDown(arm));
     
     configureBindings();
@@ -290,19 +283,6 @@ public class RobotContainer {
     // new AUTOTESTmove(drivetrain, 2, -1, 0, 0)
     // );
 
-<<<<<<< HEAD
-    // (2 note) ***USING shoots note infront of speaker drives back picks up note
-    // and shoots again,then moves out of alliance
-    // return new SequentialCommandGroup(
-    // new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
-    // new AUTOTESTarmDown(arm),
-    // new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 1.75, 1, 0, 0),
-    // new AUTOTESTmove(drivetrain, 1.99, -1, 0, 0),
-    // new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
-    // new AUTOTESTarmDown(arm),
-    // new AUTOTESTmove(drivetrain, 2.5, 1, 0, 0)
-    // );
-=======
     //(2 note) ***USING shoots note infront of speaker drives back picks up note and shoots again,then moves out of alliance
     return new SequentialCommandGroup(
       new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2), //try changing this to 0
@@ -313,7 +293,6 @@ public class RobotContainer {
       new AUTOTESTarmDown(arm),
       new AUTOTESTmove(drivetrain, 2.5, 1, 0, 0)
     );
->>>>>>> 542b85656694f2e7da4b2291389abf12f2e8003e
 
     // (1 note)
     // return new SequentialCommandGroup(
@@ -335,10 +314,6 @@ public class RobotContainer {
     // // return new TESTauto(drivetrain, 5);
     // // return drivetrain.applyRequest(null);
     // return AutoBuilder.followPath(path);
-<<<<<<< HEAD
-    return runAuto;
-=======
     // return runAuto;    
->>>>>>> 542b85656694f2e7da4b2291389abf12f2e8003e
   }
 }
