@@ -15,7 +15,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class AutoScoreSpeakerArm extends Command {
   /** Creates a new AutoScoreTrap. */
   private final ArmSubsystem armSubsystem;
-  private final PIDController pidControllerArm = new PIDController(1.4, 0.01, 0);
+  private final PIDController pidControllerArm = new PIDController(1, 0.0, 0);
   private int counter = 0;
   public AutoScoreSpeakerArm(
     ArmSubsystem armSubsystem
@@ -32,9 +32,9 @@ public class AutoScoreSpeakerArm extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double armSpeed = pidControllerArm.calculate(armSubsystem.getEncoder(), Constants.encoderTrap);
+    double armSpeed = pidControllerArm.calculate(armSubsystem.getEncoder(), Constants.encoderManualSpeaker);
     armSubsystem.moveArm(-armSpeed);
-    System.out.println("testing");
+    // System.out.println("testing");
     // if (counter > Constants.numSeconds(2)){
     //   flywheelSubsystem.setFlywheelMotorSpeed();
     // }

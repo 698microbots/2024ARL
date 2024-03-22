@@ -12,22 +12,15 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "autes"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeMove"
-                }
-              }
-            ]
+            "name": "AUTOTESTarmDown"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "autes"
           }
         }
       ]

@@ -22,7 +22,7 @@ public class AutoCenterSpeaker extends Command {
 
 private double angle;
 private final PIDController pidControllerCenter = new PIDController(.04, 0.01, 0); //kp as 0.05 works, everything else as 0 I MADE IT SO MUCH SMOOTHER WTF??? (ty alex Nie)
-private final PIDController pidControllerArm = new PIDController(1.4, 0.01, 0);
+private final PIDController pidControllerArm = new PIDController(1, 0, 0); //working arm constants
 //dont use I for pid
 private LimeLightSubsystem limeLightSubsystem;
 private CommandSwerveDrivetrain drivetrain;
