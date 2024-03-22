@@ -4,8 +4,13 @@
 
 package frc.robot.commands;
 
+import java.util.function.Supplier;
+
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.CommandSwerveDrivetrain;
 import frc.robot.Constants;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LightSubsystem;
@@ -14,6 +19,9 @@ import frc.robot.subsystems.LimeLightSubsystem;
 public class IntakeMove extends Command { // TODO - add CANdle (led strips) functionality
   /** Creates a new IntakeMove. */
   private final IntakeSubsystem intakeSubsystem;
+  private CommandSwerveDrivetrain drivetrain;
+  private final SwerveRequest.FieldCentric swerveCentric = new SwerveRequest.FieldCentric();
+
   private final LimeLightSubsystem limelight;
   private final LightSubsystem lightSubsystem;
   // private  boolean yes = false;
@@ -21,13 +29,16 @@ public class IntakeMove extends Command { // TODO - add CANdle (led strips) func
   private boolean reverse;
   private XboxController xboxController1;
     private XboxController xboxController2;
+  private Supplier<Double> x, y, theta;
+  
   public IntakeMove(
     XboxController xboxController1, 
     XboxController xboxController2, 
     IntakeSubsystem intakeSubsystem, 
     LimeLightSubsystem limelight, 
     boolean reverse,
-    LightSubsystem lightSubsystem) {
+    LightSubsystem lightSubsystem
+  ) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intakeSubsystem = intakeSubsystem;
     this.limelight = limelight;
@@ -35,8 +46,39 @@ public class IntakeMove extends Command { // TODO - add CANdle (led strips) func
     this.xboxController1 = xboxController1;
     this.xboxController2 = xboxController2;
     this.lightSubsystem = lightSubsystem;
+
     // this.yes = yes;
     addRequirements(intakeSubsystem);
+    addRequirements(limelight);
+    
+  }  
+  
+  
+  public IntakeMove(
+    XboxController xboxController1, 
+    XboxController xboxController2, 
+    IntakeSubsystem intakeSubsystem, 
+    LimeLightSubsystem limelight, 
+    boolean reverse,
+    LightSubsystem lightSubsystem,
+    CommandSwerveDrivetrain drivetrain,
+    Supplier<Double> x,
+    Supplier<Double> y,
+    Supplier<Double> theta) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    this.intakeSubsystem = intakeSubsystem;
+    this.drivetrain = drivetrain;
+    this.limelight = limelight;
+    this.reverse = reverse;
+    this.xboxController1 = xboxController1;
+    this.xboxController2 = xboxController2;
+    this.lightSubsystem = lightSubsystem;
+    this.x = x;
+    this.y = y;
+    this.theta = theta;
+    // this.yes = yes;
+    addRequirements(intakeSubsystem);
+    addRequirements(drivetrain);
     addRequirements(limelight);
     
   }
@@ -54,9 +96,11 @@ public class IntakeMove extends Command { // TODO - add CANdle (led strips) func
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //DO NOT USE THIS
+  
   if (!reverse){
     intakeSubsystem.setIntakeMotor(.9);
+    drivetrain.setControl(swerveCentric.withVelocityX(-y.get()).withVelocityY(-x.get()).withRotationalRate(-theta.get() * Math.PI));
+
     // if (intakeSubsystem.getBlocked()){
     //   intakeSubsystem.setCanRun(false);
     //   lightSubsystem.setLights(Constants.colorRGBIntake[0], Constants.colorRGBIntake[1], Constants.colorRGBIntake[2]);

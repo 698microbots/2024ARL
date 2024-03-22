@@ -38,6 +38,7 @@ public class ArmSubsystem extends SubsystemBase {
     armMotor2.set(-speed);
   }
 
+
   // @Override
   // public void periodic() { // don't need preiodic
   // distance = ; // Gets the distance traveled

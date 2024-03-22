@@ -5,59 +5,43 @@
 package frc.robot;
 
 import com.ctre.phoenix6.Utils;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
-import com.pathplanner.lib.auto.AutoBuilder;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj.XboxController.Axis;
-import frc.robot.commands.AutoCenterSpeaker;
-import frc.robot.commands.MoveHanger;
-import frc.robot.commands.SetAutoArm;
-import frc.robot.commands.AutoArm;
-import frc.robot.commands.AutoCenterAmp;
-import frc.robot.commands.AutoCenterNoteAndIntake;
-import frc.robot.commands.BROKENAutoCenterNoteAndIntake;
-import frc.robot.commands.BackUpIntake;
-
-import frc.robot.commands.AutoPositionAmp;
-import frc.robot.commands.AutoScoreSpeakerArm;
-import frc.robot.commands.AutoSetLEDS;
-import frc.robot.commands.FlyWheelShoot;
-import frc.robot.commands.FlywheelShootAmp;
-import frc.robot.commands.AUTOTESTmove;
-import frc.robot.commands.IntakeMove;
-import frc.robot.commands.TESTBrokenButtons;
-import frc.robot.commands.TESTFlywheel;
-import frc.robot.commands.AUTOTESTIntakeMove;
 import frc.robot.commands.AUTOTESTIntakeMoveAndDriveTrain;
 import frc.robot.commands.AUTOTESTarmDown;
 import frc.robot.commands.AUTOTESTautoArmShoot;
+import frc.robot.commands.AUTOTESTmove;
+import frc.robot.commands.AutoCenterAmp;
+import frc.robot.commands.AutoCenterSpeaker;
+import frc.robot.commands.AutoScoreSpeakerArm;
+import frc.robot.commands.AutoSetLEDS;
+import frc.robot.commands.AutoTrap;
+import frc.robot.commands.BackUpIntake;
+import frc.robot.commands.FlyWheelShoot;
+import frc.robot.commands.FlywheelShootAmp;
+import frc.robot.commands.IntakeMove;
+import frc.robot.commands.MoveHanger;
 import frc.robot.commands.TESTMoveArm;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.GyroSubsystem;
+import frc.robot.subsystems.HangerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LightSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.driveTrainVoltages;
-import frc.robot.subsystems.HangerSubsystem;
 
 public class RobotContainer {
   private double MaxSpeed = 4; // 6 meters per second desired top speed (6 origin)
@@ -109,7 +93,7 @@ public class RobotContainer {
   public Pose2d pose = drivetrain.getState().Pose; //could break the code 
   public final Field2d field2d = new Field2d();
 
-  private Command runAuto = drivetrain.getAutoPath("Test Auto");
+  private Command runAuto = drivetrain.getAutoPath("Another Auto Test");
 
   private SwerveModuleState[] states = drivetrain.getState().ModuleStates;
 
@@ -145,6 +129,9 @@ public class RobotContainer {
     
     //amp score
     joystick.rightTrigger().whileTrue(new FlywheelShootAmp(flyWheel, intake));
+
+    //auto trap
+    joystick.y().whileTrue(new AutoTrap(flyWheel, intake, arm));
     /**
      * 
      * 2nd driver commands\
@@ -198,8 +185,12 @@ public class RobotContainer {
           xboxController, 
           xboxController2, 
           intake, limeLight,
-           false, 
-           lights)
+          false, 
+          lights,
+          drivetrain,
+          () -> joystick.getLeftX(),
+          () -> joystick.getLeftY(),
+          () -> joystick.getRightX())
       );
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -228,9 +219,10 @@ public class RobotContainer {
   }
 
   public RobotContainer() {
-    configureBindings();
     NamedCommands.registerCommand("IntakeMove", new IntakeMove(xboxController, xboxController2, intake, limeLight, false, lights));
     NamedCommands.registerCommand("AUTOTESTarmDown", new AUTOTESTarmDown(arm));
+    
+    configureBindings();
 
   }
 
@@ -248,15 +240,15 @@ public class RobotContainer {
     // );
 
     //(2 note) ***USING shoots note infront of speaker drives back picks up note and shoots again,then moves out of alliance
-    // return new SequentialCommandGroup(
-    //   new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
-    //   new AUTOTESTarmDown(arm),
-    //   new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 1.75, 1, 0, 0),
-    //   new AUTOTESTmove(drivetrain, 1.99, -1, 0, 0), 
-    //   new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
-    //   new AUTOTESTarmDown(arm),
-    //   new AUTOTESTmove(drivetrain, 2.5, 1, 0, 0)
-    // );
+    return new SequentialCommandGroup(
+      new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2), //try changing this to 0
+      new AUTOTESTarmDown(arm),
+      new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 1.75, 1, 0, 0),
+      new AUTOTESTmove(drivetrain, 1.99, -1, 0, 0), 
+      new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
+      new AUTOTESTarmDown(arm),
+      new AUTOTESTmove(drivetrain, 2.5, 1, 0, 0)
+    );
 
     //(1 note)
     // return new SequentialCommandGroup(
@@ -284,6 +276,6 @@ public class RobotContainer {
     // // return new TESTauto(drivetrain, 5);
     // // return drivetrain.applyRequest(null);
     // return AutoBuilder.followPath(path);
-    return runAuto;    
+    // return runAuto;    
   }
 }

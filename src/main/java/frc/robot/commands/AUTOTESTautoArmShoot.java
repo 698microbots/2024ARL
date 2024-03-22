@@ -26,7 +26,7 @@ public class AUTOTESTautoArmShoot extends Command {
 
   private double seconds;
   private final PIDController pidControllerCenter = new PIDController(.04, 0.01, 0); //kp as 0.05 works, everything else as 0 I MADE IT SO MUCH SMOOTHER WTF??? (ty alex Nie)
-  private final PIDController pidControllerArm = new PIDController(1.4, 0.01, 0);  
+  private final PIDController pidControllerArm = new PIDController(1, 0.0, 0);  
   private int counter;
   public AUTOTESTautoArmShoot(
     ArmSubsystem armSubsystem,
@@ -65,14 +65,14 @@ public class AUTOTESTautoArmShoot extends Command {
     // double armAngle = -.0023 * distance + .361;
     // double armSpeed = pidControllerArm.calculate(armSubsystem.getEncoder(), armAngle);
     // // System.out.println("Scoring Speaker PID Speed: " + speed);
-    double armSpeed = pidControllerArm.calculate(armSubsystem.getEncoder(), Constants.encoderTrap);
+    double armSpeed = pidControllerArm.calculate(armSubsystem.getEncoder(), Constants.encoderManualSpeaker);
     armSubsystem.moveArm(-armSpeed);
 
-    if (counter > Constants.numSeconds(2)){
+    if (counter > Constants.numSeconds(1.5)){ //original 2 seconds
       flywheelSubsystem.setFlywheelMotorSpeed(1);
     }
 
-    if (counter > Constants.numSeconds(2.5)){
+    if (counter > Constants.numSeconds(2)){ // original 2.5
       intakeSubsystem.backupIntakeMotor(.9);
     }    
   }
@@ -89,7 +89,7 @@ public class AUTOTESTautoArmShoot extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (counter > Constants.numSeconds(seconds + 3)){
+    if (counter > Constants.numSeconds(seconds + 2.5)){// original is +3
       return true;
     } else {
       return false;

@@ -39,7 +39,7 @@ public class AUTOTESTarmDown extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (counter > Constants.numSeconds(.1)){
+    if (counter > Constants.numSeconds(.5)){
       return true;
     } else {
       return false;
