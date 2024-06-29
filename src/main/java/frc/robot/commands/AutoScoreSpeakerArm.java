@@ -16,14 +16,23 @@ public class AutoScoreSpeakerArm extends Command {
   /** Creates a new AutoScoreTrap. */
   private final ArmSubsystem armSubsystem;
   private final PIDController pidControllerArm = new PIDController(1, 0.0, 0);
+  private final FlywheelSubsystem flywheelSubsystem;
+  private final IntakeSubsystem intakeSubsystem;
   private int counter = 0;
   public AutoScoreSpeakerArm(
-    ArmSubsystem armSubsystem
+    ArmSubsystem armSubsystem,
+    FlywheelSubsystem flywheelSubsystem,
+    IntakeSubsystem intakeSubsystem
     ) {
     // Use addRequirements() here to declare subsystem dependencies.
   this.armSubsystem = armSubsystem;
+  this.intakeSubsystem = intakeSubsystem;
+  this.flywheelSubsystem = flywheelSubsystem;
   addRequirements(armSubsystem);
+  addRequirements(intakeSubsystem);
+  addRequirements(flywheelSubsystem);
   }
+
 
   // Called when the command is initially scheduled.
   @Override
@@ -33,15 +42,16 @@ public class AutoScoreSpeakerArm extends Command {
   @Override
   public void execute() {
     double armSpeed = pidControllerArm.calculate(armSubsystem.getEncoder(), Constants.encoderManualSpeaker);
+    counter++;
     armSubsystem.moveArm(-armSpeed);
     // System.out.println("testing");
-    // if (counter > Constants.numSeconds(2)){
-    //   flywheelSubsystem.setFlywheelMotorSpeed();
-    // }
+    if (counter > Constants.numSeconds(1.2)){
+      flywheelSubsystem.setFlywheelMotorSpeed(1);
+    }
 
-    // if (counter > Constants.numSeconds(2.5)){
-    //   intakeSubsystem.backupIntakeMotor(.75);
-    // } 
+    if (counter > Constants.numSeconds(1.7)){
+      intakeSubsystem.backupIntakeMotor(.75);
+    } 
  
   }
 
@@ -49,6 +59,9 @@ public class AutoScoreSpeakerArm extends Command {
   @Override
   public void end(boolean interrupted) {
     armSubsystem.moveArm(0);
+    intakeSubsystem.backupIntakeMotor(0);
+    flywheelSubsystem.setFlywheelMotorSpeed(0);
+    counter = 0;
 
   }
 

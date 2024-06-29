@@ -83,7 +83,7 @@ public final class Constants {
   public static final double ampEncoderUnits = 0;
   public static final double intakeNoteVoltage = 11.5;
   public static final double encoderManualSpeaker = .33;
-  public static final double encoderTrap = .31;
+  public static final double encoderTrap = .316;
 
   public static final double noteAreaToRun = 2.5;
   public static final double ampFlywheelSpeed = -.5;

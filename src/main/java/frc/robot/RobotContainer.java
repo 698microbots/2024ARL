@@ -22,11 +22,13 @@ import frc.robot.commands.AUTOTESTIntakeMoveAndDriveTrain;
 import frc.robot.commands.AUTOTESTarmDown;
 import frc.robot.commands.AUTOTESTautoArmShoot;
 import frc.robot.commands.AUTOTESTmove;
+import frc.robot.commands.AUTOTESTtagAutoShoot;
 import frc.robot.commands.AutoCenterAmp;
 import frc.robot.commands.AutoCenterSpeaker;
 import frc.robot.commands.AutoScoreSpeakerArm;
 import frc.robot.commands.AutoSetLEDS;
 import frc.robot.commands.AutoTrap;
+import frc.robot.commands.AutoTrapFromGround;
 import frc.robot.commands.BackUpIntake;
 import frc.robot.commands.FlyWheelShoot;
 import frc.robot.commands.FlywheelShootAmp;
@@ -116,7 +118,7 @@ public class RobotContainer {
     // joystick.b().whileTrue(drivetrain
     //     .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
     //fixed trap angle
-    joystick.b().whileTrue(new AutoScoreSpeakerArm(arm));
+    joystick.b().whileTrue(new AutoScoreSpeakerArm(arm, flyWheel, intake));
 
     // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
@@ -131,10 +133,22 @@ public class RobotContainer {
     joystick.rightTrigger().whileTrue(new FlywheelShootAmp(flyWheel, intake));
 
     //auto trap
-    joystick.y().whileTrue(new AutoTrap(flyWheel, intake, arm));
-    /**
+    // joystick.y().whileTrue(new AutoTrap(flyWheel, intake, arm));
+    // joystick.y().whileTrue(new AutoTrapFromGround(intake, flyWheel, limeLight, drivetrain, arm));
+      joystick.y().whileTrue(
+           new AutoCenterSpeaker(
+              () -> joystick.getLeftX() * MaxSpeed,
+              () -> joystick.getLeftY() * MaxSpeed,
+              drivetrain,
+              limeLight,
+              MaxAngularRate,
+              arm,
+              flyWheel,
+              intake)
+               
+      );    /**
      * 
-     * 2nd driver commands\
+     * 2nd driver commands
      * 
      */
     //hanger commands
@@ -265,10 +279,25 @@ public class RobotContainer {
     //   new 
     // );
 
+    // 3 note prayge BLUE ALLAINCE
+    // return new SequentialCommandGroup(
+    //   new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2), //try changing this to 0
+    //   new AUTOTESTarmDown(arm),
+    //   new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 1.75, 1, 0, 0),
+    //   new AUTOTESTtagAutoShoot(limeLight, intake, arm, drivetrain, flyWheel),
+    //   new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 1.75, 0, 1, Math.PI * .125), // this part determines 3 note
+    //   new AUTOTESTtagAutoShoot(limeLight, intake, arm, drivetrain, flyWheel)
+    // );
 
-
-
-
+    // 3 note prayge RED ALLAINCE
+    // return new SequentialCommandGroup(
+    //   new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2), //try changing this to 0
+    //   new AUTOTESTarmDown(arm),
+    //   new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 1.75, 1, 0, 0),
+    //   new AUTOTESTtagAutoShoot(limeLight, intake, arm, drivetrain, flyWheel),
+    //   new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 1.75, 0, 1, Math.PI * .125),
+    //   new AUTOTESTtagAutoShoot(limeLight, intake, arm, drivetrain, flyWheel)
+    // );
 
 
     // return Commands.print("No autonomous command configured");
