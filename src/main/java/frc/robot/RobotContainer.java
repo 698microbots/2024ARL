@@ -9,6 +9,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -46,10 +47,13 @@ import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.driveTrainVoltages;
 
 public class RobotContainer {
-  private double MaxSpeed = 4; // 6 meters per second desired top speed (6 origin)
+  private double MaxSpeed = 1; // 6 meters per second desired top speed (6 origin) //old: 4
   private double MaxAngularRate = 1.3 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
   public XboxController xboxController = new XboxController(0); // new XBox object
-  public XboxController xboxController2 = new XboxController(1); // new XBox object
+  public XboxController xboxController2 = new XboxController(1); // new XBox objec
+  SlewRateLimiter slewRateDriveX = new SlewRateLimiter(.1); //old: .5
+  SlewRateLimiter slewRateDriveY = new SlewRateLimiter(.1); //old: .5
+  SlewRateLimiter slewRateTurn = new SlewRateLimiter(.5);
   
   /*
    * 
@@ -95,6 +99,7 @@ public class RobotContainer {
   public Pose2d pose = drivetrain.getState().Pose; //could break the code 
   public final Field2d field2d = new Field2d();
 
+
   private Command runAuto = drivetrain.getAutoPath("Another Auto Test");
 
   private SwerveModuleState[] states = drivetrain.getState().ModuleStates;
@@ -104,10 +109,10 @@ public class RobotContainer {
     //drive command
     // flyWheel.setDefaultCommand(new FlyWheelShoot(flyWheel, limeLight, intake, () -> joystick.getLeftTriggerAxis()));
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-        drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
-            // negative Y (forward)
-            .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-            .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+        drivetrain.applyRequest(() -> drive.withVelocityX(slewRateDriveX.calculate(-joystick.getLeftY()) * MaxSpeed) // Drive forward with
+            // negative Y (forward) and filter the input with slewRateLimiter
+            .withVelocityY(slewRateDriveY.calculate(-joystick.getLeftX()) * MaxSpeed) // Drive left with negative X (left)
+            .withRotationalRate(slewRateTurn.calculate(-joystick.getRightX()) * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
 
 
@@ -118,7 +123,7 @@ public class RobotContainer {
     // joystick.b().whileTrue(drivetrain
     //     .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
     //fixed trap angle
-    joystick.b().whileTrue(new AutoScoreSpeakerArm(arm, flyWheel, intake));
+    // joystick.b().whileTrue(new AutoScoreSpeakerArm(arm, flyWheel, intake));
 
     // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
@@ -161,7 +166,7 @@ public class RobotContainer {
 
 
     //default arm command, move it with 2nd controller    
-    arm.setDefaultCommand(new TESTMoveArm(arm, () -> joystick2.getLeftY() * .6));
+    // arm.setDefaultCommand(new TESTMoveArm(arm, () -> joystick2.getLeftY() * .6));
     
     //reverse intake
     joystick2.a().whileTrue(new IntakeMove(xboxController, xboxController2, intake, limeLight, true, lights));
