@@ -9,6 +9,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -65,11 +66,19 @@ import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.driveTrainVoltages;
 
 public class RobotContainer {
-  private double MaxSpeed = 4; // 6 meters per second desired top speed (6 origin)
+  private double MaxSpeed = 1; // 6 meters per second desired top speed (6 origin) //old: 4
   private double MaxAngularRate = 1.3 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
   public XboxController xboxController = new XboxController(0); // new XBox object
+<<<<<<< Updated upstream
   public XboxController xboxController2 = new XboxController(1); // new XBox object
 
+=======
+  public XboxController xboxController2 = new XboxController(1); // new XBox objec
+  SlewRateLimiter slewRateDriveX = new SlewRateLimiter(.1); //old: .5
+  SlewRateLimiter slewRateDriveY = new SlewRateLimiter(.1); //old: .5
+  SlewRateLimiter slewRateTurn = new SlewRateLimiter(.5);
+  
+>>>>>>> Stashed changes
   /*
    * 
    * TODO: MaxAngularRate really effects driving in a straight line, if its too
@@ -127,6 +136,7 @@ public class RobotContainer {
   public Pose2d pose = drivetrain.getState().Pose; // could break the code
   public final Field2d field2d = new Field2d();
 
+
   private Command runAuto = drivetrain.getAutoPath("Another Auto Test");
 
   private SwerveModuleState[] states = drivetrain.getState().ModuleStates;
@@ -137,10 +147,10 @@ public class RobotContainer {
     // flyWheel.setDefaultCommand(new FlyWheelShoot(flyWheel, limeLight, intake, ()
     // -> joystick.getLeftTriggerAxis()));
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-        drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
-            // negative Y (forward)
-            .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-            .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+        drivetrain.applyRequest(() -> drive.withVelocityX(slewRateDriveX.calculate(-joystick.getLeftY()) * MaxSpeed) // Drive forward with
+            // negative Y (forward) and filter the input with slewRateLimiter
+            .withVelocityY(slewRateDriveY.calculate(-joystick.getLeftX()) * MaxSpeed) // Drive left with negative X (left)
+            .withRotationalRate(slewRateTurn.calculate(-joystick.getRightX()) * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
 
     // brake mode
@@ -148,10 +158,16 @@ public class RobotContainer {
 
     // point wheels
     // joystick.b().whileTrue(drivetrain
+<<<<<<< Updated upstream
     // .applyRequest(() -> point.withModuleDirection(new
     // Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
     // fixed trap angle
     joystick.b().whileTrue(new AutoScoreSpeakerArm(arm)); // raises the arm to the correct angle for the speaker, then fires
+=======
+    //     .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
+    //fixed trap angle
+    // joystick.b().whileTrue(new AutoScoreSpeakerArm(arm, flyWheel, intake));
+>>>>>>> Stashed changes
 
     // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
@@ -182,12 +198,21 @@ public class RobotContainer {
         () -> xboxController2.getLeftBumper(),
         () -> xboxController2.getRightBumper()));
 
+<<<<<<< Updated upstream
     // default arm command, move it with 2nd controller
     arm.setDefaultCommand(new TESTMoveArm(arm, () -> joystick2.getLeftY() * .6));
 
     // reverse intake
     joystick2.a().whileTrue(new IntakeMove(xboxController, xboxController2, intake, limeLight, true, lights,
         () -> joystick.getLeftX(), () -> joystick.getRightY(), () -> joystick.getRightX(), drivetrain));
+=======
+
+    //default arm command, move it with 2nd controller    
+    // arm.setDefaultCommand(new TESTMoveArm(arm, () -> joystick2.getLeftY() * .6));
+    
+    //reverse intake
+    joystick2.a().whileTrue(new IntakeMove(xboxController, xboxController2, intake, limeLight, true, lights));
+>>>>>>> Stashed changes
 
     // //auto amp sequence to move up to the amp and arm
     joystick2.y().whileTrue(
