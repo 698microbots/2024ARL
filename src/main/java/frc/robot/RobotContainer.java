@@ -123,7 +123,7 @@ public class RobotContainer {
     // joystick.b().whileTrue(drivetrain
     //     .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
     //fixed trap angle
-    // joystick.b().whileTrue(new AutoScoreSpeakerArm(arm, flyWheel, intake));
+    joystick.b().whileTrue(new AutoScoreSpeakerArm(arm, flyWheel, intake));
 
     // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
@@ -166,7 +166,7 @@ public class RobotContainer {
 
 
     //default arm command, move it with 2nd controller    
-    // arm.setDefaultCommand(new TESTMoveArm(arm, () -> joystick2.getLeftY() * .6));
+    arm.setDefaultCommand(new TESTMoveArm(arm, () -> joystick2.getLeftY() * .6));
     
     //reverse intake
     joystick2.a().whileTrue(new IntakeMove(xboxController, xboxController2, intake, limeLight, true, lights));
