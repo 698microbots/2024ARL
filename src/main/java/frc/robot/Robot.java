@@ -90,6 +90,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("distance to speaker", m_robotContainer.limeLight.getDistToSpeaker());
     SmartDashboard.putNumber("v angle", m_robotContainer.limeLight.getV_angle());;//just giving directly from limelight
   
+    SmartDashboard.putNumber("Slew Rate X", m_robotContainer.slewRateX.calculate(-m_robotContainer.joystick.getLeftY()));
+    SmartDashboard.putNumber("Slew Rate Y", m_robotContainer.slewRateY.calculate(-m_robotContainer.joystick.getLeftX()));
+    SmartDashboard.putNumber("Slew Rate Turn", m_robotContainer.slewRateTurn.calculate(-m_robotContainer.joystick.getRightX()));
   }
 
   @Override
