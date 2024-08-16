@@ -88,17 +88,11 @@ public class Robot extends TimedRobot {
  // says this is null when
                                                                                              // simulating
     SmartDashboard.putNumber("distance to speaker", m_robotContainer.limeLight.getDistToSpeaker());
-    SmartDashboard.putNumber("v angle", m_robotContainer.limeLight.getV_angle());
-    ;//just giving directly from limelight
-    
-    // calculate the accelleration limits on the robot X & Y axis
-    SmartDashboard.putNumber("slewRateY", m_robotContainer.slewRateDriveY.calculate(m_robotContainer.joystick.getLeftY()));  
-    SmartDashboard.putNumber("slewRateX", m_robotContainer.slewRateDriveX.calculate(m_robotContainer.joystick.getLeftX())); 
-    // calculate the accelleration limits on the robot rotation
-    SmartDashboard.putNumber("SlewRateTurn",
-        m_robotContainer.slewRateTurn.calculate(m_robotContainer.joystick.getRightX()));
-    
+    SmartDashboard.putNumber("v angle", m_robotContainer.limeLight.getV_angle());;//just giving directly from limelight
   
+    SmartDashboard.putNumber("Slew Rate X", m_robotContainer.slewRateX.calculate(-m_robotContainer.joystick.getLeftY()));
+    SmartDashboard.putNumber("Slew Rate Y", m_robotContainer.slewRateY.calculate(-m_robotContainer.joystick.getLeftX()));
+    SmartDashboard.putNumber("Slew Rate Turn", m_robotContainer.slewRateTurn.calculate(-m_robotContainer.joystick.getRightX()));
   }
 
   @Override
