@@ -33,6 +33,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   }
 
+  //if speed is positive, speed paramter is negative
   public void moveArm(double speed) {
     armMotor.set(speed);
     armMotor2.set(-speed);

@@ -98,7 +98,7 @@ public class IntakeMove extends Command { // TODO - add CANdle (led strips) func
   public void execute() {
   
   if (!reverse){
-    intakeSubsystem.setIntakeMotor(.9);
+    intakeSubsystem.setIntakeMotor(.5);
     drivetrain.setControl(swerveCentric.withVelocityX(-y.get()).withVelocityY(-x.get()).withRotationalRate(-theta.get() * Math.PI));
 
     // if (intakeSubsystem.getBlocked()){
@@ -122,7 +122,7 @@ public class IntakeMove extends Command { // TODO - add CANdle (led strips) func
     // }
   
   } else {
-    intakeSubsystem.reverseIntakeMotor(.9);
+    intakeSubsystem.reverseIntakeMotor(.5);
   }
 
     

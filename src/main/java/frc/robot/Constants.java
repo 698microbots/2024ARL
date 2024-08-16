@@ -76,6 +76,7 @@ public final class Constants {
   public static final int flywheelMotor2 = 9;
   public static final int armMotor = 10;
   public static final int armMotor2 = 11;
+  public static final int intakeMotorNew = 31;
 
   public static final double speakerTagHeightMeters = 0;
   public static final double ampTagHeightMeters = 0;

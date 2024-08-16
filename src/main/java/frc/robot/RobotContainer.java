@@ -30,7 +30,7 @@ import frc.robot.commands.AutoScoreSpeakerArm;
 import frc.robot.commands.AutoSetLEDS;
 import frc.robot.commands.AutoTrap;
 import frc.robot.commands.AutoTrapFromGround;
-import frc.robot.commands.BackUpIntake;
+import frc.robot.commands.BackupIntake;
 import frc.robot.commands.FlyWheelShoot;
 import frc.robot.commands.FlywheelShootAmp;
 import frc.robot.commands.IntakeMove;
@@ -51,9 +51,9 @@ public class RobotContainer {
   private double MaxAngularRate = 1.3 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
   public XboxController xboxController = new XboxController(0); // new XBox object
   public XboxController xboxController2 = new XboxController(1); // new XBox objec
-  SlewRateLimiter slewRateDriveX = new SlewRateLimiter(.1); //old: .5
-  SlewRateLimiter slewRateDriveY = new SlewRateLimiter(.1); //old: .5
-  SlewRateLimiter slewRateTurn = new SlewRateLimiter(.5);
+  SlewRateLimiter slewRateDriveX = new SlewRateLimiter(.6); //old: .5
+  SlewRateLimiter slewRateDriveY = new SlewRateLimiter(.6); //old: .5
+  SlewRateLimiter slewRateTurn = new SlewRateLimiter(.6);
   
   /*
    * 
@@ -129,7 +129,7 @@ public class RobotContainer {
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
 
     //backup intake
-    joystick.x().whileTrue(new BackUpIntake(intake));
+    joystick.x().whileTrue(new BackupIntake(intake));
 
     //speaker score
     joystick.leftTrigger().whileTrue(new FlyWheelShoot(flyWheel, intake, xboxController, xboxController2, () -> joystick.getLeftTriggerAxis()));

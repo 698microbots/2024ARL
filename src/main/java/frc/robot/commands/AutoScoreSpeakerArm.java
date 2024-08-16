@@ -52,6 +52,15 @@ public class AutoScoreSpeakerArm extends Command {
     if (counter > Constants.numSeconds(1.7)){
       intakeSubsystem.backupIntakeMotor(.75);
     } 
+
+    if (counter > Constants.numSeconds(2)){
+      armSubsystem.moveArm(.2);
+    }
+
+    if (counter > Constants.numSeconds(2.2)){
+      armSubsystem.moveArm(0);
+      
+    }
  
   }
 

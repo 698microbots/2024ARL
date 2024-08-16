@@ -75,7 +75,7 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("Target Space X", m_robotContainer.limeLight.getRobotPoseX());
     // SmartDashboard.putNumber("Target Pose Y", m_robotContainer.limeLight.getRobotPoseZ());
     // SmartDashboard.putData("Field2d", m_robotContainer.field2d);
-    SmartDashboard.putNumber("Intake Volts: ", m_robotContainer.intake.getIntakeVolts());
+    // SmartDashboard.putNumber("Intake Volts: ", m_robotContainer.intake.getIntakeVolts());
 
     SmartDashboard.putBoolean("isBlocked", m_robotContainer.intake.getBlocked());
     SmartDashboard.putBoolean("isBlocked2", m_robotContainer.intake.getBlocked2());
