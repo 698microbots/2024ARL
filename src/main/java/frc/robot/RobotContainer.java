@@ -31,7 +31,7 @@ import frc.robot.commands.AutoSetLEDS;
 import frc.robot.commands.AutoTrap;
 import frc.robot.commands.AutoTrapFromGround;
 import frc.robot.commands.BackupIntake;
-import frc.robot.commands.FlyWheelShoot;
+import frc.robot.commands.FlywheelShootSpeaker;
 import frc.robot.commands.FlywheelShootAmp;
 import frc.robot.commands.IntakeMove;
 import frc.robot.commands.MoveHanger;
@@ -51,9 +51,9 @@ public class RobotContainer {
   private double MaxAngularRate = 1.3 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
   public XboxController xboxController = new XboxController(0); // new XBox object
   public XboxController xboxController2 = new XboxController(1); // new XBox objec
-  SlewRateLimiter slewRateDriveX = new SlewRateLimiter(.6); //old: .5
-  SlewRateLimiter slewRateDriveY = new SlewRateLimiter(.6); //old: .5
-  SlewRateLimiter slewRateTurn = new SlewRateLimiter(.6);
+  SlewRateLimiter slewRateDriveX = new SlewRateLimiter(.65); //old: .5
+  SlewRateLimiter slewRateDriveY = new SlewRateLimiter(.65); //old: .5
+  SlewRateLimiter slewRateTurn = new SlewRateLimiter(.9);
   
   /*
    * 
@@ -103,15 +103,46 @@ public class RobotContainer {
 
   private SwerveModuleState[] states = drivetrain.getState().ModuleStates;
 
+  public double slewRateFixer(double slewRate, double joystickInput){
+    SlewRateLimiter slewRateFix = new SlewRateLimiter(slewRate);
+    if (Math.abs(driveTrainVoltages.BLDVoltage()) > 5){
+      System.out.println("slew fixing");
+      System.out.println(slewRateFix.calculate(joystickInput));
+
+      return joystickInput;
+      // return slewRateFix.calculate(joystickInput); //resets slew rate so instead of starting at 1 (where the slew rate wouldnt change anything), starts at a lower value, then ramps up
+    } else {
+      System.out.println("slew NOT fixing");
+      return joystickInput;
+    }
+  }
   private void configureBindings() {
     lights.setDefaultCommand(new AutoSetLEDS(lights));
     //drive command
     // flyWheel.setDefaultCommand(new FlyWheelShoot(flyWheel, limeLight, intake, () -> joystick.getLeftTriggerAxis()));
+    
+    //SLEW RATE NORMAL
+    // drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
+    //     drivetrain.applyRequest(() -> drive.withVelocityX(slewRateDriveX.calculate(-joystick.getLeftY()) * MaxSpeed) // Drive forward with
+    //         // negative Y (forward)
+    //         .withVelocityY(slewRateDriveY.calculate(-joystick.getLeftX()) * MaxSpeed) // Drive left with negative X (left)
+    //         .withRotationalRate(slewRateTurn.calculate(-joystick.getRightX()) * MaxAngularRate) // Drive counterclockwise with negative X (left)
+    //     ));
+
+    //SLEW RATE FIXER
+    // drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
+    //     drivetrain.applyRequest(() -> drive.withVelocityX(slewRateFixer(.6, -joystick.getLeftY()) * MaxSpeed) // Drive forward with
+    //         // negative Y (forward)
+    //         .withVelocityY(slewRateFixer(.6, (-joystick.getLeftX())) * MaxSpeed) // Drive left with negative X (left)
+    //         .withRotationalRate(slewRateFixer(.8, -joystick.getRightX()) * MaxAngularRate) // Drive counterclockwise with negative X (left)
+    //     ));
+
+    //ORIGINAL CODE
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-        drivetrain.applyRequest(() -> drive.withVelocityX(slewRateX.calculate(-joystick.getLeftY()) * MaxSpeed) // Drive forward with
+        drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
             // negative Y (forward)
-            .withVelocityY(slewRateY.calculate(-joystick.getLeftX()) * MaxSpeed) // Drive left with negative X (left)
-            .withRotationalRate(slewRateTurn.calculate(-joystick.getRightX()) * MaxAngularRate) // Drive counterclockwise with negative X (left)
+            .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+            .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
 
 
@@ -123,7 +154,7 @@ public class RobotContainer {
     //     .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
     //fixed trap angle
     joystick.b().whileTrue(new AutoScoreSpeakerArm(arm, flyWheel, intake));
-    joystick.b().whileTrue(new AutoScoreSpeakerArm(arm, flyWheel, intake));
+    // joystick.b().whileTrue(new AutoScoreSpeakerArm(arm, flyWheel, intake));
 
     // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
@@ -131,11 +162,12 @@ public class RobotContainer {
     //backup intake
     joystick.x().whileTrue(new BackupIntake(intake));
 
-    //speaker score
-    joystick.leftTrigger().whileTrue(new FlyWheelShoot(flyWheel, intake, xboxController, xboxController2, () -> joystick.getLeftTriggerAxis()));
+    //speaker score changed to leftTrigger
+    // joystick.leftTrigger().whileTrue(new FlywheelShootSpeaker(flyWheel, intake, xboxController, xboxController2, () -> joystick.getLeftTriggerAxis()));
     
-    //amp score
-    joystick.rightTrigger().whileTrue(new FlywheelShootAmp(flyWheel, intake));
+    //amp score changed to leftTrigger
+    // joystick.rightTrigger().whileTrue(new FlywheelShootAmp(flyWheel, intake));
+    joystick.leftTrigger().whileTrue(new FlywheelShootAmp(flyWheel, intake));
 
     //auto trap
     // joystick.y().whileTrue(new AutoTrap(flyWheel, intake, arm));
@@ -166,7 +198,6 @@ public class RobotContainer {
 
 
     //default arm command, move it with 2nd controller    
-    arm.setDefaultCommand(new TESTMoveArm(arm, () -> joystick2.getLeftY() * .6));
     arm.setDefaultCommand(new TESTMoveArm(arm, () -> joystick2.getLeftY() * .6));
     
     //reverse intake

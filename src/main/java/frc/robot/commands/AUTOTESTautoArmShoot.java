@@ -73,7 +73,7 @@ public class AUTOTESTautoArmShoot extends Command {
     }
 
     if (counter > Constants.numSeconds(2)){ // original 2.5
-      intakeSubsystem.backupIntakeMotor(.9);
+      intakeSubsystem.backupIntakeMotor(.25);
     }    
   }
 

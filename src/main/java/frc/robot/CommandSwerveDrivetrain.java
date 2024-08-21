@@ -50,8 +50,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     // private CurrentLimitsConfigs config1 = new CurrentLimitsConfigs().withStatorCurrentLimit(50).withSupplyCurrentLimit(50); // tis is used for current limiting
     // private CurrentLimitsConfigs config2 = new CurrentLimitsConfigs().withStatorCurrentLimit(30).withSupplyCurrentLimit(30); // tis is used for current limiting
  
-    private CurrentLimitsConfigs config1 = new CurrentLimitsConfigs().withStatorCurrentLimit(40);
-    private CurrentLimitsConfigs config2 = new CurrentLimitsConfigs().withStatorCurrentLimit(30);
+    private CurrentLimitsConfigs config1 = new CurrentLimitsConfigs().withStatorCurrentLimit(40).withSupplyCurrentThreshold(2);
+    private CurrentLimitsConfigs config2 = new CurrentLimitsConfigs().withStatorCurrentLimit(30).withSupplyCurrentThreshold(1);
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency, SwerveModuleConstants... modules) {
         super(driveTrainConstants, OdometryUpdateFrequency, modules);
         configurePathPlanner();

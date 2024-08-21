@@ -25,37 +25,37 @@ public class driveTrainVoltages extends SubsystemBase {
   public driveTrainVoltages() {}
 
   public double FLDVoltage(){
-    return FLDrive.getPosition().getValueAsDouble();
+    return FLDrive.getMotorVoltage().getValueAsDouble();
   }
 
   public double BLDVoltage(){
-    return BLDrive.getPosition().getValueAsDouble();
+    return BLDrive.getMotorVoltage().getValueAsDouble();
   }
   
   public double FRDVoltage(){
-    return FRDrive.getPosition().getValueAsDouble();
+    return FRDrive.getMotorVoltage().getValueAsDouble();
   }
   
   public double BRDVoltage(){
-    return BRDrive.getPosition().getValueAsDouble();
+    return BRDrive.getMotorVoltage().getValueAsDouble();
   }
 
   //
 
   public double FLTVoltage(){
-    return FLTurn.getPosition().getValueAsDouble();
+    return FLTurn.getMotorVoltage().getValueAsDouble();
   }
 
   public double BLTVoltage(){
-    return BLTurn.getPosition().getValueAsDouble();
+    return BLTurn.getMotorVoltage().getValueAsDouble();
   }
   
   public double FRTVoltage(){
-    return FRTurn.getPosition().getValueAsDouble();
+    return FRTurn.getMotorVoltage().getValueAsDouble();
   }
   
   public double BRTVoltage(){
-    return BRTurn.getPosition().getValueAsDouble();
+    return BRTurn.getMotorVoltage().getValueAsDouble();
   }
 
 

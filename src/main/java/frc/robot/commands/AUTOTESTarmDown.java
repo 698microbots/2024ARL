@@ -26,7 +26,7 @@ public class AUTOTESTarmDown extends Command {
   @Override
   public void execute() {
     counter++;
-    armSubsystem.moveArm(.33);
+    armSubsystem.moveArm(.30);
   }
 
   // Called once the command ends or is interrupted.
@@ -39,7 +39,7 @@ public class AUTOTESTarmDown extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (counter > Constants.numSeconds(.5)){
+    if (counter > Constants.numSeconds(.3)){
       return true;
     } else {
       return false;

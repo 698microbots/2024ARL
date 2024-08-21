@@ -46,7 +46,7 @@ public class AUTOTESTIntakeMoveAndDriveTrain extends Command {
   @Override
   public void execute() {
     counter++;
-    intakeSubsystem.setIntakeMotor(.75);
+    intakeSubsystem.setIntakeMotor(.25);
     drivetrain.setControl(swerveRequest.withVelocityX(x).withVelocityY(y).withRotationalRate(theta));
   }
 

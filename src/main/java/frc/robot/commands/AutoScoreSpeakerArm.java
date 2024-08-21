@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.CommandSwerveDrivetrain;
@@ -16,6 +17,7 @@ public class AutoScoreSpeakerArm extends Command {
   /** Creates a new AutoScoreTrap. */
   private final ArmSubsystem armSubsystem;
   private final PIDController pidControllerArm = new PIDController(1, 0.0, 0);
+  private final ArmFeedforward armFeedforward = new ArmFeedforward(0, 0, 0);
   private final FlywheelSubsystem flywheelSubsystem;
   private final IntakeSubsystem intakeSubsystem;
   private int counter = 0;
@@ -42,9 +44,11 @@ public class AutoScoreSpeakerArm extends Command {
   @Override
   public void execute() {
     double armSpeed = pidControllerArm.calculate(armSubsystem.getEncoder(), Constants.encoderManualSpeaker);
+    double armFeedforwardinput = armFeedforward.calculate((armSubsystem.getEncoder()-.24) *  2*(Math.PI), 0);
+
     counter++;
     armSubsystem.moveArm(-armSpeed);
-    // System.out.println("testing");
+
     if (counter > Constants.numSeconds(1.2)){
       flywheelSubsystem.setFlywheelMotorSpeed(1);
     }
@@ -53,11 +57,13 @@ public class AutoScoreSpeakerArm extends Command {
       intakeSubsystem.backupIntakeMotor(.75);
     } 
 
-    if (counter > Constants.numSeconds(2)){
+    //original was 2 seconds moves arm down
+    if (counter > Constants.numSeconds(3.5)){
       armSubsystem.moveArm(.2);
     }
 
-    if (counter > Constants.numSeconds(2.2)){
+    //make sure seconds is always .2 after moveArm(.2)
+    if (counter > Constants.numSeconds(3.7)){
       armSubsystem.moveArm(0);
       
     }
@@ -77,6 +83,9 @@ public class AutoScoreSpeakerArm extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if(counter > Constants.numSeconds(4)){
+      return true;
+    }
     return false;
   }
 }

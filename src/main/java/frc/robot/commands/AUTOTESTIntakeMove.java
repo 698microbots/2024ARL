@@ -28,7 +28,7 @@ public class AUTOTESTIntakeMove extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intakeSubsystem.reverseIntakeMotor(-.75);
+    intakeSubsystem.reverseIntakeMotor(-.4);
     System.out.println("reversed intake");
   }
 

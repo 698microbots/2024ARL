@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ControlModeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -21,12 +22,19 @@ public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ArmSubsystem. */
   private final TalonFX armMotor = new TalonFX(Constants.armMotor);
   private final TalonFX armMotor2 = new TalonFX(Constants.armMotor2);
+  private CurrentLimitsConfigs config1 = new CurrentLimitsConfigs().withStatorCurrentLimit(70);
+  
   // Initializes a duty cycle encoder on DIO pins 0
   DutyCycleEncoder dutyCycleEncoder = new DutyCycleEncoder(0);
 
   public ArmSubsystem() {
     // armMotor.setNeutralMode(NeutralModeValue.Brake);
     // armMotor2.setNeutralMode(NeutralModeValue.Brake);
+    config1.withStatorCurrentLimitEnable(true);
+
+    armMotor.getConfigurator().apply(config1);
+    armMotor2.getConfigurator().apply(config1);
+
     armMotor.setNeutralMode(NeutralModeValue.Coast);
     armMotor.setNeutralMode(NeutralModeValue.Coast);
 
