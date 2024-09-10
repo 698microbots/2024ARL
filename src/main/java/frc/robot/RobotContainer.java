@@ -108,9 +108,9 @@ public class RobotContainer {
     //drive command
     // flyWheel.setDefaultCommand(new FlyWheelShoot(flyWheel, limeLight, intake, () -> joystick.getLeftTriggerAxis()));
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-        drivetrain.applyRequest(() -> drive.withVelocityX(slewRateX.calculate(-joystick.getLeftY()) * MaxSpeed) // Drive forward with
+        drivetrain.applyRequest(() -> drive.withVelocityX(slewRateDriveX.calculate(-joystick.getLeftY()) * MaxSpeed) // Drive forward with
             // negative Y (forward)
-            .withVelocityY(slewRateY.calculate(-joystick.getLeftX()) * MaxSpeed) // Drive left with negative X (left)
+            .withVelocityY(slewRateDriveY.calculate(-joystick.getLeftX()) * MaxSpeed) // Drive left with negative X (left)
             .withRotationalRate(slewRateTurn.calculate(-joystick.getRightX()) * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
 
