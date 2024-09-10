@@ -75,7 +75,7 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("Target Space X", m_robotContainer.limeLight.getRobotPoseX());
     // SmartDashboard.putNumber("Target Pose Y", m_robotContainer.limeLight.getRobotPoseZ());
     // SmartDashboard.putData("Field2d", m_robotContainer.field2d);
-    SmartDashboard.putNumber("Intake Volts: ", m_robotContainer.intake.getIntakeVolts());
+    // SmartDashboard.putNumber("Intake Volts: ", m_robotContainer.intake.getIntakeVolts());
 
     SmartDashboard.putBoolean("isBlocked", m_robotContainer.intake.getBlocked());
     SmartDashboard.putBoolean("isBlocked2", m_robotContainer.intake.getBlocked2());
@@ -88,17 +88,11 @@ public class Robot extends TimedRobot {
  // says this is null when
                                                                                              // simulating
     SmartDashboard.putNumber("distance to speaker", m_robotContainer.limeLight.getDistToSpeaker());
-    SmartDashboard.putNumber("v angle", m_robotContainer.limeLight.getV_angle());
-    ;//just giving directly from limelight
-    
-    // calculate the accelleration limits on the robot X & Y axis
-    SmartDashboard.putNumber("slewRateY", m_robotContainer.slewRateDriveY.calculate(m_robotContainer.joystick.getLeftY()));  
-    SmartDashboard.putNumber("slewRateX", m_robotContainer.slewRateDriveX.calculate(m_robotContainer.joystick.getLeftX())); 
-    // calculate the accelleration limits on the robot rotation
-    SmartDashboard.putNumber("SlewRateTurn",
-        m_robotContainer.slewRateTurn.calculate(m_robotContainer.joystick.getRightX()));
-    
+    SmartDashboard.putNumber("v angle", m_robotContainer.limeLight.getV_angle());;//just giving directly from limelight
   
+    SmartDashboard.putNumber("Slew Rate X", m_robotContainer.slewRateDriveX.calculate(-m_robotContainer.joystick.getLeftY()));
+    SmartDashboard.putNumber("Slew Rate Y", m_robotContainer.slewRateDriveY.calculate(-m_robotContainer.joystick.getLeftX()));
+    SmartDashboard.putNumber("Slew Rate Turn", m_robotContainer.slewRateTurn.calculate(-m_robotContainer.joystick.getRightX()));
   }
 
   @Override

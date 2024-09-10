@@ -36,35 +36,39 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
     private final SwerveRequest.ApplyChassisSpeeds autoRequest = new SwerveRequest.ApplyChassisSpeeds();
-
+    //drive motors
     private TalonFX motor1 = new TalonFX(1);
     private TalonFX motor2 = new TalonFX(3);
     private TalonFX motor3 = new TalonFX(5);
     private TalonFX motor4 = new TalonFX(6);
 
-    
+    //turn motors
     private TalonFX Tmotor1 = new TalonFX(0);
     private TalonFX Tmotor2 = new TalonFX(2);
     private TalonFX Tmotor3 = new TalonFX(4);
     private TalonFX Tmotor4 = new TalonFX(7);    
-    private CurrentLimitsConfigs config1 = new CurrentLimitsConfigs().withStatorCurrentLimit(35).withSupplyCurrentLimit(35); // tis is used for current limiting
-    private CurrentLimitsConfigs config2 = new CurrentLimitsConfigs().withStatorCurrentLimit(15).withSupplyCurrentLimit(15); // tis is used for current limiting
-   
+    // private CurrentLimitsConfigs config1 = new CurrentLimitsConfigs().withStatorCurrentLimit(50).withSupplyCurrentLimit(50); // tis is used for current limiting
+    // private CurrentLimitsConfigs config2 = new CurrentLimitsConfigs().withStatorCurrentLimit(30).withSupplyCurrentLimit(30); // tis is used for current limiting
+ 
+    private CurrentLimitsConfigs config1 = new CurrentLimitsConfigs().withStatorCurrentLimit(40);
+    private CurrentLimitsConfigs config2 = new CurrentLimitsConfigs().withStatorCurrentLimit(30);
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency, SwerveModuleConstants... modules) {
         super(driveTrainConstants, OdometryUpdateFrequency, modules);
         configurePathPlanner();
         if (Utils.isSimulation()) {
             startSimThread();
         }
-        motor1.getConfigurator().apply(config1);
-        motor2.getConfigurator().apply(config1);
-        motor3.getConfigurator().apply(config1);
-        motor4.getConfigurator().apply(config1);
+        // motor1.getConfigurator().apply(config1);
+        // motor2.getConfigurator().apply(config1);
+        // motor3.getConfigurator().apply(config1);
+        // motor4.getConfigurator().apply(config1);
        
-        Tmotor1.getConfigurator().apply(config2);
-        Tmotor2.getConfigurator().apply(config2);
-        Tmotor3.getConfigurator().apply(config2);
-        Tmotor4.getConfigurator().apply(config2);        
+        // Tmotor1.getConfigurator().apply(config2);
+        // Tmotor2.getConfigurator().apply(config2);
+        // Tmotor3.getConfigurator().apply(config2);
+        // Tmotor4.getConfigurator().apply(config2);   
+        // config1.withStatorCurrentLimitEnable(true).withSupplyCurrentLimitEnable(true);   
+        // config2.withStatorCurrentLimitEnable(true).withSupplyCurrentLimitEnable(true);   
 
     }
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
@@ -73,6 +77,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         if (Utils.isSimulation()) {
             startSimThread();
         }
+        config1.withStatorCurrentLimitEnable(true);
+        config2.withStatorCurrentLimitEnable(true); //causes the current limits to set
+        // ^^^ IMPORTANT
         motor1.getConfigurator().apply(config1);
         motor2.getConfigurator().apply(config1);
         motor3.getConfigurator().apply(config1);
@@ -81,7 +88,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         Tmotor1.getConfigurator().apply(config2);
         Tmotor2.getConfigurator().apply(config2);
         Tmotor3.getConfigurator().apply(config2);
-        Tmotor4.getConfigurator().apply(config2);        
+        Tmotor4.getConfigurator().apply(config2); //also enables current limits
+        
     }
     // TODO: try to add desaturate wheel speeds by adding a new SwerveDriveTrain
     // public void setControl(SwerveRequestMODIFIED request) {

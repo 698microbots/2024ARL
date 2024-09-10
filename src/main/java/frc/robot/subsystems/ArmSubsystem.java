@@ -17,7 +17,7 @@ import frc.robot.Constants;
 public class ArmSubsystem extends SubsystemBase {
   // new instance var for distcnce travelled
   private double distance = 0;
-  private boolean direction = false;
+  private boolean direction = false; // ▌NEW▐
   /** Creates a new ArmSubsystem. */
   private final TalonFX armMotor = new TalonFX(Constants.armMotor);
   private final TalonFX armMotor2 = new TalonFX(Constants.armMotor2);
@@ -30,34 +30,29 @@ public class ArmSubsystem extends SubsystemBase {
     armMotor.setNeutralMode(NeutralModeValue.Coast);
     armMotor.setNeutralMode(NeutralModeValue.Coast);
 
+
   }
 
+  //if speed is positive, speed paramter is negative
   public void moveArm(double speed) {
-    if (getEncoder() < 2 && getEncoder() > 5) {
-      armMotor.set(speed);
-      armMotor2.set(-speed);
-    } else if (getEncoder() < 2 && speed < 0) { // soft locks the arm motors when fully up or down
-      armMotor.set(0); // 2 is a placeholder value
-      armMotor2.set(0);
-    } else { // 5 is a placeholder value
-      armMotor.set(0);
-      armMotor2.set(0);
-    }
+    armMotor.set(speed);
+    armMotor2.set(-speed);
   }
 
 
   // @Override
   // public void periodic() { // don't need preiodic
   // distance = ; // Gets the distance traveled
-  // direction = ; // Gets the current direction of the encoder
+  // direction = ; // Gets the current direction of the encoder // ▌NEW▐
   // }
 
   // Getter methods
+  // TODO: find out what this returns
   public double getEncoder() {
     return dutyCycleEncoder.get();
   }
 
-  public double getDistance() {
+  public double getDistance() { // ▌NEW▐
     return dutyCycleEncoder.getDistance();
   }
 
@@ -66,11 +61,9 @@ public class ArmSubsystem extends SubsystemBase {
     dutyCycleEncoder.reset();
   }
 
-  // public boolean reverseDirection() {
-  // dutyCycleEncoder.setReverseDirection(true); // think this will reverst the
-  // direction tha arm travels when invoked,
-  // // confirm later
-  // return direction; // temporary, is here just for checking it works as
-  // intended
+  // public boolean reverseDirection() { // ▌NEW▐
+  //   dutyCycleEncoder.setReverseDirection(true); // think this will reverst the direction tha arm travels when invoked,
+  //                                          // confirm later
+  //   return direction; // temporary, is here just for checking it works as intended
   // }
 }

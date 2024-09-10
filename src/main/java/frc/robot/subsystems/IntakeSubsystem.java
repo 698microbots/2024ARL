@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -15,7 +16,8 @@ import frc.robot.Constants;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
-  private final CANSparkMax IntakeMotor = new CANSparkMax(15, CANSparkMax.MotorType.kBrushless);
+  // private final CANSparkMax IntakeMotor = new CANSparkMax(15, CANSparkMax.MotorType.kBrushless);
+  private final TalonFX IntakeMotorNew = new TalonFX(Constants.intakeMotorNew);
   // Initializes a DigitalInput on DIO 0
   private final DigitalInput photoSensor = new DigitalInput(1); //TODO - make this a constant
   private final DigitalInput photoSensor2 = new DigitalInput(3); //TODO - make this a constant
@@ -29,26 +31,30 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void setIntakeMotor(double speed) {
     if (getBlocked()) {
-      IntakeMotor.set(0);
+      // IntakeMotor.set(0);
       // System.out.println("stopping motor");
+      IntakeMotorNew.set(0);
     } else {
-      IntakeMotor.set(-speed);
+      // IntakeMotor.set(-speed);
       // System.out.println("setting motor");
+      IntakeMotorNew.set(-speed); // dont know whether we need -speed or positive
     
     }
   }
 
   //also use to override normal setIntakeMotor
   public void reverseIntakeMotor(double speed) {
-    IntakeMotor.set(speed);
+    // IntakeMotor.set(speed);
+    IntakeMotorNew.set(speed);
   }
 
   public void backupIntakeMotor(double speed){
-    IntakeMotor.set(-speed);
+    // IntakeMotor.set(-speed);
+    IntakeMotorNew.set(-speed);
   }
-  public double getIntakeVolts() {
-    return IntakeMotor.getBusVoltage();
-  }
+  // public double getIntakeVolts() {
+  //   return IntakeMotor.getBusVoltage();
+  // }
 
   public void setCanRun(boolean run) {
     // if (run){

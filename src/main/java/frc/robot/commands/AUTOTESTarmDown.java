@@ -26,7 +26,7 @@ public class AUTOTESTarmDown extends Command {
   @Override
   public void execute() {
     counter++;
-    armSubsystem.moveArm(.4);
+    armSubsystem.moveArm(.33);
   }
 
   // Called once the command ends or is interrupted.
