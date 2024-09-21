@@ -15,7 +15,7 @@ import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 
-public class FlywheelShootSpeaker extends Command {
+public class FlyWheelShootSpeaker extends Command {
   /** Creates a new AutoFlyWheelShoot. */
   private final FlywheelSubsystem flywheelSubsystem;
   private final IntakeSubsystem intakeSubsystem;
@@ -42,7 +42,7 @@ public class FlywheelShootSpeaker extends Command {
   //   addRequirements(intakeSubsystem);
   // }
 
-  public FlywheelShootSpeaker(
+  public FlyWheelShootSpeaker(
     FlywheelSubsystem flywheelSubsystem,
     IntakeSubsystem intakeSubsystem,
     XboxController xboxController1,
