@@ -31,7 +31,7 @@ import frc.robot.commands.AutoSetLEDS;
 import frc.robot.commands.AutoTrap;
 import frc.robot.commands.AutoTrapFromGround;
 import frc.robot.commands.BackupIntake;
-import frc.robot.commands.FlywheelShootSpeaker;
+import frc.robot.commands.FlyWheelShootSpeaker;
 import frc.robot.commands.FlywheelShootAmp;
 import frc.robot.commands.IntakeMove;
 import frc.robot.commands.MoveHanger;
@@ -183,11 +183,14 @@ public class RobotContainer {
               flyWheel,
               intake)
                
-      );    /**
+      );    
+    
+    /**
      * 
      * 2nd driver commands
      * 
      */
+    
     //hanger commands
     hanger.setDefaultCommand(new MoveHanger(
         hanger, 
