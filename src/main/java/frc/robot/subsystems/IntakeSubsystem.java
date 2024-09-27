@@ -37,7 +37,7 @@ public class IntakeSubsystem extends SubsystemBase {
     } else {
       // IntakeMotor.set(-speed);
       // System.out.println("setting motor");
-      IntakeMotorNew.set(-speed); // dont know whether we need -speed or positive
+      IntakeMotorNew.set(speed); // dont know whether we need -speed or positive
     
     }
   }
@@ -45,12 +45,12 @@ public class IntakeSubsystem extends SubsystemBase {
   //also use to override normal setIntakeMotor
   public void reverseIntakeMotor(double speed) {
     // IntakeMotor.set(speed);
-    IntakeMotorNew.set(speed);
+    IntakeMotorNew.set(-speed);
   }
 
   public void backupIntakeMotor(double speed){
     // IntakeMotor.set(-speed);
-    IntakeMotorNew.set(-speed);
+    IntakeMotorNew.set(speed);
   }
   // public double getIntakeVolts() {
   //   return IntakeMotor.getBusVoltage();

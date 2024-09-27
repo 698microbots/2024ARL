@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ArmSubsystem extends SubsystemBase {
+  
   // new instance var for distcnce travelled
   private double distance = 0;
   private boolean direction = false; // ▌NEW▐

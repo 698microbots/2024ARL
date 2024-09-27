@@ -65,8 +65,8 @@ public class AUTOTESTautoArmShoot extends Command {
     // double armAngle = -.0023 * distance + .361;
     // double armSpeed = pidControllerArm.calculate(armSubsystem.getEncoder(), armAngle);
     // // System.out.println("Scoring Speaker PID Speed: " + speed);
-    double armSpeed = pidControllerArm.calculate(armSubsystem.getEncoder(), Constants.encoderManualSpeaker);
-    armSubsystem.moveArm(-armSpeed);
+    // double armSpeed = pidControllerArm.calculate(armSubsystem.getEncoder(), Constants.encoderManualSpeaker);
+    // armSubsystem.moveArm(-armSpeed);
 
     if (counter > Constants.numSeconds(1.5)){ //original 2 seconds
       flywheelSubsystem.setFlywheelMotorSpeed(1);

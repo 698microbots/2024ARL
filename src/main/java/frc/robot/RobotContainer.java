@@ -26,15 +26,15 @@ import frc.robot.commands.AUTOTESTmove;
 import frc.robot.commands.AUTOTESTtagAutoShoot;
 import frc.robot.commands.AutoCenterAmp;
 import frc.robot.commands.AutoCenterSpeaker;
-import frc.robot.commands.AutoScoreSpeakerArm;
 import frc.robot.commands.AutoSetLEDS;
 import frc.robot.commands.AutoTrap;
 import frc.robot.commands.AutoTrapFromGround;
 import frc.robot.commands.BackupIntake;
-import frc.robot.commands.FlywheelShootSpeaker;
+import frc.robot.commands.FlyWheelShootSpeaker;
 import frc.robot.commands.FlywheelShootAmp;
 import frc.robot.commands.IntakeMove;
 import frc.robot.commands.MoveHanger;
+import frc.robot.commands.ScoreSpeaker;
 import frc.robot.commands.TESTMoveArm;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
@@ -153,7 +153,7 @@ public class RobotContainer {
     // joystick.b().whileTrue(drivetrain
     //     .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
     //fixed trap angle
-    joystick.b().whileTrue(new AutoScoreSpeakerArm(arm, flyWheel, intake));
+    joystick.b().whileTrue(new ScoreSpeaker(flyWheel, intake));
     // joystick.b().whileTrue(new AutoScoreSpeakerArm(arm, flyWheel, intake));
 
     // reset the field-centric heading on left bumper press
@@ -183,11 +183,14 @@ public class RobotContainer {
               flyWheel,
               intake)
                
-      );    /**
+      );    
+    
+    /**
      * 
      * 2nd driver commands
      * 
      */
+
     //hanger commands
     hanger.setDefaultCommand(new MoveHanger(
         hanger, 
@@ -290,16 +293,26 @@ public class RobotContainer {
     //   new AUTOTESTmove(drivetrain, 2, -1, 0, 0)
     // );
 
-    //(2 note) ***USING shoots note infront of speaker drives back picks up note and shoots again,then moves out of alliance
+    //(2 note) shoots note infront of speaker drives back picks up note and shoots again,then moves out of alliance
     return new SequentialCommandGroup(
-      new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2), //try changing this to 0
       new AUTOTESTarmDown(arm),
+      new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2), //try changing this to 0
       new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 1.75, 1, 0, 0),
       new AUTOTESTmove(drivetrain, 1.99, -1, 0, 0), 
       new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
-      new AUTOTESTarmDown(arm),
       new AUTOTESTmove(drivetrain, 2.5, 1, 0, 0)
-    );
+    );    
+
+    // //(2 note) shoots note infront of speaker drives back picks up note and shoots again,then moves out of alliance
+    // return new SequentialCommandGroup(
+    //   new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2), //try changing this to 0
+    //   new AUTOTESTarmDown(arm),
+    //   new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 1.75, 1, 0, 0),
+    //   new AUTOTESTmove(drivetrain, 1.99, -1, 0, 0), 
+    //   new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
+    //   new AUTOTESTarmDown(arm),
+    //   new AUTOTESTmove(drivetrain, 2.5, 1, 0, 0)
+    // );
 
     //(1 note)
     // return new SequentialCommandGroup(

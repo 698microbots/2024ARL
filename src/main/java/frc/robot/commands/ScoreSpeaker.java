@@ -13,24 +13,20 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
-public class AutoScoreSpeakerArm extends Command {
+public class ScoreSpeaker extends Command {
   /** Creates a new AutoScoreTrap. */
-  private final ArmSubsystem armSubsystem;
   private final PIDController pidControllerArm = new PIDController(1, 0.0, 0);
   private final ArmFeedforward armFeedforward = new ArmFeedforward(0, 0, 0);
   private final FlywheelSubsystem flywheelSubsystem;
   private final IntakeSubsystem intakeSubsystem;
   private int counter = 0;
-  public AutoScoreSpeakerArm(
-    ArmSubsystem armSubsystem,
+  public ScoreSpeaker(
     FlywheelSubsystem flywheelSubsystem,
     IntakeSubsystem intakeSubsystem
     ) {
     // Use addRequirements() here to declare subsystem dependencies.
-  this.armSubsystem = armSubsystem;
   this.intakeSubsystem = intakeSubsystem;
   this.flywheelSubsystem = flywheelSubsystem;
-  addRequirements(armSubsystem);
   addRequirements(intakeSubsystem);
   addRequirements(flywheelSubsystem);
   }
@@ -43,37 +39,35 @@ public class AutoScoreSpeakerArm extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double armSpeed = pidControllerArm.calculate(armSubsystem.getEncoder(), Constants.encoderManualSpeaker);
-    double armFeedforwardinput = armFeedforward.calculate((armSubsystem.getEncoder()-.24) *  2*(Math.PI), 0);
-
+    // double armSpeed = pidControllerArm.calculate(armSubsystem.getEncoder(), Constants.encoderManualSpeaker);
+    // double armFeedforwardinput = armFeedforward.calculate((armSubsystem.getEncoder()-.24) *  2*(Math.PI), 0);
     counter++;
-    armSubsystem.moveArm(-armSpeed);
+    // armSubsystem.moveArm(-armSpeed);
 
-    if (counter > Constants.numSeconds(1.2)){
+    if (counter > Constants.numSeconds(0)){
       flywheelSubsystem.setFlywheelMotorSpeed(1);
     }
 
-    if (counter > Constants.numSeconds(1.7)){
+    if (counter > Constants.numSeconds(.5)){
       intakeSubsystem.backupIntakeMotor(.75);
     } 
 
-    //original was 2 seconds moves arm down
-    if (counter > Constants.numSeconds(3.5)){
-      armSubsystem.moveArm(.2);
-    }
+    // //original was 2 seconds moves arm down
+    // if (counter > Constants.numSeconds(3.5)){
+    //   armSubsystem.moveArm(.2);
+    // }
 
-    //make sure seconds is always .2 after moveArm(.2)
-    if (counter > Constants.numSeconds(3.7)){
-      armSubsystem.moveArm(0);
+    // //make sure seconds is always .2 after moveArm(.2)
+    // if (counter > Constants.numSeconds(3.7)){
+    //   armSubsystem.moveArm(0);
       
-    }
+    // }
  
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    armSubsystem.moveArm(0);
     intakeSubsystem.backupIntakeMotor(0);
     flywheelSubsystem.setFlywheelMotorSpeed(0);
     counter = 0;

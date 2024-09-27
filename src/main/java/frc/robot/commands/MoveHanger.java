@@ -45,10 +45,10 @@ public class MoveHanger extends Command {
   @Override
   public void execute() { // TODO - find directionality of the motors
     if (leftTrigger.get() > 0){
-    System.out.println("LT hanger");
+    // System.out.println("LT hanger");
     hangerSubsystem.setHangerMotorOne(-1);
     } else if (leftBumper.get()){
-    System.out.println("LB hanger");
+    // System.out.println("LB hanger");
       hangerSubsystem.setHangerMotorOne(1);
     } else {
       hangerSubsystem.setHangerMotorOne(0);
@@ -56,11 +56,11 @@ public class MoveHanger extends Command {
 
     if (rightTrigger.get() > 0){
       hangerSubsystem.setHangerMotorTwo(-1);
-    System.out.println("RT hanger");
+    // System.out.println("RT hanger");
 
     } else if (rightBumper.get()){
       hangerSubsystem.setHangerMotorTwo(1);
-    System.out.println("RB hanger");
+    // System.out.println("RB hanger");
 
     } else {
       hangerSubsystem.setHangerMotorTwo(0);
