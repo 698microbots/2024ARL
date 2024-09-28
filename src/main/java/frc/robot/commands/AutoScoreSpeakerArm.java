@@ -18,13 +18,9 @@ public class AutoScoreSpeakerArm extends Command {
   private final PIDController pidControllerArm = new PIDController(1, 0.0, 0);
   private final FlywheelSubsystem flywheelSubsystem;
   private final IntakeSubsystem intakeSubsystem;
-  private final FlywheelSubsystem flywheelSubsystem;
-  private final IntakeSubsystem intakeSubsystem;
   private int counter = 0;
   public AutoScoreSpeakerArm(
     ArmSubsystem armSubsystem,
-    FlywheelSubsystem flywheelSubsystem,
-    IntakeSubsystem intakeSubsystem,
     FlywheelSubsystem flywheelSubsystem,
     IntakeSubsystem intakeSubsystem
     ) {

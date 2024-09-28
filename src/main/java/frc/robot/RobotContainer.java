@@ -31,7 +31,7 @@ import frc.robot.commands.AutoScoreSpeakerArm;
 import frc.robot.commands.AutoSetLEDS;
 import frc.robot.commands.AutoTrap;
 import frc.robot.commands.AutoTrapFromGround;
-import frc.robot.commands.BackUpIntake;
+import frc.robot.commands.BackupIntake;
 import frc.robot.commands.FlyWheelShoot;
 import frc.robot.commands.FlywheelShootAmp;
 import frc.robot.commands.IntakeMove;
