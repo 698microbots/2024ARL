@@ -24,13 +24,14 @@ import frc.robot.commands.AUTOTESTarmDown;
 import frc.robot.commands.AUTOTESTautoArmShoot;
 import frc.robot.commands.AUTOTESTmove;
 import frc.robot.commands.AUTOTESTtagAutoShoot;
+import frc.robot.commands.AUTOTESTtagAutoShoot;
 import frc.robot.commands.AutoCenterAmp;
 import frc.robot.commands.AutoCenterSpeaker;
 import frc.robot.commands.AutoScoreSpeakerArm;
 import frc.robot.commands.AutoSetLEDS;
 import frc.robot.commands.AutoTrap;
 import frc.robot.commands.AutoTrapFromGround;
-import frc.robot.commands.BackupIntake;
+import frc.robot.commands.BackUpIntake;
 import frc.robot.commands.FlyWheelShoot;
 import frc.robot.commands.FlywheelShootAmp;
 import frc.robot.commands.IntakeMove;
@@ -122,7 +123,6 @@ public class RobotContainer {
     // joystick.b().whileTrue(drivetrain
     //     .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
     //fixed trap angle
-    joystick.b().whileTrue(new AutoScoreSpeakerArm(arm, flyWheel, intake));
     joystick.b().whileTrue(new AutoScoreSpeakerArm(arm, flyWheel, intake));
 
     // reset the field-centric heading on left bumper press

@@ -18,9 +18,13 @@ public class AutoScoreSpeakerArm extends Command {
   private final PIDController pidControllerArm = new PIDController(1, 0.0, 0);
   private final FlywheelSubsystem flywheelSubsystem;
   private final IntakeSubsystem intakeSubsystem;
+  private final FlywheelSubsystem flywheelSubsystem;
+  private final IntakeSubsystem intakeSubsystem;
   private int counter = 0;
   public AutoScoreSpeakerArm(
     ArmSubsystem armSubsystem,
+    FlywheelSubsystem flywheelSubsystem,
+    IntakeSubsystem intakeSubsystem,
     FlywheelSubsystem flywheelSubsystem,
     IntakeSubsystem intakeSubsystem
     ) {
@@ -43,6 +47,7 @@ public class AutoScoreSpeakerArm extends Command {
   public void execute() {
     double armSpeed = pidControllerArm.calculate(armSubsystem.getEncoder(), Constants.encoderManualSpeaker);
     counter++;
+    counter++;
     armSubsystem.moveArm(-armSpeed);
     // System.out.println("testing");
     if (counter > Constants.numSeconds(1.2)){
@@ -52,15 +57,6 @@ public class AutoScoreSpeakerArm extends Command {
     if (counter > Constants.numSeconds(1.7)){
       intakeSubsystem.backupIntakeMotor(.75);
     } 
-
-    if (counter > Constants.numSeconds(2)){
-      armSubsystem.moveArm(.2);
-    }
-
-    if (counter > Constants.numSeconds(2.2)){
-      armSubsystem.moveArm(0);
-      
-    }
  
   }
 
