@@ -29,7 +29,9 @@ public class IntakeMove extends Command { // TODO - add CANdle (led strips) func
   private boolean reverse;
   private XboxController xboxController1;
     private XboxController xboxController2;
-  private Supplier<Double> x, y, theta;
+    private Supplier<Double> x, y, theta;
+  
+    int blockCount = 0;
   
   public IntakeMove(
     XboxController xboxController1, 
@@ -101,21 +103,21 @@ public class IntakeMove extends Command { // TODO - add CANdle (led strips) func
     intakeSubsystem.setIntakeMotor(.5);
     drivetrain.setControl(swerveCentric.withVelocityX(-y.get()).withVelocityY(-x.get()).withRotationalRate(-theta.get() * Math.PI));
 
-    // if (intakeSubsystem.getBlocked()){
-    //   intakeSubsystem.setCanRun(false);
-    //   lightSubsystem.setLights(Constants.colorRGBIntake[0], Constants.colorRGBIntake[1], Constants.colorRGBIntake[2]);
-    //   counter++; //only invoke if need to have a delay, comment out the line above if you use this
-    //   // System.out.println("IS BLOCKED");
-    //   intakeSubsystem.rumbleController(xboxController1);
-    //   intakeSubsystem.rumbleController(xboxController2);
-    // } else {
-    //   intakeSubsystem.setCanRun(true);
-    //   lightSubsystem.setLights(0, 0 ,0);
-    //   intakeSubsystem.rumbleController(xboxController1);
-    //   intakeSubsystem.rumbleController(xboxController2);      
-    //   counter = 0;
-    //   // System.out.println("IS NOT BLOCKED");
-    // }
+    if (intakeSubsystem.getBlocked()){
+      intakeSubsystem.setCanRun(false);
+      blockCount++;
+  } else {
+    intakeSubsystem.setCanRun(true);
+  }
+
+  if (intakeSubsystem.getBlocked() && blockCount !=0) {
+    intakeSubsystem.setIntakeMotor(.5);
+    blockCount = 0;
+  }
+    
+  if (!intakeSubsystem.getCanRun()) {
+    intakeSubsystem.setIntakeMotor(0.00);
+  }
     
     // if (limelight.getNoteArea() > Constants.noteAreaToRun && intakeSubsystem.getCanRun()){
     // intakeSubsystem.setIntakeMotor(.75);
