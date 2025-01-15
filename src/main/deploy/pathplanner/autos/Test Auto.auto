@@ -14,13 +14,26 @@
         {
           "type": "named",
           "data": {
-            "name": "AUTOTESTarmDown"
+            "name": "IntakeMove"
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "autes"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "autes"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeMove"
+                }
+              }
+            ]
           }
         }
       ]

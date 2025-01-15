@@ -8,6 +8,8 @@ import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -17,6 +19,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.AUTOTESTIntakeMoveAndDriveTrain;
@@ -25,16 +28,19 @@ import frc.robot.commands.AUTOTESTautoArmShoot;
 import frc.robot.commands.AUTOTESTmove;
 import frc.robot.commands.AUTOTESTtagAutoShoot;
 import frc.robot.commands.AutoCenterAmp;
-import frc.robot.commands.AutoCenterSpeaker;
+import frc.robot.commands.AutoCenterSpeakerShoot;
 import frc.robot.commands.AutoSetLEDS;
 import frc.robot.commands.AutoTrap;
 import frc.robot.commands.AutoTrapFromGround;
 import frc.robot.commands.BackupIntake;
+import frc.robot.commands.ChaseTag;
 import frc.robot.commands.FlyWheelShootSpeaker;
 import frc.robot.commands.FlywheelShootAmp;
 import frc.robot.commands.IntakeMove;
 import frc.robot.commands.MoveHanger;
+import frc.robot.commands.ReverseFlywheel;
 import frc.robot.commands.ScoreSpeaker;
+import frc.robot.commands.TESTBrokenButtons;
 import frc.robot.commands.TESTMoveArm;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
@@ -47,6 +53,7 @@ import frc.robot.subsystems.LimeLightSubsystem;
 import frc.robot.subsystems.driveTrainVoltages;
 
 public class RobotContainer {
+
   private double MaxSpeed = 4; // 6 meters per second desired top speed (6 origin)
   private double MaxAngularRate = 1.3 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
   public XboxController xboxController = new XboxController(0); // new XBox object
@@ -55,11 +62,7 @@ public class RobotContainer {
   SlewRateLimiter slewRateDriveY = new SlewRateLimiter(.65); //old: .5
   SlewRateLimiter slewRateTurn = new SlewRateLimiter(.9);
   
-  /*
-   * 
-   * TODO: MaxAngularRate really effects driving in a straight line, if its too slow then swerve will drift off to the side in which its turning
-   * Might have to desaturate wheel speeds in the SwerveRequest Class
-   */
+
 
   // button definitions
   // private final JoystickButton Xbutton = new JoystickButton(xboxController, Constants.Xbox_Button_X);
@@ -73,10 +76,9 @@ public class RobotContainer {
   // private final JoystickButton Ybutton2 = new JoystickButton(xboxController2, Constants.Xbox_Button_Y);
   // private final JoystickButton Abutton2 = new JoystickButton(xboxController2, Constants.Xbox_Button_A);
   // private final JoystickButton Bbutton2 = new JoystickButton(xboxController2, Constants.Xbox_Button_B);
-  // private final JoystickButton RBbutton2 = new JoystickButton(xboxController2, Constants.Xbox_Button_RB);
+  // private final JoystickButton RBbu4tton2 = new JoystickButton(xboxController2, Constants.Xbox_Button_RB);
   // private final JoystickButton LBbutton2 = new JoystickButton(xboxController2, Constants.Xbox_Button_LB);
   
-  /* Setting up bindings for necessary control of the swerve drive platform */
   public LimeLightSubsystem limeLight = new LimeLightSubsystem();
   public final CommandXboxController joystick = new CommandXboxController(0); // My joystick
   public final CommandXboxController joystick2 = new CommandXboxController(1);
@@ -99,7 +101,8 @@ public class RobotContainer {
   public Pose2d pose = drivetrain.getState().Pose; //could break the code 
   public final Field2d field2d = new Field2d();
 
-  private Command runAuto = drivetrain.getAutoPath("Another Auto Test");
+
+  // public Command runAuto = new PathPlannerAuto("Test Auto");
 
   private SwerveModuleState[] states = drivetrain.getState().ModuleStates;
 
@@ -116,6 +119,8 @@ public class RobotContainer {
       return joystickInput;
     }
   }
+  
+  
   private void configureBindings() {
     lights.setDefaultCommand(new AutoSetLEDS(lights));
     //drive command
@@ -160,7 +165,7 @@ public class RobotContainer {
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
 
     //backup intake
-    joystick.x().whileTrue(new BackupIntake(intake));
+    // joystick.x().whileTrue(new BackupIntake(intake));
 
     //speaker score changed to leftTrigger
     // joystick.leftTrigger().whileTrue(new FlywheelShootSpeaker(flyWheel, intake, xboxController, xboxController2, () -> joystick.getLeftTriggerAxis()));
@@ -172,19 +177,22 @@ public class RobotContainer {
     //auto trap
     // joystick.y().whileTrue(new AutoTrap(flyWheel, intake, arm));
     // joystick.y().whileTrue(new AutoTrapFromGround(intake, flyWheel, limeLight, drivetrain, arm));
-      joystick.y().whileTrue(
-           new AutoCenterSpeaker(
-              () -> joystick.getLeftX() * MaxSpeed,
-              () -> joystick.getLeftY() * MaxSpeed,
-              drivetrain,
-              limeLight,
-              MaxAngularRate,
-              arm,
-              flyWheel,
-              intake)
-               
-      );    
+     
     
+    
+    // joystick.y().whileTrue(
+    //        new AutoCenterSpeakerShoot(
+    //           () -> joystick.getLeftX() * MaxSpeed,
+    //           () -> joystick.getLeftY() * MaxSpeed,
+    //           drivetrain,
+    //           limeLight,
+    //           MaxAngularRate,
+    //           arm,
+    //           flyWheel,
+    //           intake)
+               
+    //   );    
+  
     /**
      * 
      * 2nd driver commands
@@ -202,26 +210,30 @@ public class RobotContainer {
 
     //default arm command, move it with 2nd controller    
     arm.setDefaultCommand(new TESTMoveArm(arm, () -> joystick2.getLeftY() * .6));
-    
     //reverse intake
-    joystick2.a().whileTrue(new IntakeMove(xboxController, xboxController2, intake, limeLight, true, lights));
-
+    // joystick2.a().whileTrue(new IntakeMove(xboxController, xboxController2, intake, limeLight, true, lights));
+    // joystick2.a().whileTrue(new ParallelCommandGroup(
+    //   new IntakeMove(xboxController, xboxController2, intake, limeLight, true, lights),
+    //   new ReverseFlywheel(flyWheel)
+    //   ));
+    joystick2.a().whileTrue(new ChaseTag(limeLight, drivetrain, () -> limeLight.getRelative2dBotPose(), () -> limeLight.getTarget2dBotPose()));
     // //auto amp sequence to move up to the amp and arm
-    joystick2.y().whileTrue(new AutoCenterAmp(drivetrain, () -> joystick2.getLeftY(), () -> joystick2.getLeftX(), MaxSpeed, limeLight));
+    // joystick2.y().whileTrue(new AutoCenterAmp(drivetrain, () -> joystick2.getLeftY(), () -> joystick2.getLeftX(), MaxSpeed, limeLight));
+    joystick2.y().whileTrue(new ScoreSpeaker(flyWheel, intake));
 
     //auto center with speaker and move arm accordingly
-      joystick2.x().whileTrue(
-           new AutoCenterSpeaker(
-              () -> joystick.getLeftX() * MaxSpeed,
-              () -> joystick.getLeftY() * MaxSpeed,
-              drivetrain,
-              limeLight,
-              MaxAngularRate,
-              arm,
-              flyWheel,
-              intake)
+      // joystick2.x().whileTrue(
+      //      new AutoCenterSpeakerShoot(
+      //         () -> joystick.getLeftX() * MaxSpeed,
+      //         () -> joystick.getLeftY() * MaxSpeed,
+      //         drivetrain,
+      //         limeLight,
+      //         MaxAngularRate,
+      //         arm,
+      //         flyWheel,
+      //         intake)
                
-      );
+      // );
 
     // //auto center with note and run intake when close enough, this is probably gonna have CAN bad errors
       //  joystick2.b().whileTrue(new AutoCenterNoteAndIntake(
@@ -246,6 +258,8 @@ public class RobotContainer {
           () -> joystick.getLeftY(),
           () -> joystick.getRightX())
       );
+    
+      joystick2.x().whileTrue(new FlywheelShootAmp(flyWheel, intake));
 
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -273,8 +287,8 @@ public class RobotContainer {
   }
 
   public RobotContainer() {
-    NamedCommands.registerCommand("IntakeMove", new IntakeMove(xboxController, xboxController2, intake, limeLight, false, lights));
     NamedCommands.registerCommand("AUTOTESTarmDown", new AUTOTESTarmDown(arm));
+    NamedCommands.registerCommand("AUTOTESTautoArmShoot", new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2));
     
     configureBindings();
 
@@ -293,7 +307,11 @@ public class RobotContainer {
     //   new AUTOTESTmove(drivetrain, 2, -1, 0, 0)
     // );
 
-    //(2 note) shoots note infront of speaker drives back picks up note and shoots again,then moves out of alliance
+
+    //(1 note)
+    // return new AUTOTESTtagAutoShoot(limeLight, intake, arm, drivetrain, flyWheel);
+
+    // // (2 note) shoots note infront of speaker drives back picks up note and shoots again,then moves out of alliance
     return new SequentialCommandGroup(
       new AUTOTESTarmDown(arm),
       new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2), //try changing this to 0
@@ -303,16 +321,16 @@ public class RobotContainer {
       new AUTOTESTmove(drivetrain, 2.5, 1, 0, 0)
     );    
 
-    // //(2 note) shoots note infront of speaker drives back picks up note and shoots again,then moves out of alliance
+    // (2 note) blue side  shot
     // return new SequentialCommandGroup(
+    //  new AUTOTESTarmDown(arm),    
     //   new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2), //try changing this to 0
-    //   new AUTOTESTarmDown(arm),
-    //   new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 1.75, 1, 0, 0),
-    //   new AUTOTESTmove(drivetrain, 1.99, -1, 0, 0), 
+    //   new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 1.5, 1, 0, Math.PI/13),
+    //   new AUTOTESTmove(drivetrain, 1.9, -1, 0, -Math.PI/13), 
     //   new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
-    //   new AUTOTESTarmDown(arm),
-    //   new AUTOTESTmove(drivetrain, 2.5, 1, 0, 0)
-    // );
+    //   new AUTOTESTmove(drivetrain, 1.9, 1, -1, Math.PI/8)
+    // );      
+
 
     //(1 note)
     // return new SequentialCommandGroup(
@@ -331,8 +349,8 @@ public class RobotContainer {
 
     // 3 note prayge BLUE ALLAINCE
     // return new SequentialCommandGroup(
-    //   new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2), //try changing this to 0
     //   new AUTOTESTarmDown(arm),
+    //   new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2), //try changing this to 0
     //   new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 1.75, 1, 0, 0),
     //   new AUTOTESTtagAutoShoot(limeLight, intake, arm, drivetrain, flyWheel),
     //   new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 1.75, 0, 1, Math.PI * .125), // this part determines 3 note
@@ -352,8 +370,7 @@ public class RobotContainer {
 
     // return Commands.print("No autonomous command configured");
     // PathPlannerPath path = PathPlannerPath.fromPathFile("New Auto");
-    // // return new TESTauto(drivetrain, 5);
-    // // return drivetrain.applyRequest(null);
+
     // return AutoBuilder.followPath(path);
     // return runAuto;    
   }

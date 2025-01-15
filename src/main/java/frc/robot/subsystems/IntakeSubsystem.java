@@ -24,20 +24,20 @@ public class IntakeSubsystem extends SubsystemBase {
   
   private boolean canRun = true;
 
-
   public IntakeSubsystem() {
 
   }
 
   public void setIntakeMotor(double speed) {
-    if (getBlocked()) {
+    setCanRun();
+    if (canRun) {
       // IntakeMotor.set(0);
-      // System.out.println("stopping motor");
-      IntakeMotorNew.set(0);
+      IntakeMotorNew.set(speed); // dont know whether we need -speed or positive
+
     } else {
       // IntakeMotor.set(-speed);
       // System.out.println("setting motor");
-      IntakeMotorNew.set(speed); // dont know whether we need -speed or positive
+      IntakeMotorNew.set(0);
     
     }
   }
@@ -46,27 +46,30 @@ public class IntakeSubsystem extends SubsystemBase {
   public void reverseIntakeMotor(double speed) {
     // IntakeMotor.set(speed);
     IntakeMotorNew.set(-speed);
+    canRun = true;
   }
 
   public void backupIntakeMotor(double speed){
     // IntakeMotor.set(-speed);
     IntakeMotorNew.set(speed);
+    canRun = true;
   }
   // public double getIntakeVolts() {
   //   return IntakeMotor.getBusVoltage();
   // }
 
-  public void setCanRun(boolean run) {
-    // if (run){
-    //   System.out.println("I can run");
-    // } else {
-    //   System.out.println("I CANT  run");
-    // }
-    canRun = run;
+
+  public boolean getCanRun(){
+    return canRun;
   }
 
-  public boolean getCanRun() {
-    return canRun;
+  public void setCanRun() {
+    //  System.out.println(!photoSensor.get());
+  
+    if (getBlocked()){
+      canRun = false;
+    } else {
+    }
   }
 
   // public boolean canRun() {

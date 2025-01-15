@@ -17,7 +17,7 @@ import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimeLightSubsystem;
 
-public class AutoCenterSpeaker extends Command {
+public class AutoCenterSpeakerShoot extends Command {
 // Instance Variables
 
 private double angle;
@@ -37,7 +37,7 @@ private FlywheelSubsystem flywheelSubsystem;
 private IntakeSubsystem intakeSubsystem;
 
   /** Creates a new AutoCenter. */
-  public AutoCenterSpeaker(
+  public AutoCenterSpeakerShoot(
   Supplier<Double> ySpeed, 
   Supplier<Double> xSpeed, 
   CommandSwerveDrivetrain drivetrain,

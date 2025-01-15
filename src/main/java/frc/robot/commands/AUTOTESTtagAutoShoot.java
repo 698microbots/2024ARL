@@ -48,22 +48,15 @@ public AUTOTESTtagAutoShoot(LimeLightSubsystem limeLightSubsystem, IntakeSubsyst
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    
+    
     double speed = pidControllerCenter.calculate(limeLightSubsystem.getH_angle(),0);
-    
-
-
-    // System.out.println("Rotation Speed: " + speed);
-    // System.out.println("Angle: " + angle);
     drivetrain.setControl(swerveCentric.withRotationalRate(speed));
-    
-    counter++;  
-    
+      
     
     double distance = limeLightSubsystem.getV_angle();
-    //    angle = -.0023 * distance + .3676; original
     double armAngle = -.0023 * distance + .39;
     double armSpeed = pidControllerArm.calculate(armSubsystem.getEncoder(), armAngle);
-    // System.out.println("Scoring Speaker PID Speed: " + speed);
     armSubsystem.moveArm(-armSpeed);   
 
 
@@ -74,6 +67,8 @@ public AUTOTESTtagAutoShoot(LimeLightSubsystem limeLightSubsystem, IntakeSubsyst
     if (counter > Constants.numSeconds(2.5)){
       intakeSubsystem.backupIntakeMotor(.75);
     }    
+
+    counter++;
   }
 
   // Called once the command ends or is interrupted.

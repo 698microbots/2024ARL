@@ -46,15 +46,17 @@ public class AUTOTESTIntakeMoveAndDriveTrain extends Command {
   @Override
   public void execute() {
     counter++;
-    intakeSubsystem.setIntakeMotor(.25);
+    intakeSubsystem.setIntakeMotor(.4); //originally .25
     drivetrain.setControl(swerveRequest.withVelocityX(x).withVelocityY(y).withRotationalRate(theta));
   }
+
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     counter = 0;
-    intakeSubsystem.backupIntakeMotor(0);
+    intakeSubsystem.setIntakeMotor(0);
+
   }
 
   // Returns true when the command should end.

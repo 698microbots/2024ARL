@@ -5,13 +5,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.IntakeSubsystem;
 
-public class BackupIntake extends Command {
-  /** Creates a new BackUpIntake. */
-  private final IntakeSubsystem intakeSubsystem;
-  public BackupIntake(IntakeSubsystem intakeSubsystem) {
+public class AUTOTESTIntakeForPathPlanner extends Command {
+  /** Creates a new AUTOTESTIntakeForPathPlanner. */
+  private IntakeSubsystem intakeSubsystem;
+  private double seconds;
+  private int counter = 0;
+  public AUTOTESTIntakeForPathPlanner(IntakeSubsystem intakeSubsystem, double seconds) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.seconds = seconds;
     this.intakeSubsystem = intakeSubsystem;
     addRequirements(intakeSubsystem);
   }
@@ -23,18 +27,24 @@ public class BackupIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intakeSubsystem.backupIntakeMotor(.75);
+    counter++;
+    intakeSubsystem.setIntakeMotor(.6);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intakeSubsystem.backupIntakeMotor(0);
+    counter = 0;
+    intakeSubsystem.setIntakeMotor(.6);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if (counter > Constants.numSeconds(seconds)){
+      return true;
+    } else {
+      return false;
+    }
   }
 }

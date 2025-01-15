@@ -20,9 +20,9 @@ public class driveTrainVoltages extends SubsystemBase {
   private final TalonFX BLTurn = new TalonFX(Constants.backLeftTurn);
   private final TalonFX BRTurn = new TalonFX(Constants.backRightTurn);
   private final TalonFX FRTurn = new TalonFX(Constants.frontRightTurn);
-
   
   public driveTrainVoltages() {}
+
 
   public double FLDVoltage(){
     return FLDrive.getMotorVoltage().getValueAsDouble();

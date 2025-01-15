@@ -21,7 +21,7 @@ public class IntakeMove extends Command { // TODO - add CANdle (led strips) func
   private final IntakeSubsystem intakeSubsystem;
   private CommandSwerveDrivetrain drivetrain;
   private final SwerveRequest.FieldCentric swerveCentric = new SwerveRequest.FieldCentric();
-
+  
   private final LimeLightSubsystem limelight;
   private final LightSubsystem lightSubsystem;
   // private  boolean yes = false;
@@ -98,7 +98,7 @@ public class IntakeMove extends Command { // TODO - add CANdle (led strips) func
   public void execute() {
   
   if (!reverse){
-    intakeSubsystem.setIntakeMotor(.31);
+    intakeSubsystem.setIntakeMotor(.45);
     drivetrain.setControl(swerveCentric.withVelocityX(-y.get()).withVelocityY(-x.get()).withRotationalRate(-theta.get() * Math.PI));
 
     // if (intakeSubsystem.getBlocked()){
@@ -122,7 +122,7 @@ public class IntakeMove extends Command { // TODO - add CANdle (led strips) func
     // }
   
   } else {
-    intakeSubsystem.reverseIntakeMotor(.25);
+    intakeSubsystem.reverseIntakeMotor(.70);
   }
 
     

@@ -5,15 +5,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.FlywheelSubsystem;
 
-public class BackupIntake extends Command {
-  /** Creates a new BackUpIntake. */
-  private final IntakeSubsystem intakeSubsystem;
-  public BackupIntake(IntakeSubsystem intakeSubsystem) {
+public class ReverseFlywheel extends Command {
+  /** Creates a new ReverseFlywheel. */
+  private FlywheelSubsystem flywheelSubsystem;
+
+  public ReverseFlywheel(FlywheelSubsystem flywheelSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.intakeSubsystem = intakeSubsystem;
-    addRequirements(intakeSubsystem);
+    this.flywheelSubsystem = flywheelSubsystem;
+    addRequirements(flywheelSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -23,13 +24,14 @@ public class BackupIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intakeSubsystem.backupIntakeMotor(.75);
+    flywheelSubsystem.setFlywheelMotorSpeed(-.09);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intakeSubsystem.backupIntakeMotor(0);
+    flywheelSubsystem.setFlywheelMotorSpeed(0);
+
   }
 
   // Returns true when the command should end.

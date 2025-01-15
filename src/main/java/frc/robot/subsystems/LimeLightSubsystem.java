@@ -17,7 +17,7 @@ public class LimeLightSubsystem extends SubsystemBase {
 
   // creates the instance variables for the LimeLight Subsystem
   private NetworkTable limeLight, limeLight2;
-  private NetworkTableEntry V_angle, H_angle, TwoH_angle, hasTargets, noteArea, botPose, aprilID;
+  private NetworkTableEntry V_angle, H_angle, TwoH_angle, hasTargets, noteArea, botPose, aprilID, targetPose;
   private double[] poseList;
   private double zDistance;
   private double xDistance;
@@ -34,11 +34,14 @@ public class LimeLightSubsystem extends SubsystemBase {
     noteArea = limeLight2.getEntry("ta");
     
     hasTargets = limeLight.getEntry("tv");
-    botPose = limeLight.getEntry("targetpose_robotspace");
+    botPose = limeLight.getEntry("botpose_targetspace");
+    targetPose = limeLight.getEntry("targetpose_robotspace");
+
     aprilID = limeLight.getEntry("tid");
   }
 
   // getters
+
   public double hasTargets() {
     return hasTargets.getDouble(0);
   }
@@ -115,11 +118,73 @@ public class LimeLightSubsystem extends SubsystemBase {
     ));
     return pose3d;
   }  
+
+  public Pose3d getTarget3dBotPose() {
+    /*
+     * Its specific because it determines what type of botpose we need
+     * For example, we may need the botpose, botpose_wpiblue, botpose_wpired, etc
+     * in order to tell our distance from the apriltag.
+     * This method should give us an x and y position to the april tag as well as a rotaiton angle to it
+     */
+    poseList = targetPose.getDoubleArray(new double[6]);
+    //position
+    double x = poseList[0];
+    double y = poseList[1];
+    double z = poseList[2];
+    //rotation
+    double roll = poseList[3];
+    double pitch = poseList[4];
+    double yaw = poseList[5];
+
+    Pose3d pose3d = new Pose3d(
+    x,
+    y,
+    z,
+    new Rotation3d(
+      roll,
+      pitch,
+      yaw
+    ));
+    return pose3d;
+  } 
+
+  public Pose2d getTarget2dBotPose() {
+    /*
+     * Its specific because it determines what type of botpose we need
+     * For example, we may need the botpose, botpose_wpiblue, botpose_wpired, etc
+     * in order to tell our distance from the apriltag.
+     * This method should give us an x and y position to the april tag as well as a rotaiton angle to it
+     */
+    poseList = targetPose.getDoubleArray(new double[6]);
+    //position
+    double x = poseList[0];
+    double y = poseList[1];
+    double z = poseList[2];
+    //rotation
+    double roll = poseList[3];
+    double pitch = poseList[4];
+    double yaw = poseList[5];
+
+    Pose3d pose3d = new Pose3d(
+    x,
+    y,
+    z,
+    new Rotation3d(
+      roll,
+      pitch,
+      yaw
+    ));
+    return pose3d.toPose2d();
+  }
+
+
+
   public double getaprilTagID() {
     return aprilID.getDouble(0);
 
   }
 
+  
   public double getTargetPoseX() {
     return NetworkTableInstance.getDefault().getTable("limelight").getEntry("camerapose_targetspace")
         .getDoubleArray(new double[6])[0];
