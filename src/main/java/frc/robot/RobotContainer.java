@@ -34,6 +34,7 @@ import frc.robot.commands.AutoTrap;
 import frc.robot.commands.AutoTrapFromGround;
 import frc.robot.commands.BackupIntake;
 import frc.robot.commands.ChaseTag;
+import frc.robot.commands.ChaseTagNew;
 import frc.robot.commands.FlyWheelShootSpeaker;
 import frc.robot.commands.FlywheelShootAmp;
 import frc.robot.commands.IntakeMove;
@@ -54,7 +55,7 @@ import frc.robot.subsystems.driveTrainVoltages;
 
 public class RobotContainer {
 
-  private double MaxSpeed = 4; // 6 meters per second desired top speed (6 origin)
+  private double MaxSpeed = 1; // 6 meters per second desired top speed (6 origin)
   private double MaxAngularRate = 1.3 * Math.PI; // 3/4 of a rotation per second max angular velocity (1.5 origin)
   public XboxController xboxController = new XboxController(0); // new XBox object
   public XboxController xboxController2 = new XboxController(1); // new XBox objec
@@ -152,14 +153,27 @@ public class RobotContainer {
 
 
     //brake mode
-    joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
-
+    // joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+    joystick.a().whileTrue(
+      new IntakeMove(
+        xboxController, 
+        xboxController2, 
+        intake, limeLight,
+        false, 
+        lights,
+        drivetrain,
+        () -> joystick.getLeftX(),
+        () -> joystick.getLeftY(),
+        () -> joystick.getRightX())
+    );
     //point wheels
     // joystick.b().whileTrue(drivetrain
     //     .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
     //fixed trap angle
-    joystick.b().whileTrue(new ScoreSpeaker(flyWheel, intake));
+    // joystick.b().whileTrue(new ScoreSpeaker(flyWheel, intake));
     // joystick.b().whileTrue(new AutoScoreSpeakerArm(arm, flyWheel, intake));
+    joystick.b().whileTrue(new ChaseTag(limeLight, drivetrain, () -> limeLight.getRelative2dBotPose(), () -> limeLight.getTarget2dBotPose()));
+    // joystick.b().whileTrue(new ChaseTagNew(limeLight, drivetrain));
 
     // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));

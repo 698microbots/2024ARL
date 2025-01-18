@@ -46,31 +46,35 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Robot Y", m_robotContainer.drivetrain.getState().Pose.getY()); // says this is null when
                                                                                              // simulating
     SmartDashboard.putNumber("Robot X", m_robotContainer.drivetrain.getState().Pose.getX());
-    SmartDashboard.putNumber("AprilTag ID", LimeLightHelpersSubsystem.getFiducialID("limelight"));
+    SmartDashboard.putNumber("AprilTag ID", m_robotContainer.limeLight.getaprilTagID());
     SmartDashboard.putNumber("H Angle", m_robotContainer.limeLight.getH_angle());
     SmartDashboard.putNumber("Angle", m_robotContainer.gyro.getAngle());
     SmartDashboard.putString("Target States", m_robotContainer.drivetrain.getSwerveModTarget());
     // SmartDashboard.putNumber("Rotation Mod 1", kDefaultPeriod);
     // m_robotContainer.logger.telemeterize(m_robotContainer.drivetrain.getState());
     //TODO: Calculate the rate of change of the positions of the motors (NOT VOLTAGES RN ITS POSITION)
-    SmartDashboard.putNumber("FL DRIVE Voltage", m_robotContainer.driveTrainVoltages.FLDVoltage());
-    SmartDashboard.putNumber("BL DRIVE Voltage", m_robotContainer.driveTrainVoltages.BLDVoltage());
-    SmartDashboard.putNumber("FR DRIVE Voltage", m_robotContainer.driveTrainVoltages.FRDVoltage());
-    SmartDashboard.putNumber("BR DRIVE Voltage", m_robotContainer.driveTrainVoltages.BRDVoltage());
+    // SmartDashboard.putNumber("FL DRIVE Voltage", m_robotContainer.driveTrainVoltages.FLDVoltage());
+    // SmartDashboard.putNumber("BL DRIVE Voltage", m_robotContainer.driveTrainVoltages.BLDVoltage());
+    // SmartDashboard.putNumber("FR DRIVE Voltage", m_robotContainer.driveTrainVoltages.FRDVoltage());
+    // SmartDashboard.putNumber("BR DRIVE Voltage", m_robotContainer.driveTrainVoltages.BRDVoltage());
 
-    SmartDashboard.putNumber("FL TURN Voltage", m_robotContainer.driveTrainVoltages.FLTVoltage());
-    SmartDashboard.putNumber("BL TURN Voltage", m_robotContainer.driveTrainVoltages.BLTVoltage());
-    SmartDashboard.putNumber("FR TURN Voltage", m_robotContainer.driveTrainVoltages.FRTVoltage());
-    SmartDashboard.putNumber("BR TURN Voltage", m_robotContainer.driveTrainVoltages.BRTVoltage());
+    // SmartDashboard.putNumber("FL TURN Voltage", m_robotContainer.driveTrainVoltages.FLTVoltage());
+    // SmartDashboard.putNumber("BL TURN Voltage", m_robotContainer.driveTrainVoltages.BLTVoltage());
+    // SmartDashboard.putNumber("FR TURN Voltage", m_robotContainer.driveTrainVoltages.FRTVoltage());
+    // SmartDashboard.putNumber("BR TURN Voltage", m_robotContainer.driveTrainVoltages.BRTVoltage());
  
-    SmartDashboard.putNumber("FL DRIVE Velocity", m_robotContainer.driveTrainVoltages.FLDVoltage());
-    SmartDashboard.putNumber("BL DRIVE Velocity", m_robotContainer.driveTrainVoltages.BLDVoltage());
-    SmartDashboard.putNumber("FR DRIVE Velocity", m_robotContainer.driveTrainVoltages.FRDVoltage());
-    SmartDashboard.putNumber("BR DRIVE Velocity", m_robotContainer.driveTrainVoltages.BRDVoltage());
+    // SmartDashboard.putNumber("FL DRIVE Velocity", m_robotContainer.driveTrainVoltages.FLDVoltage());
+    // SmartDashboard.putNumber("BL DRIVE Velocity", m_robotContainer.driveTrainVoltages.BLDVoltage());
+    // SmartDashboard.putNumber("FR DRIVE Velocity", m_robotContainer.driveTrainVoltages.FRDVoltage());
+    // SmartDashboard.putNumber("BR DRIVE Velocity", m_robotContainer.driveTrainVoltages.BRDVoltage());
 
-    SmartDashboard.putNumber("Robot Pose to amp X: ", m_robotContainer.limeLight.getRelative3dBotPose().getX());
-    SmartDashboard.putNumber("Robot Pose to amp Y:", m_robotContainer.limeLight.getRelative3dBotPose().getY());
-    SmartDashboard.putNumber("Robot Pose to amp Z:", m_robotContainer.limeLight.getRelative3dBotPose().getZ());
+    SmartDashboard.putNumber("Robot Pose to tag X: ", m_robotContainer.limeLight.getRelative3dBotPose().getX());
+    SmartDashboard.putNumber("Robot Pose to tag Y:", m_robotContainer.limeLight.getRelative3dBotPose().getY());
+    SmartDashboard.putNumber("Robot Pose to tag Z:", m_robotContainer.limeLight.getRelative3dBotPose().getZ());
+
+    SmartDashboard.putNumber("Target Pose to amp X:", m_robotContainer.limeLight.getTarget3dBotPose().getX());
+    SmartDashboard.putNumber("Target Pose to amp Y:", m_robotContainer.limeLight.getTarget3dBotPose().getY());
+    SmartDashboard.putNumber("Target Pose to amp Z:", m_robotContainer.limeLight.getTarget3dBotPose().getZ());
     
     // SmartDashboard.putNumber("Target Space X", m_robotContainer.limeLight.getRobotPoseX());
     // SmartDashboard.putNumber("Target Pose Y", m_robotContainer.limeLight.getRobotPoseZ());

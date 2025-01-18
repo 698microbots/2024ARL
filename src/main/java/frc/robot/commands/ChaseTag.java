@@ -33,9 +33,9 @@ public class ChaseTag extends Command {
   private final SwerveRequest.RobotCentric roboCentric = new SwerveRequest.RobotCentric(); //might change this to swerve centric
 
   //trapezoidal motion gives smoother velocity curves (slowing down when getting to target)
-  private final TrapezoidProfile.Constraints xConstraints = new TrapezoidProfile.Constraints(3, 2);
-  private final TrapezoidProfile.Constraints yConstraints = new TrapezoidProfile.Constraints(3, 2);
-  private final TrapezoidProfile.Constraints omegaConstraints = new TrapezoidProfile.Constraints(8, 8);
+  private final TrapezoidProfile.Constraints xConstraints = new TrapezoidProfile.Constraints(1, 2);
+  private final TrapezoidProfile.Constraints yConstraints = new TrapezoidProfile.Constraints(1, 2);
+  private final TrapezoidProfile.Constraints omegaConstraints = new TrapezoidProfile.Constraints(2, 3);
   
   private final int TagToChase = 1;
   /*transform 3d will be the pose relative to the target 
@@ -46,13 +46,13 @@ public class ChaseTag extends Command {
 
   //transform so that coordinate system is relative to tag?
   private final Transform3d TagToGoal = new Transform3d(
-    new Translation3d(1.5, 0, 0), 
+    new Translation3d(.3, 0, 0), 
     new Rotation3d(0, 0, Math.PI));
 
   //ProfiledPIDControllers for smoother movement
-  private final ProfiledPIDController xController = new ProfiledPIDController(.1, 0, 0, xConstraints);
-  private final ProfiledPIDController yController = new ProfiledPIDController(.01, 0, 0, yConstraints);
-  private final ProfiledPIDController omegaController = new ProfiledPIDController(2, 0, 0, omegaConstraints);
+  private final ProfiledPIDController xController = new ProfiledPIDController(3, .1, 0, xConstraints);
+  private final ProfiledPIDController yController = new ProfiledPIDController(3, 1, 0, yConstraints);
+  private final ProfiledPIDController omegaController = new ProfiledPIDController(1, 20, 0, omegaConstraints);
   
   //periodically updates the pose of the robot for poseEstimator (I'm assuming final can be used because the supplier is final but the values can changing using the .get() method)
   private final Supplier<Pose2d> poseProvider;
@@ -66,9 +66,9 @@ public class ChaseTag extends Command {
     this.poseProvider = poseProvider;
     this.targetPoseProvider = targetPoseProvider;
     //how close to the target position can you be to say you are at the target position
-    xController.setTolerance(.2);
-    yController.setTolerance(.2);
-    omegaController.setTolerance(Units.degreesToRadians(3));
+    xController.setTolerance(.01);
+    yController.setTolerance(.01);
+    omegaController.setTolerance(Units.degreesToRadians(.1));
     omegaController.enableContinuousInput(-Math.PI, Math.PI);
 
     addRequirements(drivetrain);
@@ -116,13 +116,13 @@ public class ChaseTag extends Command {
     Pose2d goalPose = targetPose.transformBy(TagToGoal).toPose2d();
 
     //setting the goal points for the PID
-    xController.setGoal(goalPose.getX());
-    yController.setGoal(goalPose.getY());
-    omegaController.setGoal(goalPose.getRotation().getRadians());
+    xController.setGoal(targetPose.getX() + 1);
+    yController.setGoal(targetPose.getY());
+    omegaController.setGoal(targetPose.getRotation().toRotation2d().getRadians());
 
     //if there is no tag detected, set all speed to 0
     //else, do the pid calulations and set them to the speeds
-    if (limelight.getaprilTagID() == 0){
+    if (limelight.getaprilTagID() == -1){
       
       xSpeed = 0;
       ySpeed = 0;
@@ -131,26 +131,35 @@ public class ChaseTag extends Command {
     } else {
 
       xSpeed = xController.calculate(robotPose.getX());
-      
+      System.out.println("xSpeed " + xSpeed);
       if (xController.atGoal()){
-        
+        drivetrain.setControl(swerveCentric.withVelocityX(0)); 
+        System.out.println("x at goal");
+
       }
+
       ySpeed = yController.calculate(robotPose.getY());
+      System.out.println("ySpeed " + ySpeed);
 
       if (yController.atGoal()){
-        drivetrain.setControl(roboCentric.withVelocityY(0));
+        drivetrain.setControl(swerveCentric.withVelocityY(0));
+        System.out.println("y at goal");
+
       }      
 
       omegaSpeed = omegaController.calculate(robotPose.getRotation().toRotation2d().getRadians());
+      System.out.println("omegaSpeed " + omegaSpeed);
 
       if (omegaController.atGoal()){
-        drivetrain.setControl(roboCentric.withRotationalRate(0));
+        drivetrain.setControl(swerveCentric.withRotationalRate(0));
+        System.out.println("omega at goal\n");
+
       }
       
     }
 
     //set the speed 
-    drivetrain.setControl(roboCentric.withVelocityX(xSpeed).withVelocityY(ySpeed).withRotationalRate(omegaSpeed));
+    drivetrain.setControl(swerveCentric.withVelocityX(-0).withVelocityY(0).withRotationalRate(-omegaSpeed));
 
 
 
