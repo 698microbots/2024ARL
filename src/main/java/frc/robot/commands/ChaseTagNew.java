@@ -18,7 +18,7 @@ public class ChaseTagNew extends Command {
   private final SwerveRequest.FieldCentric fieldCentric = new SwerveRequest.FieldCentric();
   private final SwerveRequest.RobotCentric robotCentric = new SwerveRequest.RobotCentric();
 
-
+  //pid and constants
   private final PIDController pidControllerX = new PIDController(1, 0.1, 0);
   private final PIDController pidControllerY = new PIDController(1, 0.1, 0);
   private final PIDController pidControllerOmega = new PIDController(.05, .01, 0);
@@ -41,25 +41,27 @@ public class ChaseTagNew extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    
+    //PID setpoint for the robot to be 0 degrees away from the apriltag
     double omegaSpeed = pidControllerOmega.calculate(limeLightSubsystem.getH_angle(), 0);
-    // System.out.println("omegaSpeed " + omegaSpeed);
 
-
+    //if sees not see apriltag (ID = -1) do nothing, else do pid calculations
     if (limeLightSubsystem.getaprilTagID() == -1){
 
+      //when the robot does not see the apriltag, stop the robot from moving
       drivetrain.setControl(robotCentric.withVelocityX(0).withVelocityY(0).withRotationalRate(0));
 
     } else {
+
+      //if the robot sees any apriltag (might have to change settings to get closest apriltag), do calculations
+
+      //PID setpoint for robot to be 1.3 meters away from the tag in the x direction
       double xSpeed = pidControllerX.calculate(limeLightSubsystem.getRelative3dBotPose().getZ(), -1.3);
-      // System.out.println("xSpeed " + xSpeed);
-      System.out.println("y pos " + limeLightSubsystem.getRelative3dBotPose().getY());
+      //PID setpoint for robot to be 0 meters away from the tag in the y direction
+      double ySpeed = pidControllerY.calculate(limeLightSubsystem.getRelative3dBotPose().getX(), 0);
 
-    double ySpeed = pidControllerY.calculate(limeLightSubsystem.getRelative3dBotPose().getX(), 0);
-    // System.out.println("ySpeed " + ySpeed);
-
-    // drivetrain.setControl(swerveCentric.withVelocityX(xSpeed).withVelocityY(ySpeed).withRotationalRate(omegaSpeed));
-
-    drivetrain.setControl(robotCentric.withVelocityX(-xSpeed).withVelocityY(ySpeed).withRotationalRate(omegaSpeed));
+      //set all the calculated speeds to the robot 
+      drivetrain.setControl(robotCentric.withVelocityX(-xSpeed).withVelocityY(ySpeed).withRotationalRate(omegaSpeed));
  
 
     }
@@ -69,6 +71,8 @@ public class ChaseTagNew extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+
+    //stop the robot when the command ends
     drivetrain.setControl(robotCentric.withVelocityX(0).withVelocityY(0).withRotationalRate(0));
 
   }
