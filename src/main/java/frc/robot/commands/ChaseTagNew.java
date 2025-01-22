@@ -21,7 +21,7 @@ public class ChaseTagNew extends Command {
 
   private final PIDController pidControllerX = new PIDController(1, 0.1, 0);
   private final PIDController pidControllerY = new PIDController(1, 0.1, 0);
-  private final PIDController pidControllerOmega = new PIDController(1, 0.1, 0);
+  private final PIDController pidControllerOmega = new PIDController(.05, .01, 0);
 
   private LimeLightSubsystem limeLightSubsystem;
   private CommandSwerveDrivetrain drivetrain;
@@ -42,18 +42,28 @@ public class ChaseTagNew extends Command {
   @Override
   public void execute() {
     double omegaSpeed = pidControllerOmega.calculate(limeLightSubsystem.getH_angle(), 0);
-    System.out.println("omegaSpeed " + omegaSpeed);
+    // System.out.println("omegaSpeed " + omegaSpeed);
 
-    // double xSpeed = pidControllerX.calculate(limeLightSubsystem.getRelative2dBotPose().getX(), 0);
-    // System.out.println("xSpeed " + xSpeed);
 
-    // double ySpeed = pidControllerY.calculate(limeLightSubsystem.getRelative2dBotPose().getY(), 0);
+    if (limeLightSubsystem.getaprilTagID() == -1){
+
+      drivetrain.setControl(robotCentric.withVelocityX(0).withVelocityY(0).withRotationalRate(0));
+
+    } else {
+      double xSpeed = pidControllerX.calculate(limeLightSubsystem.getRelative3dBotPose().getZ(), -1.3);
+      // System.out.println("xSpeed " + xSpeed);
+      System.out.println("y pos " + limeLightSubsystem.getRelative3dBotPose().getY());
+
+    double ySpeed = pidControllerY.calculate(limeLightSubsystem.getRelative3dBotPose().getX(), 0);
     // System.out.println("ySpeed " + ySpeed);
 
     // drivetrain.setControl(swerveCentric.withVelocityX(xSpeed).withVelocityY(ySpeed).withRotationalRate(omegaSpeed));
 
-    drivetrain.setControl(robotCentric.withVelocityX(0).withVelocityY(0).withRotationalRate(omegaSpeed));
+    drivetrain.setControl(robotCentric.withVelocityX(-xSpeed).withVelocityY(ySpeed).withRotationalRate(omegaSpeed));
  
+
+    }
+
   }
 
   // Called once the command ends or is interrupted.

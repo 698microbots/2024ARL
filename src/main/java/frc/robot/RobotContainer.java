@@ -172,7 +172,8 @@ public class RobotContainer {
     //fixed trap angle
     // joystick.b().whileTrue(new ScoreSpeaker(flyWheel, intake));
     // joystick.b().whileTrue(new AutoScoreSpeakerArm(arm, flyWheel, intake));
-    joystick.b().whileTrue(new ChaseTag(limeLight, drivetrain, () -> limeLight.getRelative2dBotPose(), () -> limeLight.getTarget2dBotPose()));
+    // joystick.b().whileTrue(new ChaseTag(limeLight, drivetrain, () -> limeLight.getRelative2dBotPose(), () -> limeLight.getTarget2dBotPose()));
+    joystick.b().whileTrue(new ChaseTagNew(limeLight, drivetrain));
     // joystick.b().whileTrue(new ChaseTagNew(limeLight, drivetrain));
 
     // reset the field-centric heading on left bumper press
