@@ -21,7 +21,7 @@ public class ChaseTagFixed extends Command {
 
   //pid and constants
   private final PIDController pidControllerX = new PIDController(1, 0.1, 0);
-  private final PIDController pidControllerY = new PIDController(.7, 0.009, 0);
+  private final PIDController pidControllerY = new PIDController(.65, 0.009, 0);
   private final PIDController pidControllerOmega = new PIDController(.05, .01, 0);
 
   private LimeLightSubsystem limeLightSubsystem;
@@ -53,6 +53,7 @@ public class ChaseTagFixed extends Command {
       counter++;
 
       //once the counter has reached a certain time (.5 s), stop the robot
+      //this is pretty important because it stops the robot from jittering to a stop
       if (counter > Constants.numSeconds(.5)){
         drivetrain.setControl(robotCentric.withVelocityX(0).withVelocityY(0).withRotationalRate(0));
       }
@@ -64,18 +65,13 @@ public class ChaseTagFixed extends Command {
       
       //if the robot sees any apriltag (might have to change settings to get closest apriltag), do calculations
 
-      //PID setpoint for robot to be 1.3 meters away from the tag in the x direction
+      //PID setpoint for robot to be .35 meters away from the tag in the x direction
       double xSpeed = pidControllerX.calculate(limeLightSubsystem.getRelative3dBotPose().getZ(), -.35);
       //PID setpoint for robot to be 0 meters away from the tag in the y direction
       double ySpeed = pidControllerY.calculate(limeLightSubsystem.getRelative3dBotPose().getX(), 0);
 
       //set all the calculated speeds to the robot
-      // if (-limeLightSubsystem.getRelative3dBotPose().getZ() <= 1.3){
-      //   drivetrain.setControl(robotCentric.withVelocityX(-xSpeed).withVelocityY(ySpeed).withRotationalRate(omegaSpeed));
-      // } else {
-      //   drivetrain.setControl(robotCentric.withVelocityX(-xSpeed).withVelocityY(0).withRotationalRate(omegaSpeed));
 
-      // }
       drivetrain.setControl(robotCentric.withVelocityX(-xSpeed).withVelocityY(ySpeed).withRotationalRate(omegaSpeed));
  
     }
