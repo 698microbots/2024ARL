@@ -13,21 +13,21 @@ import frc.robot.Constants;
 import frc.robot.subsystems.LimeLightSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ChaseTagNew extends Command {
-  /** Creates a new ChaseTagNew. */
+public class ChaseTagFixed extends Command {
+  /** Creates a new ChaseTagFixed. */
   private int counter = 0;
   private final SwerveRequest.FieldCentric fieldCentric = new SwerveRequest.FieldCentric();
   private final SwerveRequest.RobotCentric robotCentric = new SwerveRequest.RobotCentric();
 
   //pid and constants
   private final PIDController pidControllerX = new PIDController(1, 0.1, 0);
-  private final PIDController pidControllerY = new PIDController(1, 0.1, 0);
+  private final PIDController pidControllerY = new PIDController(.7, 0.009, 0);
   private final PIDController pidControllerOmega = new PIDController(.05, .01, 0);
 
   private LimeLightSubsystem limeLightSubsystem;
   private CommandSwerveDrivetrain drivetrain;
 
-  public ChaseTagNew(LimeLightSubsystem limeLightSubsystem, CommandSwerveDrivetrain drivetrain) {
+  public ChaseTagFixed(LimeLightSubsystem limeLightSubsystem, CommandSwerveDrivetrain drivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.limeLightSubsystem = limeLightSubsystem;
     this.drivetrain = drivetrain;
@@ -65,11 +65,17 @@ public class ChaseTagNew extends Command {
       //if the robot sees any apriltag (might have to change settings to get closest apriltag), do calculations
 
       //PID setpoint for robot to be 1.3 meters away from the tag in the x direction
-      double xSpeed = pidControllerX.calculate(limeLightSubsystem.getRelative3dBotPose().getZ(), -1.3);
+      double xSpeed = pidControllerX.calculate(limeLightSubsystem.getRelative3dBotPose().getZ(), -.35);
       //PID setpoint for robot to be 0 meters away from the tag in the y direction
       double ySpeed = pidControllerY.calculate(limeLightSubsystem.getRelative3dBotPose().getX(), 0);
 
-      //set all the calculated speeds to the robot 
+      //set all the calculated speeds to the robot
+      // if (-limeLightSubsystem.getRelative3dBotPose().getZ() <= 1.3){
+      //   drivetrain.setControl(robotCentric.withVelocityX(-xSpeed).withVelocityY(ySpeed).withRotationalRate(omegaSpeed));
+      // } else {
+      //   drivetrain.setControl(robotCentric.withVelocityX(-xSpeed).withVelocityY(0).withRotationalRate(omegaSpeed));
+
+      // }
       drivetrain.setControl(robotCentric.withVelocityX(-xSpeed).withVelocityY(ySpeed).withRotationalRate(omegaSpeed));
  
     }
@@ -79,7 +85,6 @@ public class ChaseTagNew extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
     //stop the robot when the command ends
     drivetrain.setControl(robotCentric.withVelocityX(0).withVelocityY(0).withRotationalRate(0));
 

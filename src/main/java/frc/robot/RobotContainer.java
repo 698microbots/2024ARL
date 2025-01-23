@@ -34,6 +34,7 @@ import frc.robot.commands.AutoTrap;
 import frc.robot.commands.AutoTrapFromGround;
 import frc.robot.commands.BackupIntake;
 import frc.robot.commands.ChaseTag;
+import frc.robot.commands.ChaseTagFixed;
 import frc.robot.commands.ChaseTagNew;
 import frc.robot.commands.FlyWheelShootSpeaker;
 import frc.robot.commands.FlywheelShootAmp;
@@ -173,8 +174,8 @@ public class RobotContainer {
     // joystick.b().whileTrue(new ScoreSpeaker(flyWheel, intake));
     // joystick.b().whileTrue(new AutoScoreSpeakerArm(arm, flyWheel, intake));
     // joystick.b().whileTrue(new ChaseTag(limeLight, drivetrain, () -> limeLight.getRelative2dBotPose(), () -> limeLight.getTarget2dBotPose()));
-    joystick.b().whileTrue(new ChaseTagNew(limeLight, drivetrain));
     // joystick.b().whileTrue(new ChaseTagNew(limeLight, drivetrain));
+    joystick.b().whileTrue(new ChaseTagFixed(limeLight, drivetrain));
 
     // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
