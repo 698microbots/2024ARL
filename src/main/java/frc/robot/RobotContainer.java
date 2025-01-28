@@ -7,6 +7,7 @@ package frc.robot;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
@@ -18,6 +19,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -103,8 +105,9 @@ public class RobotContainer {
   public Pose2d pose = drivetrain.getState().Pose; //could break the code 
   public final Field2d field2d = new Field2d();
 
+  // private final SendableChooser<Command> autoChooser;
 
-  // public Command runAuto = new PathPlannerAuto("Test Auto");
+  public Command runAuto;
 
   private SwerveModuleState[] states = drivetrain.getState().ModuleStates;
 
@@ -303,9 +306,12 @@ public class RobotContainer {
   }
 
   public RobotContainer() {
-    NamedCommands.registerCommand("AUTOTESTarmDown", new AUTOTESTarmDown(arm));
-    NamedCommands.registerCommand("AUTOTESTautoArmShoot", new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2));
-    
+
+    NamedCommands.registerCommand("ChaseTag", new ChaseTagFixed(limeLight, drivetrain));
+    // NamedCommands.registerCommand("IntakeMove", new IntakeMove(xboxController, xboxController2, intake, limeLight, false, lights));
+
+    // autoChooser = AutoBuilder.buildAutoChooser("tester");
+    runAuto = new PathPlannerAuto("tester");
     configureBindings();
 
   }
@@ -328,14 +334,14 @@ public class RobotContainer {
     // return new AUTOTESTtagAutoShoot(limeLight, intake, arm, drivetrain, flyWheel);
 
     // // (2 note) shoots note infront of speaker drives back picks up note and shoots again,then moves out of alliance
-    return new SequentialCommandGroup(
-      new AUTOTESTarmDown(arm),
-      new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2), //try changing this to 0
-      new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 1.75, 1, 0, 0),
-      new AUTOTESTmove(drivetrain, 1.99, -1, 0, 0), 
-      new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
-      new AUTOTESTmove(drivetrain, 2.5, 1, 0, 0)
-    );    
+    // return new SequentialCommandGroup(
+    //   new AUTOTESTarmDown(arm),
+    //   new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2), //try changing this to 0
+    //   new AUTOTESTIntakeMoveAndDriveTrain(intake, drivetrain, 1.75, 1, 0, 0),
+    //   new AUTOTESTmove(drivetrain, 1.99, -1, 0, 0), 
+    //   new AUTOTESTautoArmShoot(arm, flyWheel, intake, limeLight, drivetrain, 2),
+    //   new AUTOTESTmove(drivetrain, 2.5, 1, 0, 0)
+    // );    
 
     // (2 note) blue side  shot
     // return new SequentialCommandGroup(
@@ -387,7 +393,7 @@ public class RobotContainer {
     // return Commands.print("No autonomous command configured");
     // PathPlannerPath path = PathPlannerPath.fromPathFile("New Auto");
 
-    // return AutoBuilder.followPath(path);
-    // return runAuto;    
+    // return autoChooser.getSelected();
+    return runAuto;    
   }
 }

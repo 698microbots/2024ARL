@@ -66,7 +66,7 @@ public class ChaseTagFixed extends Command {
       //if the robot sees any apriltag (might have to change settings to get closest apriltag), do calculations
 
       //PID setpoint for robot to be .35 meters away from the tag in the x direction
-      double xSpeed = pidControllerX.calculate(limeLightSubsystem.getRelative3dBotPose().getZ(), -.35);
+      double xSpeed = pidControllerX.calculate(limeLightSubsystem.getRelative3dBotPose().getZ(), -.7);
       //PID setpoint for robot to be 0 meters away from the tag in the y direction
       double ySpeed = pidControllerY.calculate(limeLightSubsystem.getRelative3dBotPose().getX(), 0);
 
