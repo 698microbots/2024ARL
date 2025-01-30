@@ -306,7 +306,7 @@ public class RobotContainer {
   }
 
   public RobotContainer() {
-
+    //if loading an auto doesnt work then try doing SenableChooser supplier with 
     NamedCommands.registerCommand("ChaseTag", new ChaseTagFixed(limeLight, drivetrain));
     // NamedCommands.registerCommand("IntakeMove", new IntakeMove(xboxController, xboxController2, intake, limeLight, false, lights));
 

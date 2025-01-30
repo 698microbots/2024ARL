@@ -124,7 +124,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     }
 
     private void configurePathPlanner() {
-        double driveBaseRadius = 0;
+        double driveBaseRadius = .3; //.5 meters
         for (var moduleLocation : m_moduleLocations) {
             driveBaseRadius = Math.max(driveBaseRadius, moduleLocation.getNorm());
         }
@@ -159,9 +159,10 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         return getState().Pose;
     }
 
-    // public void resetPose(Pose2d pose){
-    //     getState().Pose.
-    // }
+    //tareEverything() definition says it resets all the pose
+    public void resetPose(){
+        tareEverything();
+    }
     public Command getAutoPath(String pathName) {
         return new PathPlannerAuto(pathName);
     }

@@ -37,19 +37,19 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     // m_robotContainer.field2d.setRobotPose(m_robotContainer.pose); 
     // System.out.println("STATES:/n" + m_robotContainer.drivetrain.getSwerveModTarget());
-    SmartDashboard.putNumber("Left Y", m_robotContainer.joystick.getLeftY());
-    SmartDashboard.putNumber("Left X", m_robotContainer.joystick.getLeftX());
+    // SmartDashboard.putNumber("Left Y", m_robotContainer.joystick.getLeftY());
+    // SmartDashboard.putNumber("Left X", m_robotContainer.joystick.getLeftX());
 
 
-    SmartDashboard.putNumber("Left2 Y", m_robotContainer.joystick2.getLeftY());
-    SmartDashboard.putNumber("Left2 X", m_robotContainer.joystick2.getLeftX());
+    // SmartDashboard.putNumber("Left2 Y", m_robotContainer.joystick2.getLeftY());
+    // SmartDashboard.putNumber("Left2 X", m_robotContainer.joystick2.getLeftX());
     SmartDashboard.putNumber("Robot Y", m_robotContainer.drivetrain.getState().Pose.getY()); // says this is null when
                                                                                              // simulating
     SmartDashboard.putNumber("Robot X", m_robotContainer.drivetrain.getState().Pose.getX());
-    SmartDashboard.putNumber("AprilTag ID", m_robotContainer.limeLight.getaprilTagID());
-    SmartDashboard.putNumber("H Angle", m_robotContainer.limeLight.getH_angle());
-    SmartDashboard.putNumber("Angle", m_robotContainer.gyro.getAngle());
-    SmartDashboard.putString("Target States", m_robotContainer.drivetrain.getSwerveModTarget());
+    // SmartDashboard.putNumber("AprilTag ID", m_robotContainer.limeLight.getaprilTagID());
+    // SmartDashboard.putNumber("H Angle", m_robotContainer.limeLight.getH_angle());
+    // SmartDashboard.putNumber("Angle", m_robotContainer.gyro.getAngle());
+    // SmartDashboard.putString("Target States", m_robotContainer.drivetrain.getSwerveModTarget());
     // SmartDashboard.putNumber("Rotation Mod 1", kDefaultPeriod);
     // m_robotContainer.logger.telemeterize(m_robotContainer.drivetrain.getState());
     //TODO: Calculate the rate of change of the positions of the motors (NOT VOLTAGES RN ITS POSITION)
@@ -68,35 +68,36 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("FR DRIVE Velocity", m_robotContainer.driveTrainVoltages.FRDVoltage());
     // SmartDashboard.putNumber("BR DRIVE Velocity", m_robotContainer.driveTrainVoltages.BRDVoltage());
 
-    SmartDashboard.putNumber("Robot Pose to tag X: ", m_robotContainer.limeLight.getRelative3dBotPose().getX());
-    SmartDashboard.putNumber("Robot Pose to tag Y:", m_robotContainer.limeLight.getRelative3dBotPose().getY());
-    SmartDashboard.putNumber("Robot Pose to tag Z:", m_robotContainer.limeLight.getRelative3dBotPose().getZ());
+    //this is for chase tag
+    // SmartDashboard.putNumber("Robot Pose to tag X: ", m_robotContainer.limeLight.getRelative3dBotPose().getX());
+    // SmartDashboard.putNumber("Robot Pose to tag Y:", m_robotContainer.limeLight.getRelative3dBotPose().getY());
+    // SmartDashboard.putNumber("Robot Pose to tag Z:", m_robotContainer.limeLight.getRelative3dBotPose().getZ());
 
-    SmartDashboard.putNumber("Target Pose to amp X:", m_robotContainer.limeLight.getTarget3dBotPose().getX());
-    SmartDashboard.putNumber("Target Pose to amp Y:", m_robotContainer.limeLight.getTarget3dBotPose().getY());
-    SmartDashboard.putNumber("Target Pose to amp Z:", m_robotContainer.limeLight.getTarget3dBotPose().getZ());
+    // SmartDashboard.putNumber("Target Pose to amp X:", m_robotContainer.limeLight.getTarget3dBotPose().getX());
+    // SmartDashboard.putNumber("Target Pose to amp Y:", m_robotContainer.limeLight.getTarget3dBotPose().getY());
+    // SmartDashboard.putNumber("Target Pose to amp Z:", m_robotContainer.limeLight.getTarget3dBotPose().getZ());
     
     // SmartDashboard.putNumber("Target Space X", m_robotContainer.limeLight.getRobotPoseX());
     // SmartDashboard.putNumber("Target Pose Y", m_robotContainer.limeLight.getRobotPoseZ());
     // SmartDashboard.putData("Field2d", m_robotContainer.field2d);
     // SmartDashboard.putNumber("Intake Volts: ", m_robotContainer.intake.getIntakeVolts());
 
-    SmartDashboard.putBoolean("isBlocked", m_robotContainer.intake.getBlocked());
-    SmartDashboard.putBoolean("isBlocked2", m_robotContainer.intake.getBlocked2());
+    // SmartDashboard.putBoolean("isBlocked", m_robotContainer.intake.getBlocked());
+    // SmartDashboard.putBoolean("isBlocked2", m_robotContainer.intake.getBlocked2());
     
-    SmartDashboard.putNumber("Note Angle", m_robotContainer.limeLight.getNoteHorizontalAngle());
-    SmartDashboard.putNumber("Note Area", m_robotContainer.limeLight.getNoteArea());
+    // SmartDashboard.putNumber("Note Angle", m_robotContainer.limeLight.getNoteHorizontalAngle());
+    // SmartDashboard.putNumber("Note Area", m_robotContainer.limeLight.getNoteArea());
     
-    SmartDashboard.putNumber("horizontal angle", m_robotContainer.limeLight.getH_angle());
-    SmartDashboard.putNumber("arm encoder", m_robotContainer.arm.getEncoder());
+    // SmartDashboard.putNumber("horizontal angle", m_robotContainer.limeLight.getH_angle());
+    // SmartDashboard.putNumber("arm encoder", m_robotContainer.arm.getEncoder());
  // says this is null when
                                                                                              // simulating
-    SmartDashboard.putNumber("distance to speaker", m_robotContainer.limeLight.getDistToSpeaker());
-    SmartDashboard.putNumber("v angle", m_robotContainer.limeLight.getV_angle());;//just giving directly from limelight
+    // SmartDashboard.putNumber("distance to speaker", m_robotContainer.limeLight.getDistToSpeaker());
+    // SmartDashboard.putNumber("v angle", m_robotContainer.limeLight.getV_angle());;//just giving directly from limelight
   
-    SmartDashboard.putNumber("Slew Rate X", m_robotContainer.slewRateDriveX.calculate(-m_robotContainer.joystick.getLeftY()));
-    SmartDashboard.putNumber("Slew Rate Y", m_robotContainer.slewRateDriveY.calculate(-m_robotContainer.joystick.getLeftX()));
-    SmartDashboard.putNumber("Slew Rate Turn", m_robotContainer.slewRateTurn.calculate(-m_robotContainer.joystick.getRightX()));
+    // SmartDashboard.putNumber("Slew Rate X", m_robotContainer.slewRateDriveX.calculate(-m_robotContainer.joystick.getLeftY()));
+    // SmartDashboard.putNumber("Slew Rate Y", m_robotContainer.slewRateDriveY.calculate(-m_robotContainer.joystick.getLeftX()));
+    // SmartDashboard.putNumber("Slew Rate Turn", m_robotContainer.slewRateTurn.calculate(-m_robotContainer.joystick.getRightX()));
   }
 
   @Override
